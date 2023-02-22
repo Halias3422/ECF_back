@@ -1,5 +1,6 @@
 import cors from 'cors';
 import express from 'express';
+import { routes } from './routes';
 
 export const initExpressServer = () => {
   const app = express();
@@ -13,6 +14,10 @@ export const initExpressServer = () => {
     express.json()
   );
 
+  // init routing
+  app.use('/', routes);
+
+  // launch server
   let server = null;
   try {
     server = app.listen(process.env.SERVER_PORT, () => {
