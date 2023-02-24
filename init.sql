@@ -9,12 +9,6 @@ CREATE TABLE IF NOT EXISTS Users (
 	isAdmin BOOLEAN NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS Gallery_images (
-	id_image BINARY(16) DEFAULT (UUID_TO_BIN(UUID())) PRIMARY KEY,
-	title VARCHAR(255) NOT NULL,
-	image VARCHAR(255) NOT NULL
-);
-
 CREATE TABLE IF NOT EXISTS Menus (
 	id_menu BINARY(16) DEFAULT (UUID_TO_BIN(UUID())) PRIMARY KEY,
 	title VARCHAR(255) NOT NULL
@@ -48,12 +42,20 @@ CREATE TABLE IF NOT EXISTS Categories (
 
 CREATE TABLE IF NOT EXISTS Dishes (
 	id_dish BINARY(16) DEFAULT (UUID_TO_BIN(UUID())) PRIMARY KEY,
+	image VARCHAR(255) NOT NULL,
 	title VARCHAR(255) NOT NULL,
 	description VARCHAR(1000) NOT NULL,
 	price FLOAT NOT NULL
 );
 
 /* ONE TO MANY TABLES */
+
+CREATE TABLE IF NOT EXISTS Gallery_dishes (
+	dish_id BINARY(16) NOT NULL,
+	PRIMARY KEY(dish_id),
+	Constraint FOREIGN KEY (dish_id) REFERENCES Dishes(id_dish)
+);
+
 
 CREATE TABLE IF NOT EXISTS Categories_dishes (
 	category_id BINARY(16) NOT NULL,
@@ -88,3 +90,28 @@ CREATE TABLE IF NOT EXISTS Reservations (
 
 INSERT INTO Users ()
 VALUES (DEFAULT, 'admin@mail.com', SHA2('password', 256), NULL, NULL, true);
+INSERT INTO Dishes ()
+VALUES (DEFAULT, 'image placeholder', 'titre recette 1', 'description recette 1', '15.99');
+INSERT INTO Dishes ()
+VALUES (DEFAULT, 'image placeholder', 'titre recette 2', 'description recette 2', '15.99');
+INSERT INTO Dishes ()
+VALUES (DEFAULT, 'image placeholder', 'titre recette 3', 'description recette 3', '15.99');
+INSERT INTO Dishes ()
+VALUES (DEFAULT, 'image placeholder', 'titre recette 4', 'description recette 4', '15.99');
+INSERT INTO Dishes ()
+VALUES (DEFAULT, 'image placeholder', 'titre recette 5', 'description recette 5', '15.99');
+INSERT INTO Gallery_dishes
+SELECT id_dish FROM Dishes
+WHERE title="titre recette 1";
+INSERT INTO Gallery_dishes
+SELECT id_dish FROM Dishes
+WHERE title="titre recette 2";
+INSERT INTO Gallery_dishes
+SELECT id_dish FROM Dishes
+WHERE title="titre recette 3";
+INSERT INTO Gallery_dishes
+SELECT id_dish FROM Dishes
+WHERE title="titre recette 4";
+INSERT INTO Gallery_dishes
+SELECT id_dish FROM Dishes
+WHERE title="titre recette 5";
