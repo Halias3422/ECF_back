@@ -2,11 +2,12 @@ export const DISHES_ROUTES = {
   createNewDish: '/api/create-new-dish',
 };
 
-export const DishesTable = {
+export const DISHES_TABLE = {
   name: 'Dishes',
   columns: {
     id: 'id_dish',
     title: 'title',
+    image: 'image',
     description: 'description',
     price: 'price',
   },
