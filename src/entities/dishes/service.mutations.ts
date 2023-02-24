@@ -1,7 +1,7 @@
 import mysql2 from 'mysql2';
 import { dbConnexion } from '../..';
 import { MutationResponse } from '../globalConstants';
-import { DishesTable, DishFormData } from './constants';
+import { DISHES_TABLE, DishFormData } from './constants';
 
 export class DishesMutationService {
   static async createNewDish(newDish: DishFormData): Promise<MutationResponse> {
@@ -14,7 +14,7 @@ export class DishesMutationService {
 
     try {
       const mutation = mysql2.format(
-        `INSERT INTO ${DishesTable.name} VALUES (?, ?, ?, ?)`,
+        `INSERT INTO ${DISHES_TABLE.name} VALUES (?, ?, ?, ?)`,
         [
           DEFAULT,
           newDish.title,

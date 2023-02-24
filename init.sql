@@ -91,15 +91,15 @@ CREATE TABLE IF NOT EXISTS Reservations (
 INSERT INTO Users ()
 VALUES (DEFAULT, 'admin@mail.com', SHA2('password', 256), NULL, NULL, true);
 INSERT INTO Dishes ()
-VALUES (DEFAULT, 'image placeholder', 'titre recette 1', 'description recette 1', '15.99');
+VALUES (DEFAULT, 'pizza-3-fromages.jpg', 'titre recette 1', 'description recette 1', '15.99');
 INSERT INTO Dishes ()
-VALUES (DEFAULT, 'image placeholder', 'titre recette 2', 'description recette 2', '15.99');
+VALUES (DEFAULT, 'plat-hamburger-frites.jpg', 'titre recette 2', 'description recette 2', '15.99');
 INSERT INTO Dishes ()
-VALUES (DEFAULT, 'image placeholder', 'titre recette 3', 'description recette 3', '15.99');
+VALUES (DEFAULT, 'plat-plateau-charcuterie-fromage.jpg', 'titre recette 3', 'description recette 3', '15.99');
 INSERT INTO Dishes ()
-VALUES (DEFAULT, 'image placeholder', 'titre recette 4', 'description recette 4', '15.99');
+VALUES (DEFAULT, 'plat-raviolis-en-sauce.jpg', 'titre recette 4', 'description recette 4', '15.99');
 INSERT INTO Dishes ()
-VALUES (DEFAULT, 'image placeholder', 'titre recette 5', 'description recette 5', '15.99');
+VALUES (DEFAULT, 'soupe-de-la-mer-jpg', 'titre recette 5', 'description recette 5', '15.99');
 INSERT INTO Gallery_dishes
 SELECT id_dish FROM Dishes
 WHERE title="titre recette 1";
