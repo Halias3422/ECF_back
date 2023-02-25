@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS Formulas (
 
 CREATE TABLE IF NOT EXISTS Schedule (
 	id_schedule BINARY(16) DEFAULT (UUID_TO_BIN(UUID())) PRIMARY KEY,
-	day_of_week INT NOT NULL,
+	day_of_week VARCHAR(20) NOT NULL,
 	morning_opening TIME,
 	morning_closing TIME,
 	afternoon_opening TIME,
@@ -99,7 +99,8 @@ VALUES (DEFAULT, 'plat-plateau-charcuterie-fromage.jpg', 'titre recette 3', 'des
 INSERT INTO Dishes ()
 VALUES (DEFAULT, 'plat-raviolis-en-sauce.jpg', 'titre recette 4', 'description recette 4', '15.99');
 INSERT INTO Dishes ()
-VALUES (DEFAULT, 'soupe-de-la-mer-jpg', 'titre recette 5', 'description recette 5', '15.99');
+VALUES (DEFAULT, 'soupe-de-la-mer.jpg', 'titre recette 5', 'description recette 5', '15.99');
+
 INSERT INTO Gallery_dishes
 SELECT id_dish FROM Dishes
 WHERE title="titre recette 1";
@@ -115,3 +116,18 @@ WHERE title="titre recette 4";
 INSERT INTO Gallery_dishes
 SELECT id_dish FROM Dishes
 WHERE title="titre recette 5";
+
+INSERT INTO Schedule ()
+VALUES (DEFAULT, 'lundi', '12:00', '14:00', '19:00', '22:00');
+INSERT INTO Schedule ()
+VALUES (DEFAULT, 'mardi', '12:00', '14:00', '19:00', '22:00');
+INSERT INTO Schedule ()
+VALUES (DEFAULT, 'mercredi', NULL, NULL, NULL, NULL);
+INSERT INTO Schedule ()
+VALUES (DEFAULT, 'jeudi', '13:00', '14:00', '18:00', '21:00');
+INSERT INTO Schedule ()
+VALUES (DEFAULT, 'vendredi', '12:00', '14:30', '18:00', '23:00');
+INSERT INTO Schedule ()
+VALUES (DEFAULT, 'samedi', NULL, NULL, '19:00', '23:00');
+INSERT INTO Schedule ()
+VALUES (DEFAULT, 'lundi', '12:30', '14:00', NULL, NULL);
