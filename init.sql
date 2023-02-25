@@ -130,4 +130,4 @@ VALUES (DEFAULT, 'vendredi', '12:00', '14:30', '18:00', '23:00');
 INSERT INTO Schedule ()
 VALUES (DEFAULT, 'samedi', NULL, NULL, '19:00', '23:00');
 INSERT INTO Schedule ()
-VALUES (DEFAULT, 'lundi', '12:30', '14:00', NULL, NULL);
+VALUES (DEFAULT, 'dimanche', '12:30', '14:00', NULL, NULL);
