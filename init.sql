@@ -39,10 +39,12 @@ CREATE TABLE IF NOT EXISTS Categories (
 
 CREATE TABLE IF NOT EXISTS Dishes (
 	id_dish BINARY(16) DEFAULT (UUID_TO_BIN(UUID())) PRIMARY KEY,
+	category_id BINARY(16) NOT NULL,
 	image VARCHAR(255) NOT NULL,
 	title VARCHAR(255) NOT NULL,
 	description VARCHAR(1000) NOT NULL,
-	price FLOAT NOT NULL
+	price FLOAT NOT NULL,
+	Constraint FOREIGN KEY (category_id) REFERENCES Categories(id_category)
 );
 
 /* ONE TO MANY TABLES */
@@ -50,15 +52,6 @@ CREATE TABLE IF NOT EXISTS Dishes (
 CREATE TABLE IF NOT EXISTS Gallery_dishes (
 	dish_id BINARY(16) NOT NULL,
 	PRIMARY KEY(dish_id),
-	Constraint FOREIGN KEY (dish_id) REFERENCES Dishes(id_dish)
-);
-
-
-CREATE TABLE IF NOT EXISTS Categories_dishes (
-	category_id BINARY(16) NOT NULL,
-	dish_id BINARY(16) NOT NULL,
-	PRIMARY KEY (category_id, dish_id),
-	Constraint FOREIGN KEY (category_id) REFERENCES Categories(id_category),
 	Constraint FOREIGN KEY (dish_id) REFERENCES Dishes(id_dish)
 );
 
@@ -79,16 +72,32 @@ CREATE TABLE IF NOT EXISTS Reservations (
 
 INSERT INTO Users ()
 VALUES (DEFAULT, 'admin@mail.com', SHA2('password', 256), NULL, NULL, true);
+
+INSERT INTO Categories ()
+VALUES (DEFAULT, 'Entrée');
+
+INSERT INTO Categories ()
+VALUES (DEFAULT, 'Plat principal');
+
+INSERT INTO Categories ()
+VALUES (DEFAULT, 'Dessert');
+
+INSERT INTO Categories ()
+VALUES (DEFAULT, 'Salades');
+
+INSERT INTO Categories ()
+VALUES (DEFAULT, 'Burgers');
+
 INSERT INTO Dishes ()
-VALUES (DEFAULT, 'pizza-3-fromages.jpg', 'titre recette 1', 'description recette 1', '15.99');
+VALUES (DEFAULT, (SELECT id_category FROM Categories WHERE Categories.name = "Entrée"),'pizza-3-fromages.jpg', 'titre recette 1', 'description recette 1', '15.99');
 INSERT INTO Dishes ()
-VALUES (DEFAULT, 'plat-hamburger-frites.jpg', 'titre recette 2', 'description recette 2', '15.99');
+VALUES (DEFAULT, (SELECT id_category FROM Categories WHERE Categories.name = "Plat principal"), 'plat-hamburger-frites.jpg', 'titre recette 2', 'description recette 2', '15.99');
 INSERT INTO Dishes ()
-VALUES (DEFAULT, 'plat-plateau-charcuterie-fromage.jpg', 'titre recette 3', 'description recette 3', '15.99');
+VALUES (DEFAULT, (SELECT id_category FROM Categories WHERE Categories.name = "Plat principal"),'plat-plateau-charcuterie-fromage.jpg', 'titre recette 3', 'description recette 3', '15.99');
 INSERT INTO Dishes ()
-VALUES (DEFAULT, 'plat-raviolis-en-sauce.jpg', 'titre recette 4', 'description recette 4', '15.99');
+VALUES (DEFAULT, (SELECT id_category FROM Categories WHERE Categories.name = "Dessert"), 'plat-raviolis-en-sauce.jpg', 'titre recette 4', 'description recette 4', '15.99');
 INSERT INTO Dishes ()
-VALUES (DEFAULT, 'soupe-de-la-mer.jpg', 'titre recette 5', 'description recette 5', '15.99');
+VALUES (DEFAULT, (SELECT id_category FROM Categories WHERE Categories.name = "Dessert"), 'soupe-de-la-mer.jpg', 'titre recette 5', 'description recette 5', '15.99');
 
 INSERT INTO Gallery_dishes
 SELECT id_dish FROM Dishes

@@ -1,11 +1,13 @@
 export const DISHES_ROUTES = {
   createNewDish: '/api/create-new-dish',
+  getAllDishesByCategories: '/api/get-all-dishes-by-categories',
 };
 
 export const DISHES_TABLE = {
   name: 'Dishes',
   columns: {
     id: 'id_dish',
+    category_id: 'category_id',
     title: 'title',
     image: 'image',
     description: 'description',
@@ -18,4 +20,12 @@ export interface DishFormData {
   description: string;
   price: number;
   category: string;
+}
+
+export interface ResponseDishesByCategory {
+  category: {
+    id: string;
+    name: string;
+  };
+  dishes: DishFormData[];
 }
