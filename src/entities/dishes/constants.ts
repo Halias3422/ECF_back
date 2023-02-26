@@ -17,6 +17,7 @@ export const DISHES_TABLE = {
 
 export interface DishFormData {
   title: string;
+  image: string;
   description: string;
   price: number;
   category: string;

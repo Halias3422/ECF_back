@@ -73,6 +73,7 @@ export class DishesController {
         ) {
           retreivedCategories[i].dishes.push({
             title: dish.title,
+            image: dish.image,
             description: dish.description,
             price: dish.price,
             category: dish.category,
