@@ -43,8 +43,8 @@ export class DishesController {
     const response: ResponseDishesByCategory[] = [];
     const retreivedCategoriesId: string[] = [];
     for (const dish of dishes) {
-      if (!retreivedCategoriesId.includes(dish.category_id)) {
-        retreivedCategoriesId.push(dish.category_id);
+      if (!retreivedCategoriesId.includes(JSON.stringify(dish.category_id))) {
+        retreivedCategoriesId.push(JSON.stringify(dish.category_id));
         const retreivedCategory =
           await CategoriesQueriesService.getCategoryById(dish.category_id);
         if (retreivedCategory.statusCode === 200) {
