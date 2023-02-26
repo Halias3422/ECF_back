@@ -4,17 +4,6 @@ import { FormattedMenu, MENUS_TABLE } from './constants';
 import { MenusQueriesService } from './service.queries';
 
 export const MenuController = {
-  addFormulasToMenu: (menu: FormattedMenu, formulas: any[]) => {
-    for (const formula of formulas) {
-      menu.formulas.push({
-        title: formula.title,
-        description: formula.description,
-        price: formula.price,
-      });
-    }
-    return menu;
-  },
-
   getAllMenus: async (): Promise<QueryResponse> => {
     const retreivedMenus = await MenusQueriesService.getAllMenus();
     const formattedMenus = await Promise.all(
@@ -27,17 +16,27 @@ export const MenuController = {
           await FormulasQueriesService.getAllFormulasFromMenuId(
             menu[`${MENUS_TABLE.columns.id}`]
           );
-        return MenuController.addFormulasToMenu(
-          formattedMenu,
-          retreivedFormulas.rows
-        );
+        return addFormulasToMenu(formattedMenu, retreivedFormulas.rows);
       })
     );
-    console.log('end result = ' + JSON.stringify(formattedMenus));
     return {
       statusCode: retreivedMenus.statusCode,
       rows: formattedMenus,
       response: retreivedMenus.response,
     };
   },
+};
+
+const addFormulasToMenu = (
+  menu: FormattedMenu,
+  formulas: any[]
+): FormattedMenu => {
+  for (const formula of formulas) {
+    menu.formulas.push({
+      title: formula.title,
+      description: formula.description,
+      price: formula.price,
+    });
+  }
+  return menu;
 };

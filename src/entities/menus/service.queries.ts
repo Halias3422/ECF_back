@@ -6,7 +6,6 @@ export const MenusQueriesService = {
   getAllMenus: async (): Promise<QueryResponse> => {
     const query = `SELECT ${MENUS_TABLE.columns.id}, ${MENUS_TABLE.columns.menuTitle} as title FROM ${MENUS_TABLE.name}`;
 
-    console.log('query = ' + query);
     try {
       const [rows] = await dbConnexion.execute(query);
       if (rows.length > 0) {
