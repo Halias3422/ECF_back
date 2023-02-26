@@ -24,7 +24,7 @@ export const ScheduleQueriesService = {
       };
     }
     return {
-      statusCode: 500,
+      statusCode: 200,
       rows: [],
       response: 'Warning: no entries in the Schedule table.',
     };
