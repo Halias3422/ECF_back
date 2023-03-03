@@ -1,14 +1,86 @@
-import { MutationResponse } from '../globalConstants';
-import { DishFormData } from './constants';
+import { CategoriesQueriesService } from '../categories/service.queries';
+import { MutationResponse, QueryResponse } from '../globalConstants';
+import { DishFormData, ResponseDishesByCategory } from './constants';
 import { DishesMutationService } from './service.mutations';
+import { DishesQueriesService } from './service.queries';
 
 export class DishesController {
-  //mutations
+  // MUTATIONS
 
-  static async createNewDish(
+  static createNewDish = async (
     dishData: DishFormData
-  ): Promise<MutationResponse> {
+  ): Promise<MutationResponse> => {
     const response = await DishesMutationService.createNewDish(dishData);
     return response;
-  }
+  };
+
+  // QUERIES
+
+  static getAllDishesByCategories = async (): Promise<QueryResponse> => {
+    const retreivedDishes = await DishesQueriesService.getAllDishes();
+    if (retreivedDishes.statusCode === 200) {
+      const retreivedCategories = await this.getDishesCategoriesById(
+        retreivedDishes.rows
+      );
+      if (retreivedCategories.length > 0) {
+        const response = await this.formatGetDishesByCategoriesResponse(
+          retreivedDishes.rows,
+          retreivedCategories
+        );
+        return {
+          statusCode: 200,
+          rows: response,
+          response: 'All dishes retreived successfully by categories',
+        };
+      }
+    }
+    return retreivedDishes;
+  };
+
+  // PRIVATE METHODS
+
+  private static getDishesCategoriesById = async (dishes: any[]) => {
+    const response: ResponseDishesByCategory[] = [];
+    const retreivedCategoriesId: string[] = [];
+    for (const dish of dishes) {
+      if (!retreivedCategoriesId.includes(JSON.stringify(dish.category_id))) {
+        retreivedCategoriesId.push(JSON.stringify(dish.category_id));
+        const retreivedCategory =
+          await CategoriesQueriesService.getCategoryById(dish.category_id);
+        if (retreivedCategory.statusCode === 200) {
+          response.push({
+            category: {
+              id: retreivedCategory.rows[0].id_category,
+              name: retreivedCategory.rows[0].name,
+            },
+            dishes: [],
+          });
+        }
+      }
+    }
+    return response;
+  };
+
+  private static formatGetDishesByCategoriesResponse = async (
+    dishes: any[],
+    retreivedCategories: ResponseDishesByCategory[]
+  ) => {
+    for (let i = 0; i < retreivedCategories.length; i++) {
+      for (const dish of dishes) {
+        if (
+          JSON.stringify(dish.category_id) ===
+          JSON.stringify(retreivedCategories[i].category.id)
+        ) {
+          retreivedCategories[i].dishes.push({
+            title: dish.title,
+            image: dish.image,
+            description: dish.description,
+            price: dish.price,
+            category: dish.category,
+          });
+        }
+      }
+    }
+    return retreivedCategories;
+  };
 }
