@@ -10,7 +10,16 @@ export class DishesController {
   static createNewDish = async (
     dishData: DishFormData
   ): Promise<MutationResponse> => {
-    const response = await DishesMutationService.createNewDish(dishData);
+    const dishCategory = await CategoriesQueriesService.getCategoryByName(
+      dishData.category
+    );
+    if (dishCategory.statusCode !== 200) {
+      return dishCategory;
+    }
+    const response = await DishesMutationService.createNewDish(
+      dishData,
+      dishCategory.rows[0].id_category
+    );
     return response;
   };
 

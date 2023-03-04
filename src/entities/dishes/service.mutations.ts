@@ -4,7 +4,10 @@ import { MutationResponse } from '../globalConstants';
 import { DISHES_TABLE, DishFormData } from './constants';
 
 export class DishesMutationService {
-  static async createNewDish(newDish: DishFormData): Promise<MutationResponse> {
+  static async createNewDish(
+    newDish: DishFormData,
+    dishCategoryId: string
+  ): Promise<MutationResponse> {
     //necessary to set DEFAULT value for id
     const DEFAULT = {
       toSqlString: function () {
@@ -14,13 +17,14 @@ export class DishesMutationService {
 
     try {
       const mutation = mysql2.format(
-        `INSERT INTO ${DISHES_TABLE.name} VALUES (?, ?, ?, ?)`,
+        `INSERT INTO ${DISHES_TABLE.name} VALUES (?, ?, ?, ?, ?, ?)`,
         [
           DEFAULT,
+          dishCategoryId,
+          newDish.image,
           newDish.title,
           newDish.description,
           newDish.price,
-          newDish.category,
         ]
       );
       const [rows] = await dbConnexion.execute(mutation);

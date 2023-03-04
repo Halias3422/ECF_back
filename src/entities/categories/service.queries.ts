@@ -33,4 +33,33 @@ export class CategoriesQueriesService {
       response: 'Warning: did not find any Category for ID: ' + categoryId,
     };
   };
+
+  static getCategoryByName = async (categoryName: string) => {
+    const query = mysql2.format(
+      `SELECT * FROM ${CATEGORIES_TABLE.name} WHERE ${CATEGORIES_TABLE.columns.name} = ?`,
+      [categoryName]
+    );
+    try {
+      const [rows] = await dbConnexion.execute(query);
+      if (rows.length > 0) {
+        return {
+          statusCode: 200,
+          rows,
+          response: 'Category successfully retreived from name.',
+        };
+      }
+    } catch (error) {
+      return {
+        statusCode: 500,
+        rows: [],
+        response:
+          'Error: could not execute the query to retreive the Category from name',
+      };
+    }
+    return {
+      statusCode: 200,
+      rows: [],
+      response: 'Warning: did not find any Category for name: ' + categoryName,
+    };
+  };
 }
