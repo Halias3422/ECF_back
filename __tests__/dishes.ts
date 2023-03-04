@@ -4,7 +4,6 @@ import {
   CATEGORIES_ROUTES,
   CategoryFormData,
 } from '../src/entities/categories/constant';
-import { QueryResponse } from '../src/entities/common/constants';
 import { DISHES_ROUTES, DishFormData } from '../src/entities/dishes/constants';
 import { emptyTestDatabase } from '../src/testUtils/database';
 

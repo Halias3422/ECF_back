@@ -60,3 +60,24 @@ export const isDuplicateResponse = (mutationName: string): MutationResponse => {
       ' because duplicate was found in the database.',
   };
 };
+
+export const verifyFormDataValidity = (
+  formData: any,
+  formAttributes: string[]
+): MutationResponse => {
+  for (const attribute of formAttributes) {
+    if (formData[attribute] === undefined) {
+      return {
+        statusCode: 400,
+        response:
+          'Error: wrong data sent. ' +
+          attribute +
+          ' atttribute is not defined.',
+      };
+    }
+  }
+  return {
+    statusCode: 200,
+    response: 'Form data is valid.',
+  };
+};
