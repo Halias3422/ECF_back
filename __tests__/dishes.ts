@@ -17,7 +17,7 @@ const dishForm: DishFormData = {
   image: 'glace-menthe.jpg',
   title: 'glace à la menthe',
   description: 'un généreux dessert pour les plus gourmands',
-  price: 19.99,
+  price: '19.99',
 };
 
 describe('Dishes endpoints: createNewDish', () => {
@@ -83,21 +83,21 @@ const dishes: DishFormData[] = [
     image: 'image-dish-1.jpg',
     title: 'dish 1 title',
     description: 'dish 1 description',
-    price: 19.99,
+    price: '19.99',
   },
   {
     category: 'Dessert',
     image: 'image-dish-2.jpg',
     title: 'dish 2 title',
     description: 'dish 2 description',
-    price: 24.99,
+    price: '24.99',
   },
   {
     category: 'Entree',
     image: 'image-dish-3.jpg',
     title: 'dish 3 title',
     description: 'dish 3 description',
-    price: 14.99,
+    price: '14.99',
   },
 ];
 
@@ -140,16 +140,16 @@ describe('Dishes endpoints: getAllDishesByCategories', () => {
     expect(entries[0].dishes[0].title).toEqual('dish 1 title');
     expect(entries[0].dishes[0].image).toEqual('image-dish-1.jpg');
     expect(entries[0].dishes[0].description).toEqual('dish 1 description');
-    expect(entries[0].dishes[0].price).toEqual(19.99);
+    expect(entries[0].dishes[0].price).toEqual('19.99');
     expect(entries[0].dishes[1].title).toEqual('dish 2 title');
     expect(entries[0].dishes[1].image).toEqual('image-dish-2.jpg');
     expect(entries[0].dishes[1].description).toEqual('dish 2 description');
-    expect(entries[0].dishes[1].price).toEqual(24.99);
+    expect(entries[0].dishes[1].price).toEqual('24.99');
     expect(entries[1].category.name).toEqual('Entree');
     expect(entries[1].dishes.length).toEqual(1);
     expect(entries[1].dishes[0].title).toEqual('dish 3 title');
     expect(entries[1].dishes[0].image).toEqual('image-dish-3.jpg');
     expect(entries[1].dishes[0].description).toEqual('dish 3 description');
-    expect(entries[1].dishes[0].price).toEqual(14.99);
+    expect(entries[1].dishes[0].price).toEqual('14.99');
   });
 });

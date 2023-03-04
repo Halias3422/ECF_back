@@ -19,7 +19,7 @@ export interface DishFormData {
   title: string;
   image: string;
   description: string;
-  price: number;
+  price: string;
   category: string;
 }
 
