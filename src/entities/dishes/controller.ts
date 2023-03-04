@@ -1,4 +1,5 @@
 import { CategoriesQueriesService } from '../categories/service.queries';
+import { isDuplicateResponse } from '../common/apiResponses';
 import { MutationResponse, QueryResponse } from '../common/constants';
 import { DishFormData, ResponseDishesByCategory } from './constants';
 import { DishesMutationService } from './service.mutations';
@@ -8,20 +9,19 @@ export class DishesController {
   // MUTATIONS
 
   static createNewDish = async (
-    dishData: DishFormData
+    dish: DishFormData
   ): Promise<MutationResponse> => {
-    const duplicate = await DishesQueriesService.getDishByTitle(dishData.title);
-    if (duplicate.statusCode === 200) {
-      return;
+    if ((await this.getDishByTitle(dish)).statusCode === 200) {
+      return isDuplicateResponse('create new dish');
     }
     const dishCategory = await CategoriesQueriesService.getCategoryByName(
-      dishData.category
+      dish.category
     );
     if (dishCategory.statusCode !== 200 || dishCategory.rows.length === 0) {
       return dishCategory;
     }
     const response = await DishesMutationService.createNewDish(
-      dishData,
+      dish,
       dishCategory.rows[0].id_category
     );
     return response;

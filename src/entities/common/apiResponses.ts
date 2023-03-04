@@ -50,3 +50,13 @@ export const databaseMutationError = (
     response: 'Error: could not execute the mutation ' + mutationName + '.',
   };
 };
+
+export const isDuplicateResponse = (mutationName: string): MutationResponse => {
+  return {
+    statusCode: 400,
+    response:
+      'Error: could not execute the mutation ' +
+      mutationName +
+      ' because duplicate was found in the database.',
+  };
+};
