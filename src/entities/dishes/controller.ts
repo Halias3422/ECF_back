@@ -1,5 +1,8 @@
 import { CategoriesQueriesService } from '../categories/service.queries';
-import { isDuplicateResponse } from '../common/apiResponses';
+import {
+  isDuplicateResponse,
+  verifyFormDataValidity,
+} from '../common/apiResponses';
 import { MutationResponse, QueryResponse } from '../common/constants';
 import { DishFormData, ResponseDishesByCategory } from './constants';
 import { DishesMutationService } from './service.mutations';
@@ -11,6 +14,16 @@ export class DishesController {
   static createNewDish = async (
     dish: DishFormData
   ): Promise<MutationResponse> => {
+    const isValid = verifyFormDataValidity(dish, [
+      'title',
+      'image',
+      'description',
+      'price',
+      'category',
+    ]);
+    if (isValid.statusCode !== 200) {
+      return isValid;
+    }
     if ((await this.getDishByTitle(dish)).statusCode === 200) {
       return isDuplicateResponse('create new dish');
     }
@@ -35,7 +48,6 @@ export class DishesController {
     const retreivedDish = await DishesQueriesService.getDishByTitle(dish.title);
     return retreivedDish;
   };
-
   static getAllDishesByCategories = async (): Promise<QueryResponse> => {
     const retreivedDishes = await DishesQueriesService.getAllDishes();
     if (retreivedDishes.statusCode === 200) {
