@@ -1,7 +1,10 @@
 import { dbConnexion } from '../..';
-import { databaseQueryError, databaseQueryResponse } from '../databaseResponse';
+import {
+  databaseQueryError,
+  databaseQueryResponse,
+} from '../common/apiResponses';
+import { QueryResponse } from '../common/constants';
 import { DISHES_TABLE } from '../dishes/constants';
-import { QueryResponse } from '../globalConstants';
 import { DISHES_GALLERY_TABLE } from './constants';
 
 export const DishesGalleryQueriesService = {

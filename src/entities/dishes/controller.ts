@@ -1,5 +1,5 @@
 import { CategoriesQueriesService } from '../categories/service.queries';
-import { MutationResponse, QueryResponse } from '../globalConstants';
+import { MutationResponse, QueryResponse } from '../common/constants';
 import { DishFormData, ResponseDishesByCategory } from './constants';
 import { DishesMutationService } from './service.mutations';
 import { DishesQueriesService } from './service.queries';
@@ -10,6 +10,10 @@ export class DishesController {
   static createNewDish = async (
     dishData: DishFormData
   ): Promise<MutationResponse> => {
+    const duplicate = await DishesQueriesService.getDishByTitle(dishData.title);
+    if (duplicate.statusCode === 200) {
+      return;
+    }
     const dishCategory = await CategoriesQueriesService.getCategoryByName(
       dishData.category
     );

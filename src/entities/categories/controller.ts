@@ -1,4 +1,4 @@
-import { MutationResponse } from '../globalConstants';
+import { MutationResponse } from '../common/constants';
 import { CategoryFormData } from './constant';
 import { CategoriesMutationsService } from './service.mutations';
 

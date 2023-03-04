@@ -1,4 +1,4 @@
-import { MutationResponse, QueryResponse } from './globalConstants';
+import { MutationResponse, QueryResponse } from './constants';
 
 export const databaseQueryResponse = (
   rows: any,

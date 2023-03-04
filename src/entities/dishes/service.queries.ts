@@ -1,14 +1,13 @@
 import mysql2 from 'mysql2';
 import { dbConnexion } from '../..';
-import { QueryResponse } from '../globalConstants';
-import { databaseQueryError, databaseQueryResponse } from '../databaseResponse';
+import {
+  databaseQueryError,
+  databaseQueryResponse,
+} from '../common/apiResponses';
+import { QueryResponse } from '../common/constants';
 import { DISHES_TABLE } from './constants';
 
 export class DishesQueriesService {
-  // MUTATIONS
-
-  // QUERIES
-
   static getDishByTitle = async (dishTitle: string): Promise<QueryResponse> => {
     const query = mysql2.format(`SELECT * FROM ? WHERE ? = ?`, [
       DISHES_TABLE.name,

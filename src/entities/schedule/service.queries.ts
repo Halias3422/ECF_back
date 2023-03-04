@@ -1,6 +1,9 @@
 import { dbConnexion } from '../..';
-import { databaseQueryError, databaseQueryResponse } from '../databaseResponse';
-import { QueryResponse } from '../globalConstants';
+import {
+  databaseQueryError,
+  databaseQueryResponse,
+} from '../common/apiResponses';
+import { QueryResponse } from '../common/constants';
 import { SCHEDULE_TABLE } from './constants';
 
 export const ScheduleQueriesService = {

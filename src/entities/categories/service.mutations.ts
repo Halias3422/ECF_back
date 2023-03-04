@@ -3,8 +3,8 @@ import { dbConnexion } from '../..';
 import {
   databaseMutationError,
   databaseMutationResponse,
-} from '../databaseResponse';
-import { MutationResponse } from '../globalConstants';
+} from '../common/apiResponses';
+import { MutationResponse } from '../common/constants';
 import { CATEGORIES_TABLE, CategoryFormData } from './constant';
 
 export class CategoriesMutationsService {

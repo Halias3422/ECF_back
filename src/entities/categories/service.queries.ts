@@ -1,11 +1,12 @@
 import mysql2 from 'mysql2';
 import { dbConnexion } from '../..';
-import { databaseQueryError, databaseQueryResponse } from '../databaseResponse';
+import {
+  databaseQueryError,
+  databaseQueryResponse,
+} from '../common/apiResponses';
 import { CATEGORIES_TABLE } from './constant';
 
 export class CategoriesQueriesService {
-  // QUERIES
-
   static getCategoryById = async (categoryId: string) => {
     const query = mysql2.format(
       `SELECT * FROM ${CATEGORIES_TABLE.name} WHERE ${CATEGORIES_TABLE.columns.id} = ?`,

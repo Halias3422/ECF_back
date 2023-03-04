@@ -1,7 +1,10 @@
 import mysql2 from 'mysql2';
 import { dbConnexion } from '../..';
-import { databaseQueryError, databaseQueryResponse } from '../databaseResponse';
-import { QueryResponse } from '../globalConstants';
+import {
+  databaseQueryError,
+  databaseQueryResponse,
+} from '../common/apiResponses';
+import { QueryResponse } from '../common/constants';
 import { FORMULAS_TABLE } from './constants';
 
 export const FormulasQueriesService = {
