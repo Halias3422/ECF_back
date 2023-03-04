@@ -1,0 +1,53 @@
+import { MutationResponse, QueryResponse } from './globalConstants';
+
+export const databaseQueryResponse = (
+  rows: any,
+  queryName: string
+): QueryResponse => {
+  if (rows.length > 0) {
+    return {
+      statusCode: 200,
+      rows,
+      response: 'Query ' + queryName + ' successfully executed.',
+    };
+  }
+  return {
+    statusCode: 400,
+    rows: [],
+    response: 'Error: did not find ' + queryName + '.',
+  };
+};
+
+export const databaseQueryError = (queryName: string): QueryResponse => {
+  return {
+    statusCode: 500,
+    rows: [],
+    response: 'Error: could not execute the query ' + queryName + '.',
+  };
+};
+
+export const databaseMutationResponse = (
+  rows: any,
+  mutationName: string
+): MutationResponse => {
+  if (rows.length > 0) {
+    return {
+      statusCode: 200,
+      response: 'Mutation ' + mutationName + ' successfully executed.',
+    };
+  }
+  return {
+    statusCode: 500,
+    response:
+      'Error executing' + mutationName + ': cannot insert row into database.',
+  };
+};
+
+export const databaseMutationError = (
+  mutationName: string
+): MutationResponse => {
+  return {
+    statusCode: 400,
+    response: 'Error: could not execute the mutation ' + mutationName + '.',
+  };
+};

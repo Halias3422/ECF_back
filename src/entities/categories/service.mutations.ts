@@ -1,5 +1,9 @@
 import mysql2 from 'mysql2';
 import { dbConnexion } from '../..';
+import {
+  databaseMutationError,
+  databaseMutationResponse,
+} from '../databaseResponse';
 import { MutationResponse } from '../globalConstants';
 import { CATEGORIES_TABLE, CategoryFormData } from './constant';
 
@@ -18,23 +22,9 @@ export class CategoriesMutationsService {
     );
     try {
       const [rows] = await dbConnexion.execute(mutation);
-      if (rows.length === 0) {
-        return {
-          statusCode: 500,
-          response:
-            'Error creating new category: cannot insert row into database',
-        };
-      }
+      return databaseMutationResponse(rows, 'create new category');
     } catch (error: any) {
-      return {
-        statusCode: 500,
-        response:
-          'Error creating new category: ' + JSON.stringify(error.message),
-      };
+      return databaseMutationError('create new category');
     }
-    return {
-      statusCode: 200,
-      response: 'New category successfully created',
-    };
   };
 }

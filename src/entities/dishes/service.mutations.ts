@@ -1,5 +1,9 @@
 import mysql2 from 'mysql2';
 import { dbConnexion } from '../..';
+import {
+  databaseMutationError,
+  databaseMutationResponse,
+} from '../databaseResponse';
 import { MutationResponse } from '../globalConstants';
 import { DISHES_TABLE, DishFormData } from './constants';
 
@@ -28,22 +32,9 @@ export class DishesMutationService {
         ]
       );
       const [rows] = await dbConnexion.execute(mutation);
-      if (rows.length === 0) {
-        return {
-          statusCode: 500,
-          response: 'Error creating new dish: cannot insert row into database',
-        };
-      }
+      return databaseMutationResponse(rows, 'create new dish');
     } catch (error: any) {
-      return {
-        statusCode: 500,
-        response:
-          'Error creating new ingredient: ' + JSON.stringify(error.message),
-      };
+      return databaseMutationError('create new dish');
     }
-    return {
-      statusCode: 200,
-      response: 'New dish successfully created',
-    };
   }
 }

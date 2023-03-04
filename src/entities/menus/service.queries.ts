@@ -1,4 +1,5 @@
 import { dbConnexion } from '../..';
+import { databaseQueryError, databaseQueryResponse } from '../databaseResponse';
 import { QueryResponse } from '../globalConstants';
 import { MENUS_TABLE } from './constants';
 
@@ -8,24 +9,9 @@ export const MenusQueriesService = {
 
     try {
       const [rows] = await dbConnexion.execute(query);
-      if (rows.length > 0) {
-        return {
-          statusCode: 200,
-          rows,
-          response: 'Menus successfully retreived.',
-        };
-      }
+      return databaseQueryResponse(rows, 'get all menus');
     } catch (error) {
-      return {
-        statusCode: 500,
-        rows: [],
-        response: 'Error: could not execute the query to retreive the menus',
-      };
+      return databaseQueryError('get all menus');
     }
-    return {
-      statusCode: 200,
-      rows: [],
-      response: 'Warning: did not find any menu',
-    };
   },
 };

@@ -1,5 +1,6 @@
 import mysql2 from 'mysql2';
 import { dbConnexion } from '../..';
+import { databaseQueryError, databaseQueryResponse } from '../databaseResponse';
 import { CATEGORIES_TABLE } from './constant';
 
 export class CategoriesQueriesService {
@@ -12,26 +13,10 @@ export class CategoriesQueriesService {
     );
     try {
       const [rows] = await dbConnexion.execute(query);
-      if (rows.length > 0) {
-        return {
-          statusCode: 200,
-          rows,
-          response: 'Category successfully retreived from ID.',
-        };
-      }
+      return databaseQueryResponse(rows, 'category by ID');
     } catch (error) {
-      return {
-        statusCode: 500,
-        rows: [],
-        response:
-          'Error: could not execute the query to retreive the Category from ID',
-      };
+      return databaseQueryError('get category by ID');
     }
-    return {
-      statusCode: 200,
-      rows: [],
-      response: 'Warning: did not find any Category for ID: ' + categoryId,
-    };
   };
 
   static getCategoryByName = async (categoryName: string) => {
@@ -41,25 +26,9 @@ export class CategoriesQueriesService {
     );
     try {
       const [rows] = await dbConnexion.execute(query);
-      if (rows.length > 0) {
-        return {
-          statusCode: 200,
-          rows,
-          response: 'Category successfully retreived from name.',
-        };
-      }
+      return databaseQueryResponse(rows, 'category by name');
     } catch (error) {
-      return {
-        statusCode: 500,
-        rows: [],
-        response:
-          'Error: could not execute the query to retreive the Category from name',
-      };
+      return databaseQueryError('category by name');
     }
-    return {
-      statusCode: 200,
-      rows: [],
-      response: 'Warning: did not find any Category for name: ' + categoryName,
-    };
   };
 }

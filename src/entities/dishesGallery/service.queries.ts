@@ -1,4 +1,5 @@
 import { dbConnexion } from '../..';
+import { databaseQueryError, databaseQueryResponse } from '../databaseResponse';
 import { DISHES_TABLE } from '../dishes/constants';
 import { QueryResponse } from '../globalConstants';
 import { DISHES_GALLERY_TABLE } from './constants';
@@ -10,24 +11,10 @@ export const DishesGalleryQueriesService = {
     try {
       const [rows] = await dbConnexion.execute(query);
       if (rows.length > 0) {
-        return {
-          statusCode: 200,
-          rows,
-          response: 'Gallery dishes successfully retreived.',
-        };
       }
+      return databaseQueryResponse(rows, 'get all dishes gallery');
     } catch (error) {
-      return {
-        statusCode: 500,
-        rows: [],
-        response:
-          "Error: could not execute the query to retreive the gallery's dishes",
-      };
+      return databaseQueryError('get all dishes gallery');
     }
-    return {
-      statusCode: 200,
-      rows: [],
-      response: "Warning: did not find any gallery's dishes",
-    };
   },
 };

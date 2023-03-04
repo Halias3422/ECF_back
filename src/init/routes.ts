@@ -1,4 +1,5 @@
 import express from 'express';
+import { categoriesRoutes } from '../entities/categories/routes';
 import { dishesRoutes } from '../entities/dishes/routes';
 import { dishesGalleryRoutes } from '../entities/dishesGallery/routes';
 import { menusRoutes } from '../entities/menus/routes';
@@ -10,3 +11,4 @@ routes.use(dishesRoutes);
 routes.use(dishesGalleryRoutes);
 routes.use(scheduleRoutes);
 routes.use(menusRoutes);
+routes.use(categoriesRoutes);

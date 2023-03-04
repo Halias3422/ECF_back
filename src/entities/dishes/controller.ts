@@ -13,7 +13,7 @@ export class DishesController {
     const dishCategory = await CategoriesQueriesService.getCategoryByName(
       dishData.category
     );
-    if (dishCategory.statusCode !== 200) {
+    if (dishCategory.statusCode !== 200 || dishCategory.rows.length === 0) {
       return dishCategory;
     }
     const response = await DishesMutationService.createNewDish(
@@ -24,6 +24,12 @@ export class DishesController {
   };
 
   // QUERIES
+
+  static getDishByTitle = async (
+    dish: DishFormData
+  ): Promise<QueryResponse> => {
+    const retreivedDish = await DishesQueriesService.getDishByTitle(dish.title);
+  };
 
   static getAllDishesByCategories = async (): Promise<QueryResponse> => {
     const retreivedDishes = await DishesQueriesService.getAllDishes();
