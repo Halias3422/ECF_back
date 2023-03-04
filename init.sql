@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS Dishes (
 	image VARCHAR(255) NOT NULL,
 	title VARCHAR(255) NOT NULL,
 	description VARCHAR(1000) NOT NULL,
-	price FLOAT NOT NULL,
+	price VARCHAR(5) NOT NULL,
 	Constraint FOREIGN KEY (category_id) REFERENCES Categories(id_category)
 );
 

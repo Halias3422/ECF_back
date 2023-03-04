@@ -1,3 +1,7 @@
+export const CATEGORIES_ROUTES = {
+  createNewCategory: '/api/create-new-category',
+};
+
 export const CATEGORIES_TABLE = {
   name: 'Categories',
   columns: {
@@ -5,3 +9,7 @@ export const CATEGORIES_TABLE = {
     name: 'name',
   },
 };
+
+export interface CategoryFormData {
+  name: string;
+}

@@ -1,35 +1,34 @@
+import mysql2 from 'mysql2';
 import { dbConnexion } from '../..';
-import { QueryResponse } from '../globalConstants';
+import {
+  databaseQueryError,
+  databaseQueryResponse,
+} from '../common/apiResponses';
+import { QueryResponse } from '../common/constants';
 import { DISHES_TABLE } from './constants';
 
 export class DishesQueriesService {
-  // MUTATIONS
-
-  // QUERIES
+  static getDishByTitle = async (dishTitle: string): Promise<QueryResponse> => {
+    const query = mysql2.format(
+      `SELECT * FROM ${DISHES_TABLE.name} WHERE ${DISHES_TABLE.name}.${DISHES_TABLE.columns.title} = ?`,
+      [dishTitle]
+    );
+    try {
+      const [rows] = await dbConnexion.execute(query);
+      return databaseQueryResponse(rows, 'get dish by title');
+    } catch (error) {
+      return databaseQueryError('get dish by title');
+    }
+  };
 
   static getAllDishes = async (): Promise<QueryResponse> => {
     const query = `SELECT * FROM ${DISHES_TABLE.name}`;
 
     try {
       const [rows] = await dbConnexion.execute(query);
-      if (rows.length > 0) {
-        return {
-          statusCode: 200,
-          rows,
-          response: 'Dishes successfully retreived.',
-        };
-      }
+      return databaseQueryResponse(rows, 'get all dishes');
     } catch (error) {
-      return {
-        statusCode: 500,
-        rows: [],
-        response: 'Error: could not execute the query to retreive the dishes',
-      };
+      return databaseQueryError('get all dishes');
     }
-    return {
-      statusCode: 200,
-      rows: [],
-      response: 'Warning: did not find any dish',
-    };
   };
 }

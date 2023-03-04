@@ -1,6 +1,10 @@
 import mysql2 from 'mysql2';
 import { dbConnexion } from '../..';
-import { QueryResponse } from '../globalConstants';
+import {
+  databaseQueryError,
+  databaseQueryResponse,
+} from '../common/apiResponses';
+import { QueryResponse } from '../common/constants';
 import { FORMULAS_TABLE } from './constants';
 
 export const FormulasQueriesService = {
@@ -11,25 +15,9 @@ export const FormulasQueriesService = {
     );
     try {
       const [rows] = await dbConnexion.execute(query);
-      if (rows.length > 0) {
-        return {
-          statusCode: 200,
-          rows,
-          response: 'Formulas successfully retreived from Menu ID.',
-        };
-      }
+      return databaseQueryResponse(rows, 'get all formulas by menu ID');
     } catch (error) {
-      return {
-        statusCode: 500,
-        rows: [],
-        response:
-          'Error: could not execute the query to retreive the formulas from Menu ID',
-      };
+      return databaseQueryError('get all formulas by menu ID');
     }
-    return {
-      statusCode: 200,
-      rows: [],
-      response: 'Warning: did not find any formulas for Menu ID: ' + menuId,
-    };
   },
 };

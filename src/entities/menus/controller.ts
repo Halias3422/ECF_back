@@ -1,5 +1,5 @@
+import { QueryResponse } from '../common/constants';
 import { FormulasQueriesService } from '../formulas/service.queries';
-import { QueryResponse } from '../globalConstants';
 import { FormattedMenu, MENUS_TABLE } from './constants';
 import { MenusQueriesService } from './service.queries';
 

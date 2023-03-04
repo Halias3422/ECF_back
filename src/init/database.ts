@@ -18,6 +18,7 @@ export const initDatabaseConnexion = () => {
       user: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
+      port: parseInt(process.env.DB_PORT as string),
     })
     .promise();
   testDatabaseConnexion(dbConnexion);
