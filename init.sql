@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS Users (
 	password VARCHAR(255) NOT NULL,
 	default_guests_number INT,
 	default_allergies VARCHAR(1000),
-	isAdmin BOOLEAN NOT NULL
+	is_admin BOOLEAN NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS Menus (
