@@ -6,8 +6,8 @@ import {
 import { QueryResponse } from '../common/constants';
 import { SCHEDULE_TABLE } from './constants';
 
-export const ScheduleQueriesService = {
-  getWeekSchedule: async (): Promise<QueryResponse> => {
+export class ScheduleQueriesService {
+  static getWeekSchedule = async (): Promise<QueryResponse> => {
     const query = `SELECT *  FROM ${SCHEDULE_TABLE.name}`;
 
     try {
@@ -16,5 +16,5 @@ export const ScheduleQueriesService = {
     } catch (error) {
       return databaseQueryError('get week schedule');
     }
-  },
-};
+  };
+}
