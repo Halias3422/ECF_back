@@ -1,4 +1,4 @@
-import { QueryResponse } from '../globalConstants';
+import { QueryResponse } from '../common/constants';
 import { ScheduleQueriesService } from './service.queries';
 
 export const ScheduleController = {
