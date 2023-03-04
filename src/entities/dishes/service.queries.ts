@@ -17,7 +17,6 @@ export class DishesQueriesService {
       const [rows] = await dbConnexion.execute(query);
       return databaseQueryResponse(rows, 'get dish by title');
     } catch (error) {
-      console.log('error = ' + error);
       return databaseQueryError('get dish by title');
     }
   };
