@@ -29,6 +29,7 @@ export class DishesController {
     dish: DishFormData
   ): Promise<QueryResponse> => {
     const retreivedDish = await DishesQueriesService.getDishByTitle(dish.title);
+    return retreivedDish;
   };
 
   static getAllDishesByCategories = async (): Promise<QueryResponse> => {

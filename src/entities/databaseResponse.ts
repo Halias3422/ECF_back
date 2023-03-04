@@ -30,7 +30,7 @@ export const databaseMutationResponse = (
   rows: any,
   mutationName: string
 ): MutationResponse => {
-  if (rows.length > 0) {
+  if (rows.affectedRows > 0) {
     return {
       statusCode: 200,
       response: 'Mutation ' + mutationName + ' successfully executed.',
@@ -38,8 +38,7 @@ export const databaseMutationResponse = (
   }
   return {
     statusCode: 500,
-    response:
-      'Error executing' + mutationName + ': cannot insert row into database.',
+    response: 'Error: could not execute the mutation ' + mutationName + '.',
   };
 };
 
