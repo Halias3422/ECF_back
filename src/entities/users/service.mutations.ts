@@ -20,8 +20,8 @@ export class UsersMutationsService {
     };
 
     const mutation = mysql2.format(
-      `INSERT INTO ${USERS_TABLE.name} VALUES (?, ?, ?, ?, ?, ?)`,
-      [DEFAULT, userInfo.email, hashedPassword, 1, null, 0]
+      `INSERT INTO ${USERS_TABLE.name} VALUES (?, ?, ?, ?, ?, ?, ?)`,
+      [DEFAULT, userInfo.email, hashedPassword, 1, null, null, 0]
     );
     try {
       const [rows] = await dbConnexion.execute(mutation);

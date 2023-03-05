@@ -56,6 +56,7 @@ export class UsersController {
       userInfo.email
     );
     if (retreivedUser.statusCode != 200) {
+      console.log('toujours la');
       return retreivedUser;
     }
     if (

@@ -1,18 +1,30 @@
 import request from 'supertest';
 import { server } from '../src';
-import { UserSignupData, USERS_ROUTES } from '../src/entities/users/constants';
+import {
+  UserAuthData,
+  UserOptionalData,
+  USERS_ROUTES,
+} from '../src/entities/users/constants';
 import { emptyTestDatabase } from '../src/testUtils/database';
 
-const userSignUp: UserSignupData = {
+const userSignUp: UserAuthData = {
   email: 'test@mail.com',
   password: 'sup3rsecretp@ssword',
+};
+
+const userOptionalData: UserOptionalData = {
+  email: 'test@mail.com',
   defaultGuestNumber: 3,
   defaultAllergies: '',
 };
 
-const userDuplicateSignup: UserSignupData = {
+const userDuplicateSignup: UserAuthData = {
   email: 'test@mail.com',
   password: 'oth3r@wesomepassword',
+};
+
+const userDuplicateOptionalData: UserOptionalData = {
+  email: 'test@mail.com',
   defaultGuestNumber: 0,
   defaultAllergies: 'arachides',
 };
@@ -145,7 +157,7 @@ describe('Users endpoints: login', () => {
       .post(USERS_ROUTES.signup)
       .send(userSignUp);
     expect(newUser.statusCode).toEqual(200);
-    const login = await request(server).get(USERS_ROUTES.login).send({
+    const login = await request(server).post(USERS_ROUTES.login).send({
       email: userSignUp.email,
       password: userSignUp.password,
     });
@@ -153,7 +165,7 @@ describe('Users endpoints: login', () => {
   });
 
   it('should not find the user with an incorrect email', async () => {
-    const login = await request(server).get(USERS_ROUTES.login).send({
+    const login = await request(server).post(USERS_ROUTES.login).send({
       email: 'teste@mail.com',
       password: userSignUp.password,
     });
@@ -161,7 +173,7 @@ describe('Users endpoints: login', () => {
   });
 
   it('should not find the user with an incorrect password', async () => {
-    const login = await request(server).get(USERS_ROUTES.login).send({
+    const login = await request(server).post(USERS_ROUTES.login).send({
       email: userSignUp.email,
       password: 'sup3rsecretp@sswor',
     });
