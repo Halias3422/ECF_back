@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt';
 import {
+  databaseMutationResponse,
   databaseQueryResponse,
   isDuplicateResponse,
   verifyFormDataValidity,
@@ -65,7 +66,15 @@ export class UsersController {
     ) {
       return databaseQueryResponse([], 'user');
     }
-    return databaseQueryResponse([1, 1], 'login');
+    const token = this.generateUserSessionToken();
+    const updatedUser = await UsersMutationsService.updateUserToken(
+      userInfo.email,
+      token
+    );
+    if (updatedUser.statusCode !== 200) {
+      return { ...updatedUser, rows: [] };
+    }
+    return databaseQueryResponse([{ token: token }], 'login');
   };
 
   // PRIVATE
@@ -118,5 +127,15 @@ export class UsersController {
       statusCode: 400,
       response: 'email or password is not conform',
     };
+  };
+
+  private static generateUserSessionToken = (): string => {
+    const chars =
+      'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let token = '';
+    for (let i = 0; i < 500; i++) {
+      token += chars[Math.floor(Math.random() * chars.length)];
+    }
+    return token;
   };
 }

@@ -12,6 +12,7 @@ export const USERS_TABLE = {
     password: 'password',
     defaultGuestNumber: 'default_guests_number',
     defaultAllergies: 'default_allergies',
+    sessionToken: 'session_token',
     isAdmin: 'is_admin',
   },
 };

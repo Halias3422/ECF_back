@@ -43,4 +43,18 @@ export class UsersMutationsService {
       return databaseMutationError('update user optional data');
     }
   };
+
+  static updateUserToken = async (userEmail: string, token: string) => {
+    const mutation = mysql2.format(
+      `UPDATE ${USERS_TABLE.name} SET ${USERS_TABLE.columns.sessionToken} = ? WHERE ${USERS_TABLE.columns.email} = ?`,
+      [token, userEmail]
+    );
+
+    try {
+      const [rows] = await dbConnexion.execute(mutation);
+      return databaseMutationResponse(rows, 'update user session token');
+    } catch (error) {
+      return databaseMutationError('update user session token');
+    }
+  };
 }
