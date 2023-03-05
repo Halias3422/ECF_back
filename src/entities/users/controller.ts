@@ -5,15 +5,13 @@ import {
   verifyFormDataValidity,
 } from '../common/apiResponses';
 import { MutationResponse, QueryResponse } from '../common/constants';
-import { UserLoginData, UserSignupData } from './constants';
+import { UserAuthData, UserOptionalData } from './constants';
 import { UsersMutationsService } from './service.mutations';
 import { UsersQueriesService } from './service.queries';
 
 export class UsersController {
   // MUTATIONS
-  static signup = async (
-    userInfo: UserSignupData
-  ): Promise<MutationResponse> => {
+  static signup = async (userInfo: UserAuthData): Promise<MutationResponse> => {
     const isValid = verifyFormDataValidity(userInfo, ['email', 'password']);
     if (isValid.statusCode !== 200) {
       return isValid;
@@ -31,9 +29,28 @@ export class UsersController {
     const response = await UsersMutationsService.createNewUser(userInfo);
     return response;
   };
+
+  static updateOptionalInfo = async (
+    userInfo: UserOptionalData
+  ): Promise<MutationResponse> => {
+    const isValid = verifyFormDataValidity(userInfo, ['email']);
+    if (isValid.statusCode !== 200) {
+      return isValid;
+    }
+    const isRegistered = await UsersQueriesService.getUserByEmail(
+      userInfo.email
+    );
+    if (isRegistered.statusCode !== 200) {
+      return isRegistered;
+    }
+    const response = await UsersMutationsService.updateUserOptionalData(
+      userInfo
+    );
+    return response;
+  };
   // QUERIES
 
-  static login = async (userInfo: UserLoginData): Promise<QueryResponse> => {
+  static login = async (userInfo: UserAuthData): Promise<QueryResponse> => {
     const retreivedUser = await UsersQueriesService.getUserByEmail(
       userInfo.email
     );
@@ -83,7 +100,7 @@ export class UsersController {
 
 */
   private static verifyUserSignupConformity = (
-    userInfo: UserSignupData
+    userInfo: UserAuthData
   ): MutationResponse => {
     if (userInfo.email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)) {
       if (
