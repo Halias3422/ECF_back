@@ -15,9 +15,9 @@ export class UsersQueriesService {
         [email]
       );
       const [rows] = await dbConnexion.execute(query);
-      return databaseQueryResponse(rows, 'user by email');
+      return databaseQueryResponse(rows, 'user');
     } catch (error) {
-      return databaseQueryError('get user by email');
+      return databaseQueryError('get user');
     }
   };
 }
