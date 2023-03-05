@@ -63,7 +63,7 @@ export class UsersController {
         userInfo.password
       ))
     ) {
-      return databaseQueryResponse([], 'any user matching the provided data');
+      return databaseQueryResponse([], 'user');
     }
     return databaseQueryResponse([1, 1], 'login');
   };
