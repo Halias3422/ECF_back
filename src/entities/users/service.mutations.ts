@@ -10,7 +10,8 @@ import {
 
 export class UsersMutationsService {
   static createNewUser = async (
-    userInfo: UserAuthData
+    userInfo: UserAuthData,
+    token: string
   ): Promise<MutationResponse> => {
     const hashedPassword = await bcrypt.hash(userInfo.password, 10);
     const DEFAULT = {
@@ -21,10 +22,16 @@ export class UsersMutationsService {
 
     const mutation = mysql2.format(
       `INSERT INTO ${USERS_TABLE.name} VALUES (?, ?, ?, ?, ?, ?, ?)`,
-      [DEFAULT, userInfo.email, hashedPassword, 1, null, null, 0]
+      [DEFAULT, userInfo.email, hashedPassword, 1, null, token, 0]
     );
     try {
       const [rows] = await dbConnexion.execute(mutation);
+      if (rows.affectedRows > 0) {
+        return {
+          statusCode: 200,
+          response: token,
+        };
+      }
       return databaseMutationResponse(rows, 'create new user');
     } catch (error) {
       return databaseMutationError('create new user');

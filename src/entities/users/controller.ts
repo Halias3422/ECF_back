@@ -27,7 +27,10 @@ export class UsersController {
     if (isDuplicate.statusCode === 200) {
       return isDuplicateResponse('signup');
     }
-    const response = await UsersMutationsService.createNewUser(userInfo);
+    const response = await UsersMutationsService.createNewUser(
+      userInfo,
+      this.generateUserSessionToken()
+    );
     return response;
   };
 
@@ -75,7 +78,11 @@ export class UsersController {
     if (updatedUser.statusCode !== 200) {
       return { ...updatedUser, rows: [] };
     }
-    return databaseQueryResponse([{ token: token }], 'login');
+    return {
+      statusCode: 200,
+      rows: [],
+      response: token,
+    };
   };
 
   // PRIVATE

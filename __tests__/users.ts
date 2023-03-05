@@ -52,6 +52,35 @@ describe('Users endpoints: signup', () => {
     expect(res.statusCode).toEqual(400);
   });
 
+  it('should return a token on signup', async () => {
+    const res = await request(server)
+      .post(USERS_ROUTES.signup)
+      .send({ ...userSignUp, email: 'newuser@mail.com' });
+    expect(res.statusCode).toEqual(200);
+    expect(res.text.length).toEqual(500);
+  });
+
+  it('should add optional data to the user', async () => {
+    const res = await request(server)
+      .post(USERS_ROUTES.updateOptionalInfo)
+      .send(userOptionalData);
+    expect(res.statusCode).toEqual(200);
+  });
+
+  it('should not add optional data with wrong mail', async () => {
+    const res = await request(server)
+      .post(USERS_ROUTES.updateOptionalInfo)
+      .send({ ...userOptionalData, email: 'fake@mail.com' });
+    expect(res.statusCode).toEqual(400);
+  });
+
+  it('should not add optional data with wrong value type', async () => {
+    const res = await request(server)
+      .post(USERS_ROUTES.updateOptionalInfo)
+      .send({ ...userOptionalData, defaultGuestNumber: 'toto' });
+    expect(res.statusCode).toEqual(400);
+  });
+
   it('should create a new user with a 8 character long conform password', async () => {
     const res = await request(server).post(USERS_ROUTES.signup).send({
       email: 'test@eightpass.com',
@@ -157,11 +186,30 @@ describe('Users endpoints: login', () => {
       .post(USERS_ROUTES.signup)
       .send(userSignUp);
     expect(newUser.statusCode).toEqual(200);
-    const login = await request(server).post(USERS_ROUTES.login).send({
-      email: userSignUp.email,
-      password: userSignUp.password,
-    });
+    const login = await request(server)
+      .post(USERS_ROUTES.login)
+      .send(userSignUp);
     expect(login.statusCode).toEqual(200);
+  });
+
+  it('should return a token', async () => {
+    const login = await request(server)
+      .post(USERS_ROUTES.login)
+      .send(userSignUp);
+    expect(login.statusCode).toEqual(200);
+    expect(login.text.length).toEqual(500);
+  });
+
+  it('should return a different token every time', async () => {
+    const login = await request(server)
+      .post(USERS_ROUTES.login)
+      .send(userSignUp);
+    expect(login.statusCode).toEqual(200);
+    const secondLogin = await request(server)
+      .post(USERS_ROUTES.login)
+      .send(userSignUp);
+    expect(login.statusCode).toEqual(200);
+    expect(login.text).not.toBe(secondLogin.text);
   });
 
   it('should not find the user with an incorrect email', async () => {
