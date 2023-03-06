@@ -93,7 +93,7 @@ export class UsersController {
     }
     return {
       statusCode: statusCode,
-      data: [{ token: user.data[0].session_token, id: user.data[0].id_user }],
+      data: { token: user.data[0].session_token, id: user.data[0].id_user },
       response: context + ' successfully',
     };
   };

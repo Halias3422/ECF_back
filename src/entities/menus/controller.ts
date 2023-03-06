@@ -10,7 +10,7 @@ export class MenuController {
     const retreivedMenus = await MenusQueriesService.getAllMenus();
     if (retreivedMenus.statusCode === 200 && retreivedMenus.data) {
       const formattedMenus = await Promise.all(
-        retreivedMenus.data.map(async (menu) => {
+        retreivedMenus.data.map(async (menu: any) => {
           let formattedMenu: FormattedMenu = {
             title: menu.title,
             formulas: [],
