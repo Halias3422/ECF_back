@@ -2,6 +2,7 @@ export const USERS_ROUTES = {
   login: '/api/user-login',
   signup: '/api/user-signup',
   updateOptionalInfo: '/api/user-update-optional-info',
+  getOptionalInfo: '/api/user-get-optional-info',
 };
 
 export const USERS_TABLE = {
@@ -26,4 +27,19 @@ export interface UserOptionalData {
   email: string;
   defaultGuestNumber?: number;
   defaultAllergies?: string;
+}
+
+export interface UserSessionData {
+  id: string;
+  token: string;
+}
+
+export interface UserData {
+  id: string;
+  email: string;
+  password: string;
+  defaultGuestNumber: string;
+  defaultAllergies: string;
+  sessionToken: string;
+  isAdmin: boolean;
 }

@@ -1,11 +1,12 @@
 import bcrypt from 'bcrypt';
 import {
+  databaseQueryError,
   databaseQueryResponse,
   isDuplicateResponse,
   verifyFormDataValidity,
 } from '../common/apiResponses';
 import { ApiResponse } from '../common/constants';
-import { UserAuthData, UserOptionalData } from './constants';
+import { UserAuthData, UserOptionalData, UserSessionData } from './constants';
 import { UsersMutationsService } from './service.mutations';
 import { UsersQueriesService } from './service.queries';
 
@@ -82,6 +83,40 @@ export class UsersController {
 
   // QUERIES
 
+  static getUserOptionalInfo = async (
+    userSessionInfo: UserSessionData
+  ): Promise<ApiResponse> => {
+    const isValid = verifyFormDataValidity(userSessionInfo, ['id', 'token']);
+    if (isValid.statusCode !== 200) {
+      return isValid;
+    }
+    const retreivedUser =
+      await UsersQueriesService.getUserOptionalInfoBySessionToken(
+        userSessionInfo.token
+      );
+    if (retreivedUser.statusCode !== 200) {
+      return retreivedUser;
+    }
+    const IdIsValid = await this.verifyUserSessionIdValidity(
+      userSessionInfo.id,
+      retreivedUser.data[0].id_user
+    );
+    if (!IdIsValid) {
+      console.log('id invalid');
+      return databaseQueryError('get user info');
+    }
+    return {
+      statusCode: 200,
+      data: {
+        defaultGuestNumber: retreivedUser.data[0].default_guests_number,
+        defaultAllergies: retreivedUser.data[0].default_allergies,
+      },
+      response: 'user data found successfully',
+    };
+  };
+
+  // PRIVATE
+
   private static getUserSessionInfo = async (
     email: string,
     statusCode: number,
@@ -91,14 +126,25 @@ export class UsersController {
     if (user.statusCode !== 200 || !user.data) {
       return user;
     }
+    const hashedId = await bcrypt.hash(user.data[0].id_user, 10);
+    console.log('hashedId = ' + hashedId);
     return {
       statusCode: statusCode,
-      data: { token: user.data[0].session_token, id: user.data[0].id_user },
+      data: { session: `${hashedId}:${user.data[0].session_token}` },
       response: context + ' successfully',
     };
   };
 
-  // PRIVATE
+  private static verifyUserSessionIdValidity = async (
+    sessionId: string,
+    userId: string
+  ): Promise<boolean> => {
+    try {
+      return await bcrypt.compare(userId, sessionId);
+    } catch (error) {
+      return false;
+    }
+  };
 
   private static comparePassword = async (
     dbPass: string,

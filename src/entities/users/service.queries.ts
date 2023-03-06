@@ -20,4 +20,19 @@ export class UsersQueriesService {
       return databaseQueryError('get user');
     }
   };
+
+  static getUserOptionalInfoBySessionToken = async (
+    sessionToken: string
+  ): Promise<ApiResponse> => {
+    try {
+      const query = mysql2.format(
+        `SELECT * FROM ${USERS_TABLE.name} WHERE ${USERS_TABLE.columns.sessionToken} = ?`,
+        [sessionToken]
+      );
+      const [rows] = await dbConnexion.execute(query);
+      return databaseQueryResponse(rows, 'user');
+    } catch (error) {
+      return databaseQueryError('get user');
+    }
+  };
 }
