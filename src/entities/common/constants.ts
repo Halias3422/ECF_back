@@ -1,8 +1,5 @@
-export interface MutationResponse {
+export interface ApiResponse {
   statusCode: number;
+  data?: any[];
   response: string;
-}
-
-export interface QueryResponse extends MutationResponse {
-  rows: any[];
 }

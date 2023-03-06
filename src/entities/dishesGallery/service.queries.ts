@@ -3,12 +3,12 @@ import {
   databaseQueryError,
   databaseQueryResponse,
 } from '../common/apiResponses';
-import { QueryResponse } from '../common/constants';
+import { ApiResponse } from '../common/constants';
 import { DISHES_TABLE } from '../dishes/constants';
 import { DISHES_GALLERY_TABLE } from './constants';
 
 export class DishesGalleryQueriesService {
-  static getAllDishesGallery = async (): Promise<QueryResponse> => {
+  static getAllDishesGallery = async (): Promise<ApiResponse> => {
     const query = `SELECT ${DISHES_TABLE.columns.title}, ${DISHES_TABLE.columns.image} FROM ${DISHES_TABLE.name} INNER JOIN ${DISHES_GALLERY_TABLE.name} ON ${DISHES_GALLERY_TABLE.columns.id}=${DISHES_TABLE.columns.id}`;
 
     try {

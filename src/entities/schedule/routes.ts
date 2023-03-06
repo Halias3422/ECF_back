@@ -5,7 +5,7 @@ import { ScheduleController } from './controller';
 export const scheduleRoutes = express.Router();
 
 scheduleRoutes.get(SCHEDULE_ROUTES.getWeekSchedule, async (req, res) => {
-  const { statusCode, response, rows } =
+  const { statusCode, response, data } =
     await ScheduleController.getWeekSchedule();
-  res.status(statusCode).send({ response, rows });
+  res.status(statusCode).send({ response, data });
 });

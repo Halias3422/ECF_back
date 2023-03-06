@@ -6,7 +6,8 @@ CREATE TABLE IF NOT EXISTS Users (
 	password VARCHAR(255) NOT NULL,
 	default_guests_number INT,
 	default_allergies VARCHAR(1000),
-	isAdmin BOOLEAN NOT NULL
+	session_token VARCHAR(500),
+	is_admin BOOLEAN NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS Menus (
@@ -71,7 +72,7 @@ CREATE TABLE IF NOT EXISTS Reservations (
 /* INIT DATABASE CONTENT */
 
 INSERT INTO Users ()
-VALUES (DEFAULT, 'admin@mail.com', SHA2('password', 256), NULL, NULL, true);
+VALUES (DEFAULT, 'admin@mail.com', SHA2('password', 256), NULL, NULL, NULL, true);
 
 INSERT INTO Categories ()
 VALUES (DEFAULT, 'Entrée');

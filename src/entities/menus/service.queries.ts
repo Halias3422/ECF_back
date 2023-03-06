@@ -3,11 +3,11 @@ import {
   databaseQueryError,
   databaseQueryResponse,
 } from '../common/apiResponses';
-import { QueryResponse } from '../common/constants';
+import { ApiResponse } from '../common/constants';
 import { MENUS_TABLE } from './constants';
 
 export class MenusQueriesService {
-  static getAllMenus = async (): Promise<QueryResponse> => {
+  static getAllMenus = async (): Promise<ApiResponse> => {
     const query = `SELECT ${MENUS_TABLE.columns.id}, ${MENUS_TABLE.columns.menuTitle} as title FROM ${MENUS_TABLE.name}`;
 
     try {

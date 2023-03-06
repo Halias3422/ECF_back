@@ -3,7 +3,7 @@ import {
   isDuplicateResponse,
   verifyFormDataValidity,
 } from '../common/apiResponses';
-import { MutationResponse, QueryResponse } from '../common/constants';
+import { ApiResponse } from '../common/constants';
 import { DishFormData, ResponseDishesByCategory } from './constants';
 import { DishesMutationService } from './service.mutations';
 import { DishesQueriesService } from './service.queries';
@@ -11,9 +11,7 @@ import { DishesQueriesService } from './service.queries';
 export class DishesController {
   // MUTATIONS
 
-  static createNewDish = async (
-    dish: DishFormData
-  ): Promise<MutationResponse> => {
+  static createNewDish = async (dish: DishFormData): Promise<ApiResponse> => {
     const isValid = verifyFormDataValidity(dish, [
       'title',
       'image',
@@ -30,38 +28,36 @@ export class DishesController {
     const dishCategory = await CategoriesQueriesService.getCategoryByName(
       dish.category
     );
-    if (dishCategory.statusCode !== 200 || dishCategory.rows.length === 0) {
+    if (dishCategory.statusCode !== 200 || dishCategory.data?.length === 0) {
       return dishCategory;
     }
     const response = await DishesMutationService.createNewDish(
       dish,
-      dishCategory.rows[0].id_category
+      dishCategory.data?.[0].id_category
     );
     return response;
   };
 
   // QUERIES
 
-  static getDishByTitle = async (
-    dish: DishFormData
-  ): Promise<QueryResponse> => {
+  static getDishByTitle = async (dish: DishFormData): Promise<ApiResponse> => {
     const retreivedDish = await DishesQueriesService.getDishByTitle(dish.title);
     return retreivedDish;
   };
-  static getAllDishesByCategories = async (): Promise<QueryResponse> => {
+  static getAllDishesByCategories = async (): Promise<ApiResponse> => {
     const retreivedDishes = await DishesQueriesService.getAllDishes();
-    if (retreivedDishes.statusCode === 200) {
+    if (retreivedDishes.statusCode === 200 && retreivedDishes.data) {
       const retreivedCategories = await this.getDishesCategoriesById(
-        retreivedDishes.rows
+        retreivedDishes.data
       );
       if (retreivedCategories.length > 0) {
         const response = await this.formatGetDishesByCategoriesResponse(
-          retreivedDishes.rows,
+          retreivedDishes.data,
           retreivedCategories
         );
         return {
           statusCode: 200,
-          rows: response,
+          data: response,
           response: 'All dishes retreived successfully by categories',
         };
       }
@@ -79,11 +75,11 @@ export class DishesController {
         retreivedCategoriesId.push(JSON.stringify(dish.category_id));
         const retreivedCategory =
           await CategoriesQueriesService.getCategoryById(dish.category_id);
-        if (retreivedCategory.statusCode === 200) {
+        if (retreivedCategory.statusCode === 200 && retreivedCategory.data) {
           response.push({
             category: {
-              id: retreivedCategory.rows[0].id_category,
-              name: retreivedCategory.rows[0].name,
+              id: retreivedCategory.data[0].id_category,
+              name: retreivedCategory.data[0].name,
             },
             dishes: [],
           });

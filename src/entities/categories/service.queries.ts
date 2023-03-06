@@ -4,10 +4,11 @@ import {
   databaseQueryError,
   databaseQueryResponse,
 } from '../common/apiResponses';
+import { ApiResponse } from '../common/constants';
 import { CATEGORIES_TABLE } from './constant';
 
 export class CategoriesQueriesService {
-  static getCategoryById = async (categoryId: string) => {
+  static getCategoryById = async (categoryId: string): Promise<ApiResponse> => {
     const query = mysql2.format(
       `SELECT * FROM ${CATEGORIES_TABLE.name} WHERE ${CATEGORIES_TABLE.columns.id} = ?`,
       [categoryId]
@@ -20,7 +21,9 @@ export class CategoriesQueriesService {
     }
   };
 
-  static getCategoryByName = async (categoryName: string) => {
+  static getCategoryByName = async (
+    categoryName: string
+  ): Promise<ApiResponse> => {
     const query = mysql2.format(
       `SELECT * FROM ${CATEGORIES_TABLE.name} WHERE ${CATEGORIES_TABLE.columns.name} = ?`,
       [categoryName]

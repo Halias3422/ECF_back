@@ -4,11 +4,11 @@ import {
   databaseQueryError,
   databaseQueryResponse,
 } from '../common/apiResponses';
-import { QueryResponse } from '../common/constants';
+import { ApiResponse } from '../common/constants';
 import { DISHES_TABLE } from './constants';
 
 export class DishesQueriesService {
-  static getDishByTitle = async (dishTitle: string): Promise<QueryResponse> => {
+  static getDishByTitle = async (dishTitle: string): Promise<ApiResponse> => {
     const query = mysql2.format(
       `SELECT * FROM ${DISHES_TABLE.name} WHERE ${DISHES_TABLE.name}.${DISHES_TABLE.columns.title} = ?`,
       [dishTitle]
@@ -21,7 +21,7 @@ export class DishesQueriesService {
     }
   };
 
-  static getAllDishes = async (): Promise<QueryResponse> => {
+  static getAllDishes = async (): Promise<ApiResponse> => {
     const query = `SELECT * FROM ${DISHES_TABLE.name}`;
 
     try {

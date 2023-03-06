@@ -4,14 +4,14 @@ import {
   databaseMutationError,
   databaseMutationResponse,
 } from '../common/apiResponses';
-import { MutationResponse } from '../common/constants';
+import { ApiResponse } from '../common/constants';
 import { DISHES_TABLE, DishFormData } from './constants';
 
 export class DishesMutationService {
   static async createNewDish(
     newDish: DishFormData,
     dishCategoryId: string
-  ): Promise<MutationResponse> {
+  ): Promise<ApiResponse> {
     //necessary to set DEFAULT value for id
     const DEFAULT = {
       toSqlString: function () {
