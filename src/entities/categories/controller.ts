@@ -1,5 +1,5 @@
 import { verifyFormDataValidity } from '../common/apiResponses';
-import { MutationResponse } from '../common/constants';
+import { ApiResponse } from '../common/constants';
 import { CategoryFormData } from './constant';
 import { CategoriesMutationsService } from './service.mutations';
 
@@ -7,7 +7,7 @@ export class CategoriesController {
   // MUTATIONS
   static createNewCategory = async (
     newCategory: CategoryFormData
-  ): Promise<MutationResponse> => {
+  ): Promise<ApiResponse> => {
     const isValid = verifyFormDataValidity(newCategory, ['name']);
     if (isValid.statusCode !== 200) {
       return isValid;

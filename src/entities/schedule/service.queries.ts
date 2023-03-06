@@ -3,11 +3,11 @@ import {
   databaseQueryError,
   databaseQueryResponse,
 } from '../common/apiResponses';
-import { QueryResponse } from '../common/constants';
+import { ApiResponse } from '../common/constants';
 import { SCHEDULE_TABLE } from './constants';
 
 export class ScheduleQueriesService {
-  static getWeekSchedule = async (): Promise<QueryResponse> => {
+  static getWeekSchedule = async (): Promise<ApiResponse> => {
     const query = `SELECT *  FROM ${SCHEDULE_TABLE.name}`;
 
     try {

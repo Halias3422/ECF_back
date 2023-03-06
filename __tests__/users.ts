@@ -23,12 +23,6 @@ const userDuplicateSignup: UserAuthData = {
   password: 'oth3r@wesomepassword',
 };
 
-const userDuplicateOptionalData: UserOptionalData = {
-  email: 'test@mail.com',
-  defaultGuestNumber: 0,
-  defaultAllergies: 'arachides',
-};
-
 describe('Users endpoints: signup', () => {
   beforeAll(async () => {
     await emptyTestDatabase();
@@ -42,7 +36,7 @@ describe('Users endpoints: signup', () => {
     const res = await request(server)
       .post(USERS_ROUTES.signup)
       .send(userSignUp);
-    expect(res.statusCode).toEqual(200);
+    expect(res.statusCode).toEqual(201);
   });
 
   it('should not create a second user with the same email', async () => {
@@ -52,12 +46,12 @@ describe('Users endpoints: signup', () => {
     expect(res.statusCode).toEqual(400);
   });
 
-  it('should return a token on signup', async () => {
+  it('should return a token', async () => {
     const res = await request(server)
       .post(USERS_ROUTES.signup)
       .send({ ...userSignUp, email: 'newuser@mail.com' });
-    expect(res.statusCode).toEqual(200);
-    expect(res.text.length).toEqual(500);
+    expect(res.statusCode).toEqual(201);
+    expect(res.body.data[0].token.length).toEqual(500);
   });
 
   it('should add optional data to the user', async () => {
@@ -86,7 +80,7 @@ describe('Users endpoints: signup', () => {
       email: 'test@eightpass.com',
       password: '12#%$ert',
     });
-    expect(res.statusCode).toEqual(200);
+    expect(res.statusCode).toEqual(201);
   });
 
   it('should create a new user with a 99 character long conform password', async () => {
@@ -98,7 +92,7 @@ describe('Users endpoints: signup', () => {
       email: 'test@longpassword.com',
       password: longPass,
     });
-    expect(res.statusCode).toEqual(200);
+    expect(res.statusCode).toEqual(201);
   });
 
   it('should not create a user with an invalid email', async () => {
@@ -185,7 +179,7 @@ describe('Users endpoints: login', () => {
     const newUser = await request(server)
       .post(USERS_ROUTES.signup)
       .send(userSignUp);
-    expect(newUser.statusCode).toEqual(200);
+    expect(newUser.statusCode).toEqual(201);
     const login = await request(server)
       .post(USERS_ROUTES.login)
       .send(userSignUp);
@@ -197,7 +191,7 @@ describe('Users endpoints: login', () => {
       .post(USERS_ROUTES.login)
       .send(userSignUp);
     expect(login.statusCode).toEqual(200);
-    expect(login.text.length).toEqual(500);
+    expect(login.body.data[0].token.length).toEqual(500);
   });
 
   it('should return a different token every time', async () => {

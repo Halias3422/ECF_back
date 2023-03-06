@@ -4,11 +4,11 @@ import {
   databaseQueryError,
   databaseQueryResponse,
 } from '../common/apiResponses';
-import { QueryResponse } from '../common/constants';
+import { ApiResponse } from '../common/constants';
 import { USERS_TABLE } from './constants';
 
 export class UsersQueriesService {
-  static getUserByEmail = async (email: string): Promise<QueryResponse> => {
+  static getUserByEmail = async (email: string): Promise<ApiResponse> => {
     try {
       const query = mysql2.format(
         `SELECT * FROM ${USERS_TABLE.name} WHERE ${USERS_TABLE.columns.email} = ?`,

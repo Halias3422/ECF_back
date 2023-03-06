@@ -1,18 +1,17 @@
 import bcrypt from 'bcrypt';
 import {
-  databaseMutationResponse,
   databaseQueryResponse,
   isDuplicateResponse,
   verifyFormDataValidity,
 } from '../common/apiResponses';
-import { MutationResponse, QueryResponse } from '../common/constants';
+import { ApiResponse } from '../common/constants';
 import { UserAuthData, UserOptionalData } from './constants';
 import { UsersMutationsService } from './service.mutations';
 import { UsersQueriesService } from './service.queries';
 
 export class UsersController {
   // MUTATIONS
-  static signup = async (userInfo: UserAuthData): Promise<MutationResponse> => {
+  static signup = async (userInfo: UserAuthData): Promise<ApiResponse> => {
     const isValid = verifyFormDataValidity(userInfo, ['email', 'password']);
     if (isValid.statusCode !== 200) {
       return isValid;
@@ -31,12 +30,15 @@ export class UsersController {
       userInfo,
       this.generateUserSessionToken()
     );
-    return response;
+    if (response.statusCode !== 200) {
+      return response;
+    }
+    return await this.getUserSessionInfo(userInfo.email, 201, 'user created');
   };
 
   static updateOptionalInfo = async (
     userInfo: UserOptionalData
-  ): Promise<MutationResponse> => {
+  ): Promise<ApiResponse> => {
     const isValid = verifyFormDataValidity(userInfo, ['email']);
     if (isValid.statusCode !== 200) {
       return isValid;
@@ -52,36 +54,47 @@ export class UsersController {
     );
     return response;
   };
-  // QUERIES
 
-  static login = async (userInfo: UserAuthData): Promise<QueryResponse> => {
+  static login = async (userInfo: UserAuthData): Promise<ApiResponse> => {
     const retreivedUser = await UsersQueriesService.getUserByEmail(
       userInfo.email
     );
-    if (retreivedUser.statusCode != 200) {
-      console.log('toujours la');
+    if (retreivedUser.statusCode != 200 || !retreivedUser.data) {
       return retreivedUser;
     }
     if (
       !(await this.comparePassword(
-        retreivedUser.rows[0].password,
+        retreivedUser.data[0].password,
         userInfo.password
       ))
     ) {
       return databaseQueryResponse([], 'user');
     }
-    const token = this.generateUserSessionToken();
     const updatedUser = await UsersMutationsService.updateUserToken(
       userInfo.email,
-      token
+      this.generateUserSessionToken()
     );
     if (updatedUser.statusCode !== 200) {
-      return { ...updatedUser, rows: [] };
+      return updatedUser;
+    }
+    return await this.getUserSessionInfo(userInfo.email, 200, 'user logged in');
+  };
+
+  // QUERIES
+
+  private static getUserSessionInfo = async (
+    email: string,
+    statusCode: number,
+    context: string
+  ): Promise<ApiResponse> => {
+    const user = await UsersQueriesService.getUserByEmail(email);
+    if (user.statusCode !== 200 || !user.data) {
+      return user;
     }
     return {
-      statusCode: 200,
-      rows: [],
-      response: token,
+      statusCode: statusCode,
+      data: [{ token: user.data[0].session_token, id: user.data[0].id_user }],
+      response: context + ' successfully',
     };
   };
 
@@ -118,7 +131,7 @@ export class UsersController {
 */
   private static verifyUserSignupConformity = (
     userInfo: UserAuthData
-  ): MutationResponse => {
+  ): ApiResponse => {
     if (userInfo.email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)) {
       if (
         userInfo.password.length > 7 &&

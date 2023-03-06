@@ -12,7 +12,7 @@ dishesRoutes.post(DISHES_ROUTES.createNewDish, async (req, res) => {
 });
 
 dishesRoutes.get(DISHES_ROUTES.getAllDishesByCategories, async (req, res) => {
-  const { statusCode, rows, response } =
+  const { statusCode, data, response } =
     await DishesController.getAllDishesByCategories();
-  res.status(statusCode).send({ response, rows });
+  res.status(statusCode).send({ response, data });
 });

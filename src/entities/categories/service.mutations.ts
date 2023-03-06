@@ -4,13 +4,13 @@ import {
   databaseMutationError,
   databaseMutationResponse,
 } from '../common/apiResponses';
-import { MutationResponse } from '../common/constants';
+import { ApiResponse } from '../common/constants';
 import { CATEGORIES_TABLE, CategoryFormData } from './constant';
 
 export class CategoriesMutationsService {
   static createNewCategory = async (
     newCategory: CategoryFormData
-  ): Promise<MutationResponse> => {
+  ): Promise<ApiResponse> => {
     const DEFAULT = {
       toSqlString: function () {
         return 'DEFAULT';

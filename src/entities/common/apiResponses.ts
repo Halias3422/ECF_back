@@ -1,27 +1,27 @@
-import { MutationResponse, QueryResponse } from './constants';
+import { ApiResponse } from './constants';
 
 export const databaseQueryResponse = (
   rows: any,
   queryName: string
-): QueryResponse => {
+): ApiResponse => {
   if (rows.length > 0) {
     return {
       statusCode: 200,
-      rows,
+      data: rows,
       response: 'Query ' + queryName + ' successfully executed.',
     };
   }
   return {
     statusCode: 400,
-    rows: [],
+    data: [],
     response: 'Error: did not find ' + queryName + '.',
   };
 };
 
-export const databaseQueryError = (queryName: string): QueryResponse => {
+export const databaseQueryError = (queryName: string): ApiResponse => {
   return {
     statusCode: 500,
-    rows: [],
+    data: [],
     response: 'Error: could not execute the query ' + queryName + '.',
   };
 };
@@ -29,7 +29,7 @@ export const databaseQueryError = (queryName: string): QueryResponse => {
 export const databaseMutationResponse = (
   rows: any,
   mutationName: string
-): MutationResponse => {
+): ApiResponse => {
   if (rows.affectedRows > 0) {
     return {
       statusCode: 200,
@@ -42,16 +42,14 @@ export const databaseMutationResponse = (
   };
 };
 
-export const databaseMutationError = (
-  mutationName: string
-): MutationResponse => {
+export const databaseMutationError = (mutationName: string): ApiResponse => {
   return {
     statusCode: 400,
     response: 'Error: could not execute the mutation ' + mutationName + '.',
   };
 };
 
-export const isDuplicateResponse = (mutationName: string): MutationResponse => {
+export const isDuplicateResponse = (mutationName: string): ApiResponse => {
   return {
     statusCode: 400,
     response:
@@ -64,7 +62,7 @@ export const isDuplicateResponse = (mutationName: string): MutationResponse => {
 export const verifyFormDataValidity = (
   formData: any,
   formAttributes: string[]
-): MutationResponse => {
+): ApiResponse => {
   for (const attribute of formAttributes) {
     if (formData[attribute] === undefined) {
       return {

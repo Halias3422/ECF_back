@@ -5,6 +5,6 @@ import { MenuController } from './controller';
 export const menusRoutes = express.Router();
 
 menusRoutes.get(MENUS_ROUTES.getAllMenus, async (req, res) => {
-  const { statusCode, response, rows } = await MenuController.getAllMenus();
-  res.status(statusCode).send({ response, rows });
+  const { statusCode, response, data } = await MenuController.getAllMenus();
+  res.status(statusCode).send({ response, data });
 });

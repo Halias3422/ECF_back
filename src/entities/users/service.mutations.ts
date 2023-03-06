@@ -1,6 +1,6 @@
 import mysql2 from 'mysql2';
 import bcrypt from 'bcrypt';
-import { MutationResponse } from '../common/constants';
+import { ApiResponse } from '../common/constants';
 import { UserAuthData, UserOptionalData, USERS_TABLE } from './constants';
 import { dbConnexion } from '../..';
 import {
@@ -12,7 +12,7 @@ export class UsersMutationsService {
   static createNewUser = async (
     userInfo: UserAuthData,
     token: string
-  ): Promise<MutationResponse> => {
+  ): Promise<ApiResponse> => {
     const hashedPassword = await bcrypt.hash(userInfo.password, 10);
     const DEFAULT = {
       toSqlString: function () {
@@ -26,19 +26,15 @@ export class UsersMutationsService {
     );
     try {
       const [rows] = await dbConnexion.execute(mutation);
-      if (rows.affectedRows > 0) {
-        return {
-          statusCode: 200,
-          response: token,
-        };
-      }
       return databaseMutationResponse(rows, 'create new user');
     } catch (error) {
       return databaseMutationError('create new user');
     }
   };
 
-  static updateUserOptionalData = async (userInfo: UserOptionalData) => {
+  static updateUserOptionalData = async (
+    userInfo: UserOptionalData
+  ): Promise<ApiResponse> => {
     const mutation = mysql2.format(
       `UPDATE ${USERS_TABLE.name} SET ${USERS_TABLE.columns.defaultGuestNumber} = ?, ${USERS_TABLE.columns.defaultAllergies} = ? WHERE ${USERS_TABLE.columns.email} = ?`,
       [userInfo.defaultGuestNumber, userInfo.defaultAllergies, userInfo.email]
@@ -51,7 +47,10 @@ export class UsersMutationsService {
     }
   };
 
-  static updateUserToken = async (userEmail: string, token: string) => {
+  static updateUserToken = async (
+    userEmail: string,
+    token: string
+  ): Promise<ApiResponse> => {
     const mutation = mysql2.format(
       `UPDATE ${USERS_TABLE.name} SET ${USERS_TABLE.columns.sessionToken} = ? WHERE ${USERS_TABLE.columns.email} = ?`,
       [token, userEmail]
