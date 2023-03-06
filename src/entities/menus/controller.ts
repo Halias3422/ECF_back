@@ -8,7 +8,7 @@ export class MenuController {
 
   static getAllMenus = async (): Promise<ApiResponse> => {
     const retreivedMenus = await MenusQueriesService.getAllMenus();
-    if (retreivedMenus.statusCode === 2000 && retreivedMenus.data) {
+    if (retreivedMenus.statusCode === 200 && retreivedMenus.data) {
       const formattedMenus = await Promise.all(
         retreivedMenus.data.map(async (menu) => {
           let formattedMenu: FormattedMenu = {
