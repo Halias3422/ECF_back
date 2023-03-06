@@ -6,12 +6,12 @@ export const usersRoutes = express.Router();
 
 usersRoutes.post(USERS_ROUTES.login, async (req, res) => {
   const { statusCode, response, data } = await UsersController.login(req.body);
-  res.status(statusCode).send({ response, data });
+  res.status(statusCode).send({ response, ...data });
 });
 
 usersRoutes.post(USERS_ROUTES.signup, async (req, res) => {
   const { statusCode, response, data } = await UsersController.signup(req.body);
-  res.status(statusCode).send({ response, data });
+  res.status(statusCode).send({ response, ...data });
 });
 
 usersRoutes.post(USERS_ROUTES.updateOptionalInfo, async (req, res) => {
