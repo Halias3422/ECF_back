@@ -3,6 +3,13 @@ export const USERS_ROUTES = {
   signup: '/api/user-signup',
   updateOptionalInfo: '/api/user-update-optional-info',
   getOptionalInfo: '/api/user-get-optional-info',
+  getRole: '/api/user-get-role',
+  securedLogRequest: '/api/secured-log-request',
+  securedLogProcess: '/api/secured-log-process',
+  securedLogProcessed: 'secured-log-processed',
+  updateDefaultPassword: 'secured-log-update-default-password',
+  processUpdateDefaultPassword:
+    '/api/secured-log-process-update-default-password',
 };
 
 export const USERS_TABLE = {
@@ -32,6 +39,10 @@ export interface UserOptionalData {
 export interface UserSessionData {
   id: string;
   token: string;
+}
+
+export interface ProtectedUserSessionData extends UserSessionData {
+  email: string;
 }
 
 export interface UserData {

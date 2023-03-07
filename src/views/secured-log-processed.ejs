@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Authentification réussie</title>
+	<style>
+	body {
+	background-color: #427aa1;
+	}
+	.container {
+	margin: 0 auto;
+	margin-top: 80px;
+	padding: 20px 5%;
+	border-radius: 8px;
+	width: fit-content;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	background-color: #ebf2fa;
+	}
+	.paraph {
+	font-size: 20px;
+	margin-bottom: 10px;
+	text-align: center;
+	}
+	.red {
+	color: red;
+	}
+	</style>
+	<script>
+	const sessionToken = "<%= auth %>";
+	const now = new Date();
+	localStorage.setItem('lqa_user_session', JSON.stringify({
+		value: sessionToken,
+		expiry: now.getTime() + 30 * 60000,
+	}));
+
+	</script>
+	</head>
+	<body>
+		<div class="container">
+		<h1>Accès autorisé</h1>
+		<p class="paraph">Vous avez maintenant accès aux fonction administrateur,<br>
+		Vous pouvez retourner sur le site.</p>
+		<p class="paraph red">Votre session se désactivera après 30 minutes d'inactivité.</p>
+		</div>
+	</body>
+</html>

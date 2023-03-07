@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Connexion</title>
+	</head>
+	<style>
+		body {
+			background-color: #427aa1;
+		}
+
+		.formContainer {
+			display: flex;
+			flex-direction: column;
+			margin: 0 auto;
+			max-width: 450px;
+			padding: 20px 5%;
+			margin-top: 80px;
+			align-items: center;
+			gap: 15px;
+			font-size: 20px;
+			background-color: #ebf2fa;
+		}
+
+		.formInput {
+			width: 100%;
+			margin-bottom: 20px;
+		}
+	</style>
+	<body>
+			<form class="formContainer" method="POST" action="/api/secured-log-process">
+			<h1>Authentification</h1>
+			<label htmlFor="emailInput">e-mail:</label>
+			<input type="text" class="formInput" id="emailInput" name="emailInput"/>
+			<label htmlFor="passwordInput">password:</label>
+			<input type="password" class="formInput" id="passwordInput" name="passwordInput"/>
+				<input type="submit" value="Connexion"/>
+			</form>
+	</body>
+</html>

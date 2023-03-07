@@ -1,4 +1,5 @@
 import bcrypt from 'bcrypt';
+import { createHash } from 'crypto';
 import {
   databaseQueryError,
   databaseQueryResponse,
@@ -6,7 +7,12 @@ import {
   verifyFormDataValidity,
 } from '../common/apiResponses';
 import { ApiResponse } from '../common/constants';
-import { UserAuthData, UserOptionalData, UserSessionData } from './constants';
+import {
+  ProtectedUserSessionData,
+  UserAuthData,
+  UserOptionalData,
+  UserSessionData,
+} from './constants';
 import { UsersMutationsService } from './service.mutations';
 import { UsersQueriesService } from './service.queries';
 
@@ -81,9 +87,107 @@ export class UsersController {
     return await this.getUserSessionInfo(userInfo.email, 200, 'user logged in');
   };
 
+  static protectedLogin = async (
+    userInfo: UserAuthData
+  ): Promise<ApiResponse> => {
+    const retreivedUser = await UsersQueriesService.getProtectedUserByEmail(
+      userInfo.email
+    );
+    let needPasswordReset = false;
+    if (retreivedUser.statusCode != 200 || !retreivedUser.data) {
+      return retreivedUser;
+    }
+    if (
+      !(await this.comparePassword(
+        retreivedUser.data[0].password,
+        userInfo.password
+      ))
+    ) {
+      if (
+        !(await this.compareDefaultAdminPassword(
+          retreivedUser.data[0].password,
+          userInfo.password
+        ))
+      ) {
+        return databaseQueryResponse([], 'user');
+      }
+      needPasswordReset = true;
+    }
+    const updatedUser = await UsersMutationsService.updateUserToken(
+      userInfo.email,
+      this.generateUserSessionToken()
+    );
+    if (updatedUser.statusCode !== 200) {
+      return updatedUser;
+    }
+    return await this.getProtectedUserSessionInfo(
+      userInfo.email,
+      needPasswordReset ? 303 : 200,
+      needPasswordReset ? 'password reset needed' : 'user logged in'
+    );
+  };
+
+  // 303 -> See other (not redirecting to requested resource but another page)
+
+  static updateProtectedDefaultPassword = async (
+    sessionInfo: ProtectedUserSessionData,
+    newPassword: string
+  ): Promise<ApiResponse> => {
+    const retreivedUser = await this.getAuthenticatedProtectedUserFromSession(
+      sessionInfo
+    );
+    if (retreivedUser.statusCode !== 200) {
+      return retreivedUser;
+    }
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    const updatedPassword =
+      await UsersMutationsService.updateProtectedDefaultPassword(
+        retreivedUser.data[0].email,
+        hashedPassword
+      );
+    return updatedPassword;
+  };
+
   // QUERIES
 
   static getUserOptionalInfo = async (
+    userSessionInfo: UserSessionData
+  ): Promise<ApiResponse> => {
+    const retreivedUser = await this.getAuthenticatedUserFromSession(
+      userSessionInfo
+    );
+    if (retreivedUser.statusCode !== 200) {
+      return retreivedUser;
+    }
+    return {
+      statusCode: 200,
+      data: {
+        defaultGuestNumber: retreivedUser.data[0].default_guests_number,
+        defaultAllergies: retreivedUser.data[0].default_allergies,
+      },
+      response: 'user data found successfully',
+    };
+  };
+
+  static getUserRole = async (userSessionInfo: UserSessionData) => {
+    const retreivedUser = await this.getAuthenticatedUserFromSession(
+      userSessionInfo
+    );
+    if (retreivedUser.statusCode !== 200) {
+      return retreivedUser;
+    }
+    return {
+      statusCode: 200,
+      data: {
+        isAdmin: retreivedUser.data[0].is_admin,
+      },
+      response: 'user role found successfully',
+    };
+  };
+
+  // PRIVATE
+
+  private static getAuthenticatedUserFromSession = async (
     userSessionInfo: UserSessionData
   ): Promise<ApiResponse> => {
     const isValid = verifyFormDataValidity(userSessionInfo, ['id', 'token']);
@@ -97,25 +201,50 @@ export class UsersController {
     if (retreivedUser.statusCode !== 200) {
       return retreivedUser;
     }
-    const IdIsValid = await this.verifyUserSessionIdValidity(
+    const idIsValid = await this.verifyUserSessionItemValidity(
       userSessionInfo.id,
       retreivedUser.data[0].id_user
     );
-    if (!IdIsValid) {
-      console.log('id invalid');
+    if (!idIsValid) {
       return databaseQueryError('get user info');
     }
-    return {
-      statusCode: 200,
-      data: {
-        defaultGuestNumber: retreivedUser.data[0].default_guests_number,
-        defaultAllergies: retreivedUser.data[0].default_allergies,
-      },
-      response: 'user data found successfully',
-    };
+    return retreivedUser;
   };
 
-  // PRIVATE
+  private static getAuthenticatedProtectedUserFromSession = async (
+    userSessionInfo: ProtectedUserSessionData
+  ): Promise<ApiResponse> => {
+    const isValid = verifyFormDataValidity(userSessionInfo, [
+      'id',
+      'email',
+      'token',
+    ]);
+    if (isValid.statusCode !== 200) {
+      return isValid;
+    }
+    const retreivedUser =
+      await UsersQueriesService.getProtectedUserBySessionToken(
+        userSessionInfo.token
+      );
+    if (retreivedUser.statusCode !== 200) {
+      return retreivedUser;
+    }
+    const idIsValid = await this.verifyUserSessionItemValidity(
+      userSessionInfo.id,
+      retreivedUser.data[0].id_user
+    );
+    if (!idIsValid) {
+      return databaseQueryError('get protected user info');
+    }
+    const emailIsValid = await this.verifyUserSessionItemValidity(
+      userSessionInfo.email,
+      retreivedUser.data[0].email
+    );
+    if (!emailIsValid) {
+      return databaseQueryError('get protected user info');
+    }
+    return retreivedUser;
+  };
 
   private static getUserSessionInfo = async (
     email: string,
@@ -127,7 +256,6 @@ export class UsersController {
       return user;
     }
     const hashedId = await bcrypt.hash(user.data[0].id_user, 10);
-    console.log('hashedId = ' + hashedId);
     return {
       statusCode: statusCode,
       data: { session: `${hashedId}:${user.data[0].session_token}` },
@@ -135,12 +263,36 @@ export class UsersController {
     };
   };
 
-  private static verifyUserSessionIdValidity = async (
-    sessionId: string,
-    userId: string
+  private static getProtectedUserSessionInfo = async (
+    email: string,
+    statusCode: number,
+    context: string
+  ): Promise<ApiResponse> => {
+    const user = await UsersQueriesService.getProtectedUserByEmail(email);
+    if ((user.statusCode !== 200 && user.statusCode !== 303) || !user.data) {
+      return user;
+    }
+    try {
+      const hashedId = await bcrypt.hash(user.data[0].id_user, 10);
+      const hashedMail = await bcrypt.hash(user.data[0].email, 10);
+      return {
+        statusCode: statusCode,
+        data: {
+          session: `${hashedId}:${hashedMail}:${user.data[0].session_token}`,
+        },
+        response: context + ' successfully',
+      };
+    } catch (error) {
+      return databaseQueryError('get session info');
+    }
+  };
+
+  private static verifyUserSessionItemValidity = async (
+    sessionItem: string,
+    userItem: string
   ): Promise<boolean> => {
     try {
-      return await bcrypt.compare(userId, sessionId);
+      return await bcrypt.compare(userItem, sessionItem);
     } catch (error) {
       return false;
     }
@@ -156,6 +308,17 @@ export class UsersController {
     } catch (error) {
       return false;
     }
+  };
+
+  private static compareDefaultAdminPassword = async (
+    dbPass: string,
+    userPass: string
+  ): Promise<boolean> => {
+    const hashedPass = createHash('sha256').update(userPass).digest('hex');
+    if (hashedPass === dbPass) {
+      return true;
+    }
+    return false;
   };
 
   /*

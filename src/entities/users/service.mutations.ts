@@ -32,6 +32,22 @@ export class UsersMutationsService {
     }
   };
 
+  static updateProtectedDefaultPassword = async (
+    email: string,
+    newPassword: string
+  ): Promise<ApiResponse> => {
+    try {
+      const mutation = mysql2.format(
+        `UPDATE ${USERS_TABLE.name} SET ${USERS_TABLE.columns.password} = ? WHERE ${USERS_TABLE.columns.email} = ?`,
+        [newPassword, email]
+      );
+      const [rows] = await dbConnexion.execute(mutation);
+      return databaseMutationResponse(rows, 'update protected user credential');
+    } catch (error) {
+      return databaseMutationError('update protected user credential');
+    }
+  };
+
   static updateUserOptionalData = async (
     userInfo: UserOptionalData
   ): Promise<ApiResponse> => {
