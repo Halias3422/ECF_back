@@ -1,5 +1,4 @@
 import bcrypt from 'bcrypt';
-import { createHash } from 'crypto';
 import {
   databaseQueryError,
   databaseQueryResponse,
@@ -7,12 +6,7 @@ import {
   verifyFormDataValidity,
 } from '../common/apiResponses';
 import { ApiResponse } from '../common/constants';
-import {
-  ProtectedUserSessionData,
-  UserAuthData,
-  UserOptionalData,
-  UserSessionData,
-} from './constants';
+import { UserAuthData, UserOptionalData, UserSessionData } from './constants';
 import { UsersMutationsService } from './service.mutations';
 import { UsersQueriesService } from './service.queries';
 
@@ -87,67 +81,6 @@ export class UsersController {
     return await this.getUserSessionInfo(userInfo.email, 200, 'user logged in');
   };
 
-  static protectedLogin = async (
-    userInfo: UserAuthData
-  ): Promise<ApiResponse> => {
-    const retreivedUser = await UsersQueriesService.getProtectedUserByEmail(
-      userInfo.email
-    );
-    let needPasswordReset = false;
-    if (retreivedUser.statusCode != 200 || !retreivedUser.data) {
-      return retreivedUser;
-    }
-    if (
-      !(await this.comparePassword(
-        retreivedUser.data[0].password,
-        userInfo.password
-      ))
-    ) {
-      if (
-        !(await this.compareDefaultAdminPassword(
-          retreivedUser.data[0].password,
-          userInfo.password
-        ))
-      ) {
-        return databaseQueryResponse([], 'user');
-      }
-      needPasswordReset = true;
-    }
-    const updatedUser = await UsersMutationsService.updateUserToken(
-      userInfo.email,
-      this.generateUserSessionToken()
-    );
-    if (updatedUser.statusCode !== 200) {
-      return updatedUser;
-    }
-    return await this.getProtectedUserSessionInfo(
-      userInfo.email,
-      needPasswordReset ? 303 : 200,
-      needPasswordReset ? 'password reset needed' : 'user logged in'
-    );
-  };
-
-  // 303 -> See other (not redirecting to requested resource but another page)
-
-  static updateProtectedDefaultPassword = async (
-    sessionInfo: ProtectedUserSessionData,
-    newPassword: string
-  ): Promise<ApiResponse> => {
-    const retreivedUser = await this.getAuthenticatedProtectedUserFromSession(
-      sessionInfo
-    );
-    if (retreivedUser.statusCode !== 200) {
-      return retreivedUser;
-    }
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
-    const updatedPassword =
-      await UsersMutationsService.updateProtectedDefaultPassword(
-        retreivedUser.data[0].email,
-        hashedPassword
-      );
-    return updatedPassword;
-  };
-
   // QUERIES
 
   static getUserOptionalInfo = async (
@@ -211,41 +144,6 @@ export class UsersController {
     return retreivedUser;
   };
 
-  private static getAuthenticatedProtectedUserFromSession = async (
-    userSessionInfo: ProtectedUserSessionData
-  ): Promise<ApiResponse> => {
-    const isValid = verifyFormDataValidity(userSessionInfo, [
-      'id',
-      'email',
-      'token',
-    ]);
-    if (isValid.statusCode !== 200) {
-      return isValid;
-    }
-    const retreivedUser =
-      await UsersQueriesService.getProtectedUserBySessionToken(
-        userSessionInfo.token
-      );
-    if (retreivedUser.statusCode !== 200) {
-      return retreivedUser;
-    }
-    const idIsValid = await this.verifyUserSessionItemValidity(
-      userSessionInfo.id,
-      retreivedUser.data[0].id_user
-    );
-    if (!idIsValid) {
-      return databaseQueryError('get protected user info');
-    }
-    const emailIsValid = await this.verifyUserSessionItemValidity(
-      userSessionInfo.email,
-      retreivedUser.data[0].email
-    );
-    if (!emailIsValid) {
-      return databaseQueryError('get protected user info');
-    }
-    return retreivedUser;
-  };
-
   private static getUserSessionInfo = async (
     email: string,
     statusCode: number,
@@ -261,30 +159,6 @@ export class UsersController {
       data: { session: `${hashedId}:${user.data[0].session_token}` },
       response: context + ' successfully',
     };
-  };
-
-  private static getProtectedUserSessionInfo = async (
-    email: string,
-    statusCode: number,
-    context: string
-  ): Promise<ApiResponse> => {
-    const user = await UsersQueriesService.getProtectedUserByEmail(email);
-    if ((user.statusCode !== 200 && user.statusCode !== 303) || !user.data) {
-      return user;
-    }
-    try {
-      const hashedId = await bcrypt.hash(user.data[0].id_user, 10);
-      const hashedMail = await bcrypt.hash(user.data[0].email, 10);
-      return {
-        statusCode: statusCode,
-        data: {
-          session: `${hashedId}:${hashedMail}:${user.data[0].session_token}`,
-        },
-        response: context + ' successfully',
-      };
-    } catch (error) {
-      return databaseQueryError('get session info');
-    }
   };
 
   private static verifyUserSessionItemValidity = async (
@@ -308,17 +182,6 @@ export class UsersController {
     } catch (error) {
       return false;
     }
-  };
-
-  private static compareDefaultAdminPassword = async (
-    dbPass: string,
-    userPass: string
-  ): Promise<boolean> => {
-    const hashedPass = createHash('sha256').update(userPass).digest('hex');
-    if (hashedPass === dbPass) {
-      return true;
-    }
-    return false;
   };
 
   /*
