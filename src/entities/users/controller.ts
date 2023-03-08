@@ -1,4 +1,5 @@
 import bcrypt from 'bcrypt';
+import { AdminController } from '../admin/controller';
 import {
   databaseQueryError,
   databaseQueryResponse,
@@ -63,6 +64,9 @@ export class UsersController {
     if (retreivedUser.statusCode != 200 || !retreivedUser.data) {
       return retreivedUser;
     }
+    if (retreivedUser.data[0].is_admin === 1) {
+      return await AdminController.protectedLogin(userInfo);
+    }
     if (
       !(await this.comparePassword(
         retreivedUser.data[0].password,
@@ -112,7 +116,7 @@ export class UsersController {
     return {
       statusCode: 200,
       data: {
-        isAdmin: retreivedUser.data[0].is_admin,
+        role: retreivedUser.data[0].is_admin,
       },
       response: 'user role found successfully',
     };

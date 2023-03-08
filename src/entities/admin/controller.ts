@@ -73,7 +73,7 @@ export class AdminController {
     return updatedPassword;
   };
 
-  private static getAuthenticatedProtectedUserFromSession = async (
+  static getAuthenticatedProtectedUserFromSession = async (
     userSessionInfo: AdminSessionData
   ): Promise<ApiResponse> => {
     const isValid = verifyFormDataValidity(userSessionInfo, [

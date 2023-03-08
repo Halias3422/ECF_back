@@ -1,4 +1,5 @@
 import express from 'express';
+import { AdminController } from '../admin/controller';
 import { USERS_ROUTES } from './constants';
 import { UsersController } from './controller';
 
@@ -46,49 +47,18 @@ usersRoutes.get(USERS_ROUTES.getRole, async (req, res) => {
         token: auth[1],
       });
       res.status(statusCode).send({ response, data });
-    }
-  }
-  res.status(401).send('Unauthorized');
-});
-
-usersRoutes.get(USERS_ROUTES.securedLogRequest, async (req, res) => {
-  res.render('secured-log-request');
-});
-
-usersRoutes.post(USERS_ROUTES.securedLogProcess, async (req, res) => {
-  const { statusCode, data } = await UsersController.protectedLogin({
-    email: req.body.emailInput,
-    password: req.body.passwordInput,
-  });
-  if (statusCode !== 303 && statusCode !== 200) {
-    res.status(401).send('Unauthorized');
-  } else if (statusCode === 303) {
-    res.render(USERS_ROUTES.updateDefaultPassword, {
-      auth: data.session,
-    });
-  } else if (statusCode === 200) {
-    res.render(USERS_ROUTES.securedLogProcessed, {
-      auth: data.session,
-    });
-  }
-});
-
-usersRoutes.post(
-  USERS_ROUTES.processUpdateDefaultPassword,
-  async (req, res) => {
-    if (req.headers && req.headers.authorization) {
-      const auth = req.headers.authorization.split(':');
-      if (auth.length === 3) {
-        await UsersController.updateProtectedDefaultPassword(
-          {
-            id: auth[0],
-            email: auth[1],
-            token: auth[2],
-          },
-          req.body.password
-        );
+    } else if (auth.length === 3) {
+      const { statusCode, response } =
+        await AdminController.getAuthenticatedProtectedUserFromSession({
+          id: auth[0],
+          email: auth[1],
+          token: auth[2],
+        });
+      if (statusCode === 200) {
+        res.status(statusCode).send({ response, data: { role: 1 } });
       }
     }
+  } else {
     res.status(401).send('Unauthorized');
   }
-);
+});
