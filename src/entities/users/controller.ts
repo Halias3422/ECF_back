@@ -1,4 +1,5 @@
 import bcrypt from 'bcrypt';
+import { AdminController } from '../admin/controller';
 import {
   databaseQueryError,
   databaseQueryResponse,
@@ -63,6 +64,9 @@ export class UsersController {
     if (retreivedUser.statusCode != 200 || !retreivedUser.data) {
       return retreivedUser;
     }
+    if (retreivedUser.data[0].is_admin === 1) {
+      return await AdminController.protectedLogin(userInfo);
+    }
     if (
       !(await this.comparePassword(
         retreivedUser.data[0].password,
@@ -86,24 +90,11 @@ export class UsersController {
   static getUserOptionalInfo = async (
     userSessionInfo: UserSessionData
   ): Promise<ApiResponse> => {
-    const isValid = verifyFormDataValidity(userSessionInfo, ['id', 'token']);
-    if (isValid.statusCode !== 200) {
-      return isValid;
-    }
-    const retreivedUser =
-      await UsersQueriesService.getUserOptionalInfoBySessionToken(
-        userSessionInfo.token
-      );
+    const retreivedUser = await this.getAuthenticatedUserFromSession(
+      userSessionInfo
+    );
     if (retreivedUser.statusCode !== 200) {
       return retreivedUser;
-    }
-    const IdIsValid = await this.verifyUserSessionIdValidity(
-      userSessionInfo.id,
-      retreivedUser.data[0].id_user
-    );
-    if (!IdIsValid) {
-      console.log('id invalid');
-      return databaseQueryError('get user info');
     }
     return {
       statusCode: 200,
@@ -115,7 +106,47 @@ export class UsersController {
     };
   };
 
+  static getUserRole = async (userSessionInfo: UserSessionData) => {
+    const retreivedUser = await this.getAuthenticatedUserFromSession(
+      userSessionInfo
+    );
+    if (retreivedUser.statusCode !== 200) {
+      return retreivedUser;
+    }
+    return {
+      statusCode: 200,
+      data: {
+        role: retreivedUser.data[0].is_admin,
+      },
+      response: 'user role found successfully',
+    };
+  };
+
   // PRIVATE
+
+  private static getAuthenticatedUserFromSession = async (
+    userSessionInfo: UserSessionData
+  ): Promise<ApiResponse> => {
+    const isValid = verifyFormDataValidity(userSessionInfo, ['id', 'token']);
+    if (isValid.statusCode !== 200) {
+      return isValid;
+    }
+    const retreivedUser =
+      await UsersQueriesService.getUserOptionalInfoBySessionToken(
+        userSessionInfo.token
+      );
+    if (retreivedUser.statusCode !== 200) {
+      return retreivedUser;
+    }
+    const idIsValid = await this.verifyUserSessionItemValidity(
+      userSessionInfo.id,
+      retreivedUser.data[0].id_user
+    );
+    if (!idIsValid) {
+      return databaseQueryError('get user info');
+    }
+    return retreivedUser;
+  };
 
   private static getUserSessionInfo = async (
     email: string,
@@ -127,7 +158,6 @@ export class UsersController {
       return user;
     }
     const hashedId = await bcrypt.hash(user.data[0].id_user, 10);
-    console.log('hashedId = ' + hashedId);
     return {
       statusCode: statusCode,
       data: { session: `${hashedId}:${user.data[0].session_token}` },
@@ -135,12 +165,12 @@ export class UsersController {
     };
   };
 
-  private static verifyUserSessionIdValidity = async (
-    sessionId: string,
-    userId: string
+  private static verifyUserSessionItemValidity = async (
+    sessionItem: string,
+    userItem: string
   ): Promise<boolean> => {
     try {
-      return await bcrypt.compare(userId, sessionId);
+      return await bcrypt.compare(userItem, sessionItem);
     } catch (error) {
       return false;
     }

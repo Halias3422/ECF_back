@@ -3,6 +3,7 @@ export const USERS_ROUTES = {
   signup: '/api/user-signup',
   updateOptionalInfo: '/api/user-update-optional-info',
   getOptionalInfo: '/api/user-get-optional-info',
+  getRole: '/api/user-get-role',
 };
 
 export const USERS_TABLE = {

@@ -1,4 +1,5 @@
 import express from 'express';
+import { AdminController } from '../admin/controller';
 import { USERS_ROUTES } from './constants';
 import { UsersController } from './controller';
 
@@ -34,5 +35,30 @@ usersRoutes.get(USERS_ROUTES.getOptionalInfo, async (req, res) => {
       res.status(statusCode).send({ response, data });
     }
   }
-  res.status(401);
+  res.status(401).send('Unauthorized');
+});
+
+usersRoutes.get(USERS_ROUTES.getRole, async (req, res) => {
+  if (req.headers && req.headers.authorization) {
+    const auth = req.headers.authorization.split(':');
+    if (auth.length === 2) {
+      const { statusCode, response, data } = await UsersController.getUserRole({
+        id: auth[0],
+        token: auth[1],
+      });
+      res.status(statusCode).send({ response, data });
+    } else if (auth.length === 3) {
+      const { statusCode, response } =
+        await AdminController.getAuthenticatedProtectedUserFromSession({
+          id: auth[0],
+          email: auth[1],
+          token: auth[2],
+        });
+      if (statusCode === 200) {
+        res.status(statusCode).send({ response, data: { role: 1 } });
+      }
+    }
+  } else {
+    res.status(401).send('Unauthorized');
+  }
 });
