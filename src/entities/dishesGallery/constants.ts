@@ -17,9 +17,6 @@ export const DISHES_GALLERY_TABLE = {
 
 export interface DishesGalleryFormData {
   id?: string;
-  image: {
-    name: string;
-    file: File;
-  };
+  image: string;
   title: string;
 }

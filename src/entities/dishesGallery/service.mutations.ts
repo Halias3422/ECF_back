@@ -16,7 +16,7 @@ export class DishesGalleryMutationsService {
     try {
       const mutation = mysql2.format(
         `INSERT INTO ${DISHES_GALLERY_TABLE.name} VALUES (?, ?, ?)`,
-        [DEFAULT, dish.title, dish.image.name]
+        [DEFAULT, dish.title, dish.image]
       );
       const [rows] = await dbConnexion.execute(mutation);
       return databaseMutationResponse(rows, 'create gallery dish item');
