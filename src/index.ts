@@ -1,4 +1,3 @@
-import multer from 'multer';
 import { initDatabaseConnexion } from './init/database';
 import { setupCurrentEnvironment } from './init/environment';
 import { initExpressServer } from './init/server';
@@ -8,7 +7,7 @@ setupCurrentEnvironment();
 
 export const server = initExpressServer();
 export const upload = {
-  dishesGallery: () => multer({ storage: initDishesGalleryStorage() }),
-  dishes: () => initDishesStorage(),
+  dishesGallery: initDishesGalleryStorage(),
+  dishes: initDishesStorage(),
 };
 export const dbConnexion = initDatabaseConnexion();

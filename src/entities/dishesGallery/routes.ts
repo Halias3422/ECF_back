@@ -1,5 +1,5 @@
 import express from 'express';
-import multer from 'multer';
+import { upload } from '../../index';
 import { DISHES_GALLERY_ROUTES } from './constants';
 import { DishesGalleryController } from './controller';
 
@@ -39,19 +39,10 @@ dishesGalleryRoutes.post(
   }
 );
 
-const storage = multer.diskStorage({
-  destination: 'public/dishesGallery/',
-  filename: function (req, file, callback) {
-    callback(null, file.originalname);
-  },
-});
-
-const upload = multer({ storage: storage }).any();
-
 dishesGalleryRoutes.post(
   DISHES_GALLERY_ROUTES.saveDishGalleryImage,
   (req, res) => {
-    upload(req, res, (error) => {
+    upload.dishesGallery(req, res, (error) => {
       if (error) {
         return res.status(500).send('Error uploading image ');
       }
