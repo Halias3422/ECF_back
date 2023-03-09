@@ -21,6 +21,9 @@ export const initExpressServer = () => {
   // init routing
   app.use('/', routes);
 
+  // serve static images
+  app.use(express.static('public'));
+
   // launch server
   let server = null;
   try {

@@ -8,7 +8,14 @@ import { DishesGalleryQueriesService } from './service.queries';
 
 export class DishesGalleryController {
   static getAllDishesGallery = async (): Promise<ApiResponse> => {
-    return await DishesGalleryQueriesService.getAllDishesGallery();
+    const dishes = await DishesGalleryQueriesService.getAllDishesGallery();
+    if (dishes.statusCode !== 200) {
+      return dishes;
+    }
+    for (const dish of dishes.data) {
+      dish.image = `${process.env.BACK_END_URL}${process.env.SERVER_PORT}/dishesGallery/${dish.image}`;
+    }
+    return dishes;
   };
 
   // PROTECTED
