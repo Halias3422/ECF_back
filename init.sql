@@ -63,12 +63,6 @@ CREATE TABLE IF NOT EXISTS Reservations (
 	Constraint FOREIGN KEY (user_id) REFERENCES Users(id_user)
 );
 
-
-/* INIT DATABASE CONTENT */
-
-INSERT INTO Users ()
-VALUES (DEFAULT, 'admin@mail.com', SHA2('password', 256), NULL, NULL, NULL, true);
-
 INSERT INTO Categories ()
 VALUES (DEFAULT, 'Entrée');
 

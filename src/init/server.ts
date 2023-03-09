@@ -8,7 +8,7 @@ export const initExpressServer = () => {
 
   app.use(
     cors({
-      origin: process.env.FRONT_END_URL,
+      origin: '*',
     }),
     // necessary to handle incoming data
     express.urlencoded({ extended: true }),

@@ -20,18 +20,18 @@ export class DishesGalleryQueriesService {
     }
   };
 
-  static getGalleryDishByTitle = async (dishTitle: string) => {
+  static getGalleryDishById = async (dishId: string) => {
     try {
       const query = mysql2.format(
         `SELECT * FROM ${DISHES_GALLERY_TABLE.name} WHERE ${DISHES_GALLERY_TABLE.columns.title} = ?`,
-        [dishTitle]
+        [dishId]
       );
       const [rows] = await dbConnexion.execute(query);
       if (rows.length > 0) {
       }
-      return databaseQueryResponse(rows, 'get gallery dish by title');
+      return databaseQueryResponse(rows, 'get gallery dish by ID');
     } catch (error) {
-      return databaseQueryError('get gallery dish by title');
+      return databaseQueryError('get gallery dish by ID');
     }
   };
 }

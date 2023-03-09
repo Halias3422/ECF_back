@@ -13,6 +13,29 @@ export class DishesGalleryController {
 
   // PROTECTED
 
+  static createDishGalleryItem = async (
+    userSessionInfo: AdminSessionData,
+    dish: DishesGalleryFormData
+  ): Promise<ApiResponse> => {
+    const isValid = verifyFormDataValidity(dish, ['title', 'image']);
+    if (isValid.statusCode !== 200) {
+      return isValid;
+    }
+    const isAuthorized =
+      await AdminController.getAuthenticatedProtectedUserFromSession(
+        userSessionInfo
+      );
+    if (isAuthorized.statusCode !== 200) {
+      return isAuthorized;
+    }
+    const createdDish =
+      await DishesGalleryMutationsService.createDishGalleryItem(dish);
+    if (createdDish.statusCode !== 200) {
+      return createdDish;
+    }
+    return { ...createdDish, statusCode: 201 };
+  };
+
   static deleteDishGalleryItem = async (
     userSessionInfo: AdminSessionData,
     dish: DishesGalleryFormData
@@ -29,7 +52,7 @@ export class DishesGalleryController {
       return isAuthorized;
     }
     const deletedDish =
-      await DishesGalleryMutationsService.deleteGalleryDishItemById(dish.id);
+      await DishesGalleryMutationsService.deleteDishGalleryItemById(dish.id);
     return deletedDish;
   };
 }
