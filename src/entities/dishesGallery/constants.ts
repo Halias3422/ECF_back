@@ -6,11 +6,14 @@ export const DISHES_GALLERY_ROUTES = {
 export const DISHES_GALLERY_TABLE = {
   name: 'Gallery_dishes',
   columns: {
-    id: 'dish_id',
+    id: 'id_gallery_dish',
+    title: 'title',
+    image: 'image',
   },
 };
 
 export interface DishesGalleryFormData {
+  id?: string;
   image: string;
   title: string;
 }
