@@ -1,42 +1,106 @@
-import { AdminSessionData } from '../admin/constants';
-import { AdminController } from '../admin/controller';
-import { verifyFormDataValidity } from '../common/apiResponses';
+import { promises as fs } from 'fs';
+import { rootDirectory } from '../..';
+import {
+  databaseMutationError,
+  databaseMutationResponse,
+  databaseQueryResponse,
+  verifyFormDataValidity,
+} from '../common/apiResponses';
 import { ApiResponse } from '../common/constants';
-import { DishesQueriesService } from '../dishes/service.queries';
 import { DishesGalleryFormData } from './constants';
 import { DishesGalleryMutationsService } from './service.mutations';
 import { DishesGalleryQueriesService } from './service.queries';
 
 export class DishesGalleryController {
   static getAllDishesGallery = async (): Promise<ApiResponse> => {
-    return await DishesGalleryQueriesService.getAllDishesGallery();
+    const dishes = await DishesGalleryQueriesService.getAllDishesGallery();
+    if (dishes.statusCode !== 200) {
+      return dishes;
+    }
+    const formattedDishes: DishesGalleryFormData[] = [];
+    for (const dish of dishes.data) {
+      formattedDishes.push({
+        id: dish.id_gallery_dish,
+        image: `${process.env.BACK_END_URL}${process.env.SERVER_PORT}/dishesGallery/${dish.image}`,
+        title: dish.title,
+      });
+    }
+    return {
+      statusCode: 200,
+      response: dishes.response,
+      data: formattedDishes,
+    };
   };
 
-  // PROTECTED
-
-  static deleteDishGalleryItem = async (
-    userSessionInfo: AdminSessionData,
+  static verifyIfDuplicateTitleOrImage = async (
     dish: DishesGalleryFormData
   ): Promise<ApiResponse> => {
     const isValid = verifyFormDataValidity(dish, ['title', 'image']);
     if (isValid.statusCode !== 200) {
       return isValid;
     }
-    const isAuthorized =
-      await AdminController.getAuthenticatedProtectedUserFromSession(
-        userSessionInfo
-      );
-    if (isAuthorized.statusCode !== 200) {
-      return isAuthorized;
+    const isDuplicate =
+      await DishesGalleryQueriesService.getGalleryDishDuplicate(dish);
+    if (isDuplicate.statusCode === 200) {
+      return {
+        statusCode: 400,
+        data: isDuplicate.data,
+        response: 'title already exists',
+      };
     }
-    const retreivedDish = await DishesQueriesService.getDishByTitle(dish.title);
-    if (retreivedDish.statusCode !== 200) {
-      return retreivedDish;
+    return databaseQueryResponse(['a', 'b'], 'new item is not a duplicate');
+  };
+
+  // PROTECTED
+
+  static createDishGalleryItem = async (
+    dish: DishesGalleryFormData
+  ): Promise<ApiResponse> => {
+    const isValid = verifyFormDataValidity(dish, ['title', 'image']);
+    if (isValid.statusCode !== 200) {
+      return isValid;
+    }
+    const createdDish =
+      await DishesGalleryMutationsService.createDishGalleryItem(dish);
+    if (createdDish.statusCode !== 200) {
+      return createdDish;
+    }
+    return { ...createdDish, statusCode: 201 };
+  };
+
+  static modifyDishGalleryItem = async (
+    dish: DishesGalleryFormData
+  ): Promise<ApiResponse> => {
+    const isValid = verifyFormDataValidity(dish, ['id', 'title', 'image']);
+    if (!dish.id || isValid.statusCode !== 200) {
+      return isValid;
+    }
+    const modifiedDish =
+      await DishesGalleryMutationsService.modifyDishGalleryItemById(dish);
+    return modifiedDish;
+  };
+
+  static deleteDishGalleryItem = async (
+    dish: DishesGalleryFormData
+  ): Promise<ApiResponse> => {
+    const isValid = verifyFormDataValidity(dish, ['id', 'title', 'image']);
+    if (!dish.id || isValid.statusCode !== 200) {
+      return isValid;
     }
     const deletedDish =
-      await DishesGalleryMutationsService.deleteGalleryDishItemById(
-        retreivedDish.data[0].id_dish
-      );
+      await DishesGalleryMutationsService.deleteDishGalleryItemById(dish.id);
     return deletedDish;
+  };
+
+  static deleteImage = async (imageName: string): Promise<ApiResponse> => {
+    try {
+      await fs.unlink(rootDirectory + '/public/dishesGallery/' + imageName);
+    } catch (error) {
+      return databaseMutationError('delete dish gallery image');
+    }
+    return databaseMutationResponse(
+      { affectedRows: 1 },
+      'delete dish gallery image'
+    );
   };
 }

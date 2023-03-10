@@ -28,15 +28,7 @@ export class AdminController {
         userInfo.password
       ))
     ) {
-      if (
-        !(await this.compareDefaultAdminPassword(
-          retreivedUser.data[0].password,
-          userInfo.password
-        ))
-      ) {
-        return databaseQueryResponse([], 'user');
-      }
-      needPasswordReset = true;
+      return databaseQueryResponse([], 'user');
     }
     const updatedUser = await UsersMutationsService.updateUserToken(
       userInfo.email,
@@ -50,27 +42,6 @@ export class AdminController {
       needPasswordReset ? 303 : 200,
       needPasswordReset ? 'password reset needed' : 'user logged in'
     );
-  };
-
-  // 303 -> See other (not redirecting to requested resource but another page)
-
-  static updateProtectedDefaultPassword = async (
-    sessionInfo: AdminSessionData,
-    newPassword: string
-  ): Promise<ApiResponse> => {
-    const retreivedUser = await this.getAuthenticatedProtectedUserFromSession(
-      sessionInfo
-    );
-    if (retreivedUser.statusCode !== 200) {
-      return retreivedUser;
-    }
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
-    const updatedPassword =
-      await AdminMutationsService.updateProtectedDefaultPassword(
-        retreivedUser.data[0].email,
-        hashedPassword
-      );
-    return updatedPassword;
   };
 
   static getAuthenticatedProtectedUserFromSession = async (
@@ -142,17 +113,6 @@ export class AdminController {
     } catch (error) {
       return false;
     }
-  };
-
-  private static compareDefaultAdminPassword = async (
-    dbPass: string,
-    userPass: string
-  ): Promise<boolean> => {
-    const hashedPass = createHash('sha256').update(userPass).digest('hex');
-    if (hashedPass === dbPass) {
-      return true;
-    }
-    return false;
   };
 
   private static verifyUserSessionItemValidity = async (

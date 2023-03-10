@@ -8,7 +8,7 @@ export const initExpressServer = () => {
 
   app.use(
     cors({
-      origin: process.env.FRONT_END_URL,
+      origin: '*',
     }),
     // necessary to handle incoming data
     express.urlencoded({ extended: true }),
@@ -20,6 +20,9 @@ export const initExpressServer = () => {
 
   // init routing
   app.use('/', routes);
+
+  // serve static images
+  app.use(express.static('public'));
 
   // launch server
   let server = null;

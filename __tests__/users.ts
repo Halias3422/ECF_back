@@ -51,7 +51,7 @@ describe('Users endpoints: signup', () => {
       .post(USERS_ROUTES.signup)
       .send({ ...userSignUp, email: 'newuser@mail.com' });
     expect(res.statusCode).toEqual(201);
-    expect(res.body.data[0].token.length).toEqual(500);
+    expect(res.body.session.length).toBeGreaterThan(0);
   });
 
   it('should add optional data to the user', async () => {
@@ -191,7 +191,7 @@ describe('Users endpoints: login', () => {
       .post(USERS_ROUTES.login)
       .send(userSignUp);
     expect(login.statusCode).toEqual(200);
-    expect(login.body.data[0].token.length).toEqual(500);
+    expect(login.body.session.length).toBeGreaterThan(0);
   });
 
   it('should return a different token every time', async () => {
