@@ -1,6 +1,11 @@
-import { AdminSessionData } from '../admin/constants';
-import { AdminController } from '../admin/controller';
-import { verifyFormDataValidity } from '../common/apiResponses';
+import { promises as fs } from 'fs';
+import { rootDirectory } from '../..';
+import {
+  databaseMutationError,
+  databaseMutationResponse,
+  databaseQueryResponse,
+  verifyFormDataValidity,
+} from '../common/apiResponses';
 import { ApiResponse } from '../common/constants';
 import { DishesGalleryFormData } from './constants';
 import { DishesGalleryMutationsService } from './service.mutations';
@@ -27,22 +32,33 @@ export class DishesGalleryController {
     };
   };
 
-  // PROTECTED
-
-  static createDishGalleryItem = async (
-    userSessionInfo: AdminSessionData,
+  static verifyIfDuplicateTitleOrImage = async (
     dish: DishesGalleryFormData
   ): Promise<ApiResponse> => {
     const isValid = verifyFormDataValidity(dish, ['title', 'image']);
     if (isValid.statusCode !== 200) {
       return isValid;
     }
-    const isAuthorized =
-      await AdminController.getAuthenticatedProtectedUserFromSession(
-        userSessionInfo
-      );
-    if (isAuthorized.statusCode !== 200) {
-      return isAuthorized;
+    const isDuplicate =
+      await DishesGalleryQueriesService.getGalleryDishDuplicate(dish);
+    if (isDuplicate.statusCode === 200) {
+      return {
+        statusCode: 400,
+        data: isDuplicate.data,
+        response: 'title already exists',
+      };
+    }
+    return databaseQueryResponse(['a', 'b'], 'new item is not a duplicate');
+  };
+
+  // PROTECTED
+
+  static createDishGalleryItem = async (
+    dish: DishesGalleryFormData
+  ): Promise<ApiResponse> => {
+    const isValid = verifyFormDataValidity(dish, ['title', 'image']);
+    if (isValid.statusCode !== 200) {
+      return isValid;
     }
     const createdDish =
       await DishesGalleryMutationsService.createDishGalleryItem(dish);
@@ -52,23 +68,39 @@ export class DishesGalleryController {
     return { ...createdDish, statusCode: 201 };
   };
 
-  static deleteDishGalleryItem = async (
-    userSessionInfo: AdminSessionData,
+  static modifyDishGalleryItem = async (
     dish: DishesGalleryFormData
   ): Promise<ApiResponse> => {
     const isValid = verifyFormDataValidity(dish, ['id', 'title', 'image']);
     if (!dish.id || isValid.statusCode !== 200) {
       return isValid;
     }
-    const isAuthorized =
-      await AdminController.getAuthenticatedProtectedUserFromSession(
-        userSessionInfo
-      );
-    if (isAuthorized.statusCode !== 200) {
-      return isAuthorized;
+    const modifiedDish =
+      await DishesGalleryMutationsService.modifyDishGalleryItemById(dish);
+    return modifiedDish;
+  };
+
+  static deleteDishGalleryItem = async (
+    dish: DishesGalleryFormData
+  ): Promise<ApiResponse> => {
+    const isValid = verifyFormDataValidity(dish, ['id', 'title', 'image']);
+    if (!dish.id || isValid.statusCode !== 200) {
+      return isValid;
     }
     const deletedDish =
       await DishesGalleryMutationsService.deleteDishGalleryItemById(dish.id);
     return deletedDish;
+  };
+
+  static deleteImage = async (imageName: string): Promise<ApiResponse> => {
+    try {
+      await fs.unlink(rootDirectory + '/public/dishesGallery/' + imageName);
+    } catch (error) {
+      return databaseMutationError('delete dish gallery image');
+    }
+    return databaseMutationResponse(
+      { affectedRows: 1 },
+      'delete dish gallery image'
+    );
   };
 }

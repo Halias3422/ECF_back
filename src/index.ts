@@ -1,3 +1,4 @@
+import path from 'path';
 import { initDatabaseConnexion } from './init/database';
 import { setupCurrentEnvironment } from './init/environment';
 import { initExpressServer } from './init/server';
@@ -11,3 +12,4 @@ export const upload = {
   dishes: initDishesStorage(),
 };
 export const dbConnexion = initDatabaseConnexion();
+export const rootDirectory = path.resolve(__dirname + '/..');
