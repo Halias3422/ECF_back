@@ -101,7 +101,7 @@ export class DishesController {
         ) {
           retreivedCategories[i].dishes.push({
             title: dish.title,
-            image: dish.image,
+            image: `${process.env.BACK_END_URL}${process.env.SERVER_PORT}/dishes/${dish.image}`,
             description: dish.description,
             price: dish.price,
             category: dish.category,

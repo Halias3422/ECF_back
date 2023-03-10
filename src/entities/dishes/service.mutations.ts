@@ -8,10 +8,10 @@ import { ApiResponse } from '../common/constants';
 import { DISHES_TABLE, DishFormData } from './constants';
 
 export class DishesMutationService {
-  static async createNewDish(
+  static createNewDish = async (
     newDish: DishFormData,
     dishCategoryId: string
-  ): Promise<ApiResponse> {
+  ): Promise<ApiResponse> => {
     //necessary to set DEFAULT value for id
     const DEFAULT = {
       toSqlString: function () {
@@ -36,5 +36,18 @@ export class DishesMutationService {
     } catch (error: any) {
       return databaseMutationError('create new dish');
     }
-  }
+  };
+
+  static deleteDishItem = async (dishId: any) => {
+    try {
+      const mutation = mysql2.format(
+        `DELETE FROM ${DISHES_TABLE.name} WHERE ${DISHES_TABLE.columns.id} = ?`,
+        [dishId]
+      );
+      const [rows] = await dbConnexion.execute(mutation);
+      return databaseMutationResponse(rows, 'create new dish');
+    } catch (error: any) {
+      return databaseMutationError('create new dish');
+    }
+  };
 }

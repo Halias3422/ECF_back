@@ -79,3 +79,19 @@ export const verifyFormDataValidity = (
     response: 'Form data is valid.',
   };
 };
+
+export const verifyAuthorization = async (req: any): Promise<ApiResponse> => {
+  if (req.headers && req.headers.authorization) {
+    const auth = req.headers.authorization.split(':');
+    if (auth.length === 3) {
+      const isAuth =
+        await AdminController.getAuthenticatedProtectedUserFromSession({
+          id: auth[0],
+          email: auth[1],
+          token: auth[2],
+        });
+      return isAuth;
+    }
+  }
+  return databaseQueryError('Unauthorized');
+};
