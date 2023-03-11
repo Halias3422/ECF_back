@@ -32,9 +32,9 @@ export class DishesGalleryMutationsService {
         [dish.title, dish.image, dish.id]
       );
       const [rows] = await dbConnexion.execute(mutation);
-      return databaseMutationResponse(rows, 'create gallery dish item');
+      return databaseMutationResponse(rows, 'modify gallery dish item');
     } catch (error: any) {
-      return databaseMutationError('create gallery dish item');
+      return databaseMutationError('modify gallery dish item');
     }
   };
 

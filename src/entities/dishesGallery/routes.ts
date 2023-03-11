@@ -62,6 +62,20 @@ dishesGalleryRoutes.post(
 );
 
 dishesGalleryRoutes.post(
+  DISHES_GALLERY_ROUTES.deleteImage,
+  async (req, res) => {
+    const auth = await verifyAuthorization(req);
+    if (auth.statusCode === 200) {
+      const { statusCode, response } =
+        await DishesGalleryController.deleteImage(req.body.image);
+      res.status(statusCode).send(response);
+    } else {
+      res.status(401).send('Unauthorized');
+    }
+  }
+);
+
+dishesGalleryRoutes.post(
   DISHES_GALLERY_ROUTES.createNewDishGalleryItem,
   async (req, res) => {
     const auth = await verifyAuthorization(req);
@@ -82,20 +96,6 @@ dishesGalleryRoutes.post(
     if (auth.statusCode === 200) {
       const { statusCode, response } =
         await DishesGalleryController.modifyDishGalleryItem(req.body);
-      res.status(statusCode).send(response);
-    } else {
-      res.status(401).send('Unauthorized');
-    }
-  }
-);
-
-dishesGalleryRoutes.post(
-  DISHES_GALLERY_ROUTES.deleteImage,
-  async (req, res) => {
-    const auth = await verifyAuthorization(req);
-    if (auth.statusCode === 200) {
-      const { statusCode, response } =
-        await DishesGalleryController.deleteImage(req.body.image);
       res.status(statusCode).send(response);
     } else {
       res.status(401).send('Unauthorized');

@@ -10,3 +10,9 @@ categoriesRoutes.post(CATEGORIES_ROUTES.createNewCategory, async (req, res) => {
   );
   res.status(statusCode).send(response);
 });
+
+categoriesRoutes.get(CATEGORIES_ROUTES.getAllCategories, async (req, res) => {
+  const { statusCode, response, data } =
+    await CategoriesController.getAllCategories();
+  res.status(statusCode).send({ response, data });
+});

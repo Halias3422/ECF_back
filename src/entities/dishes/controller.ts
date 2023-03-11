@@ -1,28 +1,30 @@
+import { promises as fs } from 'fs';
+import { rootDirectory } from '../..';
+import { CategoriesController } from '../categories/controller';
 import { CategoriesQueriesService } from '../categories/service.queries';
 import {
+  databaseMutationError,
+  databaseMutationResponse,
+  databaseQueryResponse,
   isDuplicateResponse,
   verifyFormDataValidity,
 } from '../common/apiResponses';
 import { ApiResponse } from '../common/constants';
 import { DishFormData, ResponseDishesByCategory } from './constants';
-import { DishesMutationService } from './service.mutations';
+import { DishesMutationsService } from './service.mutations';
 import { DishesQueriesService } from './service.queries';
 
 export class DishesController {
   // MUTATIONS
 
   static createNewDish = async (dish: DishFormData): Promise<ApiResponse> => {
-    const isValid = verifyFormDataValidity(dish, [
-      'title',
-      'image',
-      'description',
-      'price',
-      'category',
-    ]);
+    const isValid = this.verifyDishFormDataValidity(dish);
     if (isValid.statusCode !== 200) {
       return isValid;
     }
-    if ((await this.getDishByTitle(dish)).statusCode === 200) {
+    if (
+      (await DishesQueriesService.getDishDuplicate(dish)).statusCode === 200
+    ) {
       return isDuplicateResponse('create new dish');
     }
     const dishCategory = await CategoriesQueriesService.getCategoryByName(
@@ -31,11 +33,25 @@ export class DishesController {
     if (dishCategory.statusCode !== 200 || dishCategory.data?.length === 0) {
       return dishCategory;
     }
-    const response = await DishesMutationService.createNewDish(
+    const response = await DishesMutationsService.createNewDish(
       dish,
       dishCategory.data?.[0].id_category
     );
-    return response;
+    if (response.statusCode !== 200) {
+      return response;
+    }
+    return { ...response, statusCode: 201 };
+  };
+
+  static deleteDishItem = async (dish: DishFormData): Promise<ApiResponse> => {
+    const isValid = this.verifyDishFormDataValidity(dish);
+    if (!dish.id || isValid.statusCode !== 200) {
+      return { statusCode: 400, response: 'data is invalid', data: [] };
+    }
+    const deletedDish = await DishesMutationsService.deleteDishItemById(
+      dish.id
+    );
+    return deletedDish;
   };
 
   // QUERIES
@@ -65,7 +81,68 @@ export class DishesController {
     return retreivedDishes;
   };
 
+  static verifyIfDuplicateTitleOrImage = async (
+    dish: DishFormData
+  ): Promise<ApiResponse> => {
+    const isValid = this.verifyDishFormDataValidity(dish);
+    if (isValid.statusCode !== 200) {
+      isValid;
+    }
+    const isDuplicate = await DishesQueriesService.getDishDuplicate(dish);
+    if (isDuplicate.statusCode === 200) {
+      return {
+        statusCode: 400,
+        data: isDuplicate.data,
+        response: 'title or image already exists',
+      };
+    }
+    return databaseQueryResponse(['a', 'b'], 'new item is not a duplicate');
+  };
+
+  static modifyDishItem = async (dish: DishFormData): Promise<ApiResponse> => {
+    const isValid = this.verifyDishFormDataValidity(dish);
+    if (!dish.id || isValid.statusCode !== 200) {
+      return { statusCode: 400, response: 'data is invalid', data: [] };
+    }
+    const dishCategory = await CategoriesController.getCategoryByName(
+      dish.category
+    );
+    if (dishCategory.statusCode !== 200) {
+      return dishCategory;
+    }
+    const modifiedDish = await DishesMutationsService.modifyDishItemById(
+      dish,
+      dishCategory.data[0].id_category
+    );
+    return modifiedDish;
+  };
+
+  static deleteImage = async (imageName: string): Promise<ApiResponse> => {
+    try {
+      await fs.unlink(rootDirectory + '/public/dishes/' + imageName);
+    } catch (error) {
+      return databaseMutationError('delete dish image');
+    }
+    return databaseMutationResponse({ affectedRows: 1 }, 'delete dish image');
+  };
+
   // PRIVATE METHODS
+
+  private static verifyDishFormDataValidity = (
+    dish: DishFormData
+  ): ApiResponse => {
+    const isValid = verifyFormDataValidity(dish, [
+      'title',
+      'image',
+      'description',
+      'price',
+      'category',
+    ]);
+    if (isValid.statusCode !== 200) {
+      return isValid;
+    }
+    return databaseQueryResponse([{ valid: 'isvalid' }], 'form data valid');
+  };
 
   private static getDishesCategoriesById = async (dishes: any[]) => {
     const response: ResponseDishesByCategory[] = [];
@@ -100,11 +177,12 @@ export class DishesController {
           JSON.stringify(retreivedCategories[i].category.id)
         ) {
           retreivedCategories[i].dishes.push({
+            id: dish.id_dish,
             title: dish.title,
             image: `${process.env.BACK_END_URL}${process.env.SERVER_PORT}/dishes/${dish.image}`,
             description: dish.description,
             price: dish.price,
-            category: dish.category,
+            category: retreivedCategories[i].category.name,
           });
         }
       }

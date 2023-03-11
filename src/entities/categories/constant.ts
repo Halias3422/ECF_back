@@ -1,5 +1,6 @@
 export const CATEGORIES_ROUTES = {
   createNewCategory: '/api/create-new-category',
+  getAllCategories: '/api/get-all-categories',
 };
 
 export const CATEGORIES_TABLE = {
@@ -11,5 +12,6 @@ export const CATEGORIES_TABLE = {
 };
 
 export interface CategoryFormData {
+  id?: string;
   name: string;
 }

@@ -1,3 +1,4 @@
+import { AdminController } from '../admin/controller';
 import { ApiResponse } from './constants';
 
 export const databaseQueryResponse = (
