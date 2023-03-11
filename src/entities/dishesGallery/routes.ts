@@ -1,8 +1,6 @@
 import express from 'express';
 import { upload } from '../../index';
-import { AdminController } from '../admin/controller';
-import { databaseQueryError } from '../common/apiResponses';
-import { ApiResponse } from '../common/constants';
+import { verifyAuthorization } from '../common/apiResponses';
 import { DISHES_GALLERY_ROUTES } from './constants';
 import { DishesGalleryController } from './controller';
 
@@ -37,22 +35,6 @@ dishesGalleryRoutes.get(
 
 // PROTECTED
 
-const verifyAuthorization = async (req: any): Promise<ApiResponse> => {
-  if (req.headers && req.headers.authorization) {
-    const auth = req.headers.authorization.split(':');
-    if (auth.length === 3) {
-      const isAuth =
-        await AdminController.getAuthenticatedProtectedUserFromSession({
-          id: auth[0],
-          email: auth[1],
-          token: auth[2],
-        });
-      return isAuth;
-    }
-  }
-  return databaseQueryError('Unauthorized');
-};
-
 dishesGalleryRoutes.post(
   DISHES_GALLERY_ROUTES.deleteDishGalleryItem,
   async (req, res) => {
@@ -60,7 +42,7 @@ dishesGalleryRoutes.post(
     if (auth.statusCode === 200) {
       const { statusCode, response } =
         await DishesGalleryController.deleteDishGalleryItem(req.body);
-      res.status(statusCode).send({ response });
+      res.status(statusCode).send(response);
     } else {
       res.status(401).send('Unauthorized');
     }
@@ -76,6 +58,20 @@ dishesGalleryRoutes.post(
       }
       return res.status(201).send('New gallery dish saved');
     });
+  }
+);
+
+dishesGalleryRoutes.post(
+  DISHES_GALLERY_ROUTES.deleteImage,
+  async (req, res) => {
+    const auth = await verifyAuthorization(req);
+    if (auth.statusCode === 200) {
+      const { statusCode, response } =
+        await DishesGalleryController.deleteImage(req.body.image);
+      res.status(statusCode).send(response);
+    } else {
+      res.status(401).send('Unauthorized');
+    }
   }
 );
 
@@ -100,20 +96,6 @@ dishesGalleryRoutes.post(
     if (auth.statusCode === 200) {
       const { statusCode, response } =
         await DishesGalleryController.modifyDishGalleryItem(req.body);
-      res.status(statusCode).send(response);
-    } else {
-      res.status(401).send('Unauthorized');
-    }
-  }
-);
-
-dishesGalleryRoutes.post(
-  DISHES_GALLERY_ROUTES.deleteImage,
-  async (req, res) => {
-    const auth = await verifyAuthorization(req);
-    if (auth.statusCode === 200) {
-      const { statusCode, response } =
-        await DishesGalleryController.deleteImage(req.body.image);
       res.status(statusCode).send(response);
     } else {
       res.status(401).send('Unauthorized');

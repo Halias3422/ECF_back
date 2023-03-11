@@ -45,7 +45,7 @@ export class DishesGalleryController {
       return {
         statusCode: 400,
         data: isDuplicate.data,
-        response: 'title already exists',
+        response: 'title or image already exists',
       };
     }
     return databaseQueryResponse(['a', 'b'], 'new item is not a duplicate');

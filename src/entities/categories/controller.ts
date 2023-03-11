@@ -2,6 +2,7 @@ import { verifyFormDataValidity } from '../common/apiResponses';
 import { ApiResponse } from '../common/constants';
 import { CategoryFormData } from './constant';
 import { CategoriesMutationsService } from './service.mutations';
+import { CategoriesQueriesService } from './service.queries';
 
 export class CategoriesController {
   // MUTATIONS
@@ -15,6 +16,22 @@ export class CategoriesController {
     const response = await CategoriesMutationsService.createNewCategory(
       newCategory
     );
+    return response;
+  };
+
+  // QUERIES
+
+  static getCategoryByName = async (
+    categoryName: string
+  ): Promise<ApiResponse> => {
+    const response = await CategoriesQueriesService.getCategoryByName(
+      categoryName
+    );
+    return response;
+  };
+
+  static getAllCategories = async (): Promise<ApiResponse> => {
+    const response = await CategoriesQueriesService.getAllCategories();
     return response;
   };
 }

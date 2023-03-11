@@ -1,6 +1,11 @@
 export const DISHES_ROUTES = {
   createNewDish: '/api/create-new-dish',
   getAllDishesByCategories: '/api/get-all-dishes-by-categories',
+  deleteDishItem: '/api/delete-dish',
+  deleteImage: '/api/delete-dish-image',
+  verifyIfDuplicateTitleOrImage: '/api/dish-verify-duplicate-title-or-image',
+  saveDishImage: '/api/save-dish-image',
+  modifyDishItem: '/api/modify-dish-item',
 };
 
 export const DISHES_TABLE = {
@@ -16,6 +21,7 @@ export const DISHES_TABLE = {
 };
 
 export interface DishFormData {
+  id?: string;
   title: string;
   image: string;
   description: string;

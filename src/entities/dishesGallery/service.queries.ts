@@ -88,9 +88,9 @@ export class DishesGalleryQueriesService {
       const [rows] = await dbConnexion.execute(query);
       if (rows.length > 0) {
       }
-      return databaseQueryResponse(rows, 'get gallery dish by image');
+      return databaseQueryResponse(rows, 'get gallery dish by image or title');
     } catch (error) {
-      return databaseQueryError('get gallery dish by image');
+      return databaseQueryError('get gallery dish by image or title');
     }
   };
 }
