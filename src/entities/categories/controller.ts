@@ -31,6 +31,32 @@ export class CategoriesController {
     return { ...response, statusCode: 201 };
   };
 
+  static deleteCategory = async (
+    category: CategoryFormData
+  ): Promise<ApiResponse> => {
+    const isValid = verifyFormDataValidity(category, ['id', 'name']);
+    if (isValid.statusCode !== 200) {
+      return isValid;
+    }
+    const response = await CategoriesMutationsService.deleteCategoryById(
+      category.id as string
+    );
+    return response;
+  };
+
+  static modifyCategory = async (
+    category: CategoryFormData
+  ): Promise<ApiResponse> => {
+    const isValid = verifyFormDataValidity(category, ['id', 'name']);
+    if (isValid.statusCode !== 200) {
+      return isValid;
+    }
+    const response = await CategoriesMutationsService.modifyCategoryById(
+      category
+    );
+    return response;
+  };
+
   // QUERIES
 
   static getCategoryByName = async (
