@@ -16,10 +16,9 @@ categoriesRoutes.get(CATEGORIES_ROUTES.getAllCategories, async (req, res) => {
 categoriesRoutes.post(CATEGORIES_ROUTES.deleteCategory, async (req, res) => {
   const auth = await verifyAuthorization(req);
   if (auth.statusCode === 200) {
-    const { statusCode, response } = await CategoriesController.deleteCategory({
-      id: req.body.id_category,
-      name: req.body.name,
-    });
+    const { statusCode, response } = await CategoriesController.deleteCategory(
+      req.body
+    );
     res.status(statusCode).send(response);
   } else {
     res.status(401).send('Unauthorized');
