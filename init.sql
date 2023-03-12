@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS Formulas (
 	menu_id char(36) NOT NULL,
 	formula_title VARCHAR(255) NOT NULL,
 	description VARCHAR(1000) NOT NULL,
-	price FLOAT NOT NULL,
+	price VARCHAR(10) NOT NULL,
 	Constraint FOREIGN KEY (menu_id) REFERENCES Menus(id_menu)
 );
 
@@ -114,30 +114,30 @@ VALUES (DEFAULT, 'dimanche', '12:30', '14:00', NULL, NULL);
 INSERT INTO Menus ()
 VALUES (DEFAULT, 'La bonne Régalade');
 INSERT INTO Formulas ()
-VALUES (DEFAULT, (SELECT id_menu FROM Menus WHERE menu_title='La bonne Régalade'), 'Formule Complète', 'entrée + plat + dessert', 19.99);
+VALUES (DEFAULT, (SELECT id_menu FROM Menus WHERE menu_title='La bonne Régalade'), 'Formule Complète', 'entrée + plat + dessert', '19.99');
 
 INSERT INTO Menus ()
 VALUES (DEFAULT, 'Au coin du feu');
 INSERT INTO Formulas ()
-VALUES (DEFAULT, (SELECT id_menu FROM Menus WHERE menu_title='Au coin du feu'), 'Formule Complète 2', 'entrée + plat + dessert', 24.99);
+VALUES (DEFAULT, (SELECT id_menu FROM Menus WHERE menu_title='Au coin du feu'), 'Formule Complète 2', 'entrée + plat + dessert', '24.99');
 INSERT INTO Formulas ()
-VALUES (DEFAULT, (SELECT id_menu FROM Menus WHERE menu_title='Au coin du feu'), 'Formule Allégée', 'plat + dessert ou entrée', 24.99);
+VALUES (DEFAULT, (SELECT id_menu FROM Menus WHERE menu_title='Au coin du feu'), 'Formule Allégée', 'plat + dessert ou entrée', '24.99');
 
 INSERT INTO Menus ()
 VALUES (DEFAULT, 'Le Sans limites');
 INSERT INTO Formulas ()
-VALUES (DEFAULT, (SELECT id_menu FROM Menus WHERE menu_title='Le Sans limites'), 'Formule Complète 3', 'entrée + plat + dessert', 24.99);
+VALUES (DEFAULT, (SELECT id_menu FROM Menus WHERE menu_title='Le Sans limites'), 'Formule Complète 3', 'entrée + plat + dessert', '24.99');
 INSERT INTO Formulas ()
-VALUES (DEFAULT, (SELECT id_menu FROM Menus WHERE menu_title='Le Sans limites'), 'Formule Allégée 2', 'plat + dessert ou entrée', 24.99);
+VALUES (DEFAULT, (SELECT id_menu FROM Menus WHERE menu_title='Le Sans limites'), 'Formule Allégée 2', 'plat + dessert ou entrée', '24.99');
 
 INSERT INTO Menus ()
 VALUES (DEFAULT, 'Le Tradition');
 INSERT INTO Formulas ()
-VALUES (DEFAULT, (SELECT id_menu FROM Menus WHERE menu_title='Le Tradition'), 'Formule Complète 4', 'entrée + plat + dessert', 19.99);
+VALUES (DEFAULT, (SELECT id_menu FROM Menus WHERE menu_title='Le Tradition'), 'Formule Complète 4', 'entrée + plat + dessert', '19.99');
 
 INSERT INTO Menus ()
 VALUES (DEFAULT, 'Le Gourmand');
 INSERT INTO Formulas ()
-VALUES (DEFAULT, (SELECT id_menu FROM Menus WHERE menu_title='Le Gourmand'), 'Formule Complète 3', 'entrée + plat + dessert', 24.99);
+VALUES (DEFAULT, (SELECT id_menu FROM Menus WHERE menu_title='Le Gourmand'), 'Formule Complète 3', 'entrée + plat + dessert', '24.99');
 INSERT INTO Formulas ()
-VALUES (DEFAULT, (SELECT id_menu FROM Menus WHERE menu_title='Le Gourmand'), 'Formule Allégée 2', 'plat + dessert ou entrée', 24.99);
+VALUES (DEFAULT, (SELECT id_menu FROM Menus WHERE menu_title='Le Gourmand'), 'Formule Allégée 2', 'plat + dessert ou entrée', '24.99');

@@ -1,3 +1,7 @@
+export const FORMULAS_ROUTES = {
+  deleteFormula: '/api/delete-formula',
+};
+
 export const FORMULAS_TABLE = {
   name: 'Formulas',
   columns: {
@@ -9,8 +13,9 @@ export const FORMULAS_TABLE = {
   },
 };
 
-export interface FormattedFormula {
+export interface FormulaData {
+  id: string;
   title: string;
   description: string;
-  price: number;
+  price: string;
 }

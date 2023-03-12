@@ -12,13 +12,12 @@ export class MenuController {
       const formattedMenus = await Promise.all(
         retreivedMenus.data.map(async (menu: any) => {
           let formattedMenu: FormattedMenu = {
+            id: menu.id,
             title: menu.title,
             formulas: [],
           };
           const retreivedFormulas =
-            await FormulasQueriesService.getAllFormulasFromMenuId(
-              menu[`${MENUS_TABLE.columns.id}`]
-            );
+            await FormulasQueriesService.getAllFormulasFromMenuId(menu.id);
           if (retreivedFormulas.statusCode === 200 && retreivedFormulas.data) {
             return this.addFormulasToMenu(
               formattedMenu,
@@ -44,11 +43,7 @@ export class MenuController {
     formulas: any[]
   ): FormattedMenu => {
     for (const formula of formulas) {
-      menu.formulas.push({
-        title: formula.title,
-        description: formula.description,
-        price: formula.price,
-      });
+      menu.formulas.push(formula);
     }
     return menu;
   };

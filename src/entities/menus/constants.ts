@@ -1,4 +1,4 @@
-import { FormattedFormula } from '../formulas/constants';
+import { FormulaData } from '../formulas/constants';
 
 export const MENUS_ROUTES = {
   getAllMenus: '/api/get-all-menus',
@@ -13,6 +13,7 @@ export const MENUS_TABLE = {
 };
 
 export interface FormattedMenu {
+  id: string;
   title: string;
-  formulas: FormattedFormula[];
+  formulas: FormulaData[];
 }
