@@ -135,7 +135,7 @@ describe('Categories endpoints: ModifyCategory', () => {
     expect(retreived.statusCode).toEqual(200);
     const modified = await request(server)
       .post(CATEGORIES_ROUTES.modifyCategory)
-      .send({ id: foundCategory.id_category, name: 'Burger' });
+      .send({ id: foundCategory.id, name: 'Burger' });
     expect(modified.statusCode).toEqual(200);
     const finalRetreived = await request(server).get(
       CATEGORIES_ROUTES.getAllCategories
@@ -143,5 +143,85 @@ describe('Categories endpoints: ModifyCategory', () => {
     expect(finalRetreived.statusCode).toEqual(200);
     const finalCategory = JSON.parse(finalRetreived.text).data[0];
     expect(finalCategory.name).toEqual('Burger');
+  });
+
+  it('should not modify the category if duplicate', async () => {
+    const retreived = await request(server).get(
+      CATEGORIES_ROUTES.getAllCategories
+    );
+    const foundCategory = JSON.parse(retreived.text).data[0];
+    expect(retreived.statusCode).toEqual(200);
+    const newCategory = await request(server)
+      .post(CATEGORIES_ROUTES.createNewCategory)
+      .send({ name: 'Dessert' });
+    expect(newCategory.statusCode).toEqual(201);
+    const res = await request(server)
+      .post(CATEGORIES_ROUTES.modifyCategory)
+      .send({ id: foundCategory.id, name: 'Dessert' });
+    expect(res.statusCode).toEqual(400);
+  });
+
+  it('should not modify if wrong id', async () => {
+    const res = await request(server)
+      .post(CATEGORIES_ROUTES.modifyCategory)
+      .send({ id: '1243', name: 'Salade' });
+    expect(res.statusCode).toEqual(500);
+  });
+});
+
+describe('Categories endpoints: DeleteCategory', () => {
+  beforeAll(async () => {
+    await emptyTestDatabase();
+    jest.spyOn(apiResponse, 'verifyAuthorization').mockImplementation(() =>
+      Promise.resolve({
+        statusCode: 200,
+        data: [{ placeholder: 'placeholder' }],
+        response: 'user logged in',
+      })
+    );
+  });
+
+  afterAll(async () => {
+    server?.close();
+  });
+
+  it('should delete the category', async () => {
+    const newCategory = await request(server)
+      .post(CATEGORIES_ROUTES.createNewCategory)
+      .send({ name: 'Dessert' });
+    expect(newCategory.statusCode).toEqual(201);
+    const retreived = await request(server).get(
+      CATEGORIES_ROUTES.getAllCategories
+    );
+    const foundCategory = JSON.parse(retreived.text).data[0];
+    expect(retreived.statusCode).toEqual(200);
+    const res = await request(server)
+      .post(CATEGORIES_ROUTES.deleteCategory)
+      .send(foundCategory);
+    expect(res.statusCode).toEqual(200);
+    const finalRetreive = await request(server).get(
+      CATEGORIES_ROUTES.getAllCategories
+    );
+    expect(JSON.parse(finalRetreive.text).data.length).toEqual(0);
+  });
+
+  it('should not delete a category with wrong ID', async () => {
+    const newCategory = await request(server)
+      .post(CATEGORIES_ROUTES.createNewCategory)
+      .send({ name: 'Dessert' });
+    expect(newCategory.statusCode).toEqual(201);
+    const retreived = await request(server).get(
+      CATEGORIES_ROUTES.getAllCategories
+    );
+    const foundCategory = JSON.parse(retreived.text).data[0];
+    expect(retreived.statusCode).toEqual(200);
+    const res = await request(server)
+      .post(CATEGORIES_ROUTES.deleteCategory)
+      .send({ id: '123', name: foundCategory.name });
+    expect(res.statusCode).toEqual(500);
+    const finalRetreive = await request(server).get(
+      CATEGORIES_ROUTES.getAllCategories
+    );
+    expect(JSON.parse(finalRetreive.text).data.length).toEqual(1);
   });
 });
