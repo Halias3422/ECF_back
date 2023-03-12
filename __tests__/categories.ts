@@ -23,7 +23,7 @@ describe('Categories endpoints: createNewCategory', () => {
     const res = await request(server)
       .post(CATEGORIES_ROUTES.createNewCategory)
       .send(categoryForm);
-    expect(res.statusCode).toEqual(200);
+    expect(res.statusCode).toEqual(201);
   });
 
   it('should not create a category with wrong data', async () => {

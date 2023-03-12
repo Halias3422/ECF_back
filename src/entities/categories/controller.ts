@@ -16,7 +16,10 @@ export class CategoriesController {
     const response = await CategoriesMutationsService.createNewCategory(
       newCategory
     );
-    return response;
+    if (response.statusCode !== 200) {
+      return response;
+    }
+    return { ...response, statusCode: 201 };
   };
 
   // QUERIES

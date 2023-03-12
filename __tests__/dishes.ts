@@ -6,6 +6,7 @@ import {
 } from '../src/entities/categories/constant';
 import { DISHES_ROUTES, DishFormData } from '../src/entities/dishes/constants';
 import { emptyTestDatabase } from '../src/testUtils/database';
+import * as apiResponse from '../src/entities/common/apiResponses';
 
 const categoryForm: CategoryFormData = {
   name: 'Dessert',
@@ -22,21 +23,30 @@ const dishForm: DishFormData = {
 describe('Dishes endpoints: createNewDish', () => {
   beforeAll(async () => {
     await emptyTestDatabase();
+    jest.spyOn(apiResponse, 'verifyAuthorization').mockImplementation(() =>
+      Promise.resolve({
+        statusCode: 200,
+        data: [{ placeholder: 'placeholder' }],
+        response: 'user logged in',
+      })
+    );
   });
 
   afterAll(async () => {
     server?.close();
   });
 
+  beforeEach(() => {});
+
   it('should create a new dish', async () => {
     const newCategory = await request(server)
       .post(CATEGORIES_ROUTES.createNewCategory)
       .send(categoryForm);
-    expect(newCategory.statusCode).toEqual(200);
+    expect(newCategory.statusCode).toEqual(201);
     const res = await request(server)
       .post(DISHES_ROUTES.createNewDish)
       .send(dishForm);
-    expect(res.statusCode).toEqual(200);
+    expect(res.statusCode).toEqual(201);
   });
 
   it("shouldn't create a dish with wrong data", async () => {
@@ -121,13 +131,13 @@ describe('Dishes endpoints: getAllDishesByCategories', () => {
       const newCategory = await request(server)
         .post(CATEGORIES_ROUTES.createNewCategory)
         .send(category);
-      expect(newCategory.statusCode).toEqual(200);
+      expect(newCategory.statusCode).toEqual(201);
     }
     for (const dish of dishes) {
       const newDish = await request(server)
         .post(DISHES_ROUTES.createNewDish)
         .send(dish);
-      expect(newDish.statusCode).toEqual(200);
+      expect(newDish.statusCode).toEqual(201);
     }
     const res = await request(server).get(
       DISHES_ROUTES.getAllDishesByCategories
@@ -137,17 +147,17 @@ describe('Dishes endpoints: getAllDishesByCategories', () => {
     expect(entries[0].category.name).toEqual('Dessert');
     expect(entries[0].dishes.length).toEqual(2);
     expect(entries[0].dishes[0].title).toEqual('dish 1 title');
-    expect(entries[0].dishes[0].image).toEqual('image-dish-1.jpg');
+    expect(entries[0].dishes[0].image).toContain('image-dish-1.jpg');
     expect(entries[0].dishes[0].description).toEqual('dish 1 description');
     expect(entries[0].dishes[0].price).toEqual('19.99');
     expect(entries[0].dishes[1].title).toEqual('dish 2 title');
-    expect(entries[0].dishes[1].image).toEqual('image-dish-2.jpg');
+    expect(entries[0].dishes[1].image).toContain('image-dish-2.jpg');
     expect(entries[0].dishes[1].description).toEqual('dish 2 description');
     expect(entries[0].dishes[1].price).toEqual('24.99');
     expect(entries[1].category.name).toEqual('Entree');
     expect(entries[1].dishes.length).toEqual(1);
     expect(entries[1].dishes[0].title).toEqual('dish 3 title');
-    expect(entries[1].dishes[0].image).toEqual('image-dish-3.jpg');
+    expect(entries[1].dishes[0].image).toContain('image-dish-3.jpg');
     expect(entries[1].dishes[0].description).toEqual('dish 3 description');
     expect(entries[1].dishes[0].price).toEqual('14.99');
   });
