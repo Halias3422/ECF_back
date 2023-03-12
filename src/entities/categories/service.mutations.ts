@@ -27,4 +27,34 @@ export class CategoriesMutationsService {
       return databaseMutationError('create new category');
     }
   };
+
+  static deleteCategoryById = async (
+    categoryId: string
+  ): Promise<ApiResponse> => {
+    try {
+      const mutation = mysql2.format(
+        `DELETE FROM ${CATEGORIES_TABLE.name} WHERE ${CATEGORIES_TABLE.columns.id} = ?`,
+        [categoryId]
+      );
+      const [rows] = await dbConnexion.execute(mutation);
+      return databaseMutationResponse(rows, 'delete category by ID');
+    } catch (error: any) {
+      return databaseMutationError('delete category by ID');
+    }
+  };
+
+  static modifyCategoryById = async (
+    category: CategoryFormData
+  ): Promise<ApiResponse> => {
+    try {
+      const mutation = mysql2.format(
+        `UPDATE ${CATEGORIES_TABLE.name} SET ${CATEGORIES_TABLE.columns.name} = ? WHERE ${CATEGORIES_TABLE.columns.id} = ?`,
+        [category.name, category.id]
+      );
+      const [rows] = await dbConnexion.execute(mutation);
+      return databaseMutationResponse(rows, 'delete category by ID');
+    } catch (error: any) {
+      return databaseMutationError('delete category by ID');
+    }
+  };
 }
