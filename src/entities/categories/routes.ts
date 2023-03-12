@@ -11,22 +11,14 @@ categoriesRoutes.get(CATEGORIES_ROUTES.getAllCategories, async (req, res) => {
   res.status(statusCode).send({ response, data });
 });
 
-categoriesRoutes.post(CATEGORIES_ROUTES.createNewCategory, async (req, res) => {
-  const { statusCode, response } = await CategoriesController.createNewCategory(
-    req.body
-  );
-  res.status(statusCode).send(response);
-});
-
 // PROTECTED
 
 categoriesRoutes.post(CATEGORIES_ROUTES.deleteCategory, async (req, res) => {
   const auth = await verifyAuthorization(req);
   if (auth.statusCode === 200) {
-    const { statusCode, response } = await CategoriesController.deleteCategory({
-      id: req.body.id_category,
-      name: req.body.name,
-    });
+    const { statusCode, response } = await CategoriesController.deleteCategory(
+      req.body
+    );
     res.status(statusCode).send(response);
   } else {
     res.status(401).send('Unauthorized');
@@ -39,6 +31,17 @@ categoriesRoutes.post(CATEGORIES_ROUTES.modifyCategory, async (req, res) => {
     const { statusCode, response } = await CategoriesController.modifyCategory(
       req.body
     );
+    res.status(statusCode).send(response);
+  } else {
+    res.status(401).send('Unauthorized');
+  }
+});
+
+categoriesRoutes.post(CATEGORIES_ROUTES.createNewCategory, async (req, res) => {
+  const auth = await verifyAuthorization(req);
+  if (auth.statusCode === 200) {
+    const { statusCode, response } =
+      await CategoriesController.createNewCategory(req.body);
     res.status(statusCode).send(response);
   } else {
     res.status(401).send('Unauthorized');

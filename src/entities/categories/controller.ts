@@ -1,4 +1,7 @@
-import { verifyFormDataValidity } from '../common/apiResponses';
+import {
+  isDuplicateResponse,
+  verifyFormDataValidity,
+} from '../common/apiResponses';
 import { ApiResponse } from '../common/constants';
 import { CategoryFormData } from './constant';
 import { CategoriesMutationsService } from './service.mutations';
@@ -13,10 +16,19 @@ export class CategoriesController {
     if (isValid.statusCode !== 200) {
       return isValid;
     }
+    const isDuplicate = await CategoriesQueriesService.getCategoryByName(
+      newCategory.name
+    );
+    if (isDuplicate.statusCode === 200) {
+      return isDuplicateResponse('create new category');
+    }
     const response = await CategoriesMutationsService.createNewCategory(
       newCategory
     );
-    return response;
+    if (response.statusCode !== 200) {
+      return response;
+    }
+    return { ...response, statusCode: 201 };
   };
 
   static deleteCategory = async (
@@ -39,6 +51,10 @@ export class CategoriesController {
     if (isValid.statusCode !== 200) {
       return isValid;
     }
+    const isDuplicate = await this.getCategoryByName(category.name);
+    if (isDuplicate.statusCode === 200) {
+      return isDuplicateResponse('modify category');
+    }
     const response = await CategoriesMutationsService.modifyCategoryById(
       category
     );
@@ -58,6 +74,20 @@ export class CategoriesController {
 
   static getAllCategories = async (): Promise<ApiResponse> => {
     const response = await CategoriesQueriesService.getAllCategories();
+    response.data = this.formatCategoriesResponse(response.data);
     return response;
+  };
+
+  private static formatCategoriesResponse = (
+    categories: any[]
+  ): CategoryFormData[] => {
+    const formattedCategories = [];
+    for (const category of categories) {
+      formattedCategories.push({
+        id: category.id_category,
+        name: category.name,
+      });
+    }
+    return formattedCategories;
   };
 }

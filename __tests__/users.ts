@@ -6,6 +6,7 @@ import {
   USERS_ROUTES,
 } from '../src/entities/users/constants';
 import { emptyTestDatabase } from '../src/testUtils/database';
+import * as apiResponse from '../src/entities/common/apiResponses';
 
 const userSignUp: UserAuthData = {
   email: 'test@mail.com',
@@ -23,9 +24,39 @@ const userDuplicateSignup: UserAuthData = {
   password: 'oth3r@wesomepassword',
 };
 
+describe('Users verify authorization for protected endpoints', () => {
+  afterAll(async () => {
+    server?.close();
+  });
+
+  it('endpoint: updateOptionalInfo', async () => {
+    const res = await request(server)
+      .post(USERS_ROUTES.updateOptionalInfo)
+      .send(userOptionalData);
+    expect(res.statusCode).toEqual(401);
+  });
+
+  it('endpoint: getOptionalInfo', async () => {
+    const res = await request(server).get(USERS_ROUTES.getOptionalInfo);
+    expect(res.statusCode).toEqual(401);
+  });
+
+  it('endpoint: getRole', async () => {
+    const res = await request(server).get(USERS_ROUTES.getRole);
+    expect(res.statusCode).toEqual(401);
+  });
+});
+
 describe('Users endpoints: signup', () => {
   beforeAll(async () => {
     await emptyTestDatabase();
+    jest.spyOn(apiResponse, 'verifyUserAuthorization').mockImplementation(() =>
+      Promise.resolve({
+        statusCode: 200,
+        data: [{ placeholder: 'placeholder' }],
+        response: 'user logged in',
+      })
+    );
   });
 
   afterAll(async () => {
