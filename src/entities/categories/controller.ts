@@ -51,6 +51,10 @@ export class CategoriesController {
     if (isValid.statusCode !== 200) {
       return isValid;
     }
+    const isDuplicate = await this.getCategoryByName(category.name);
+    if (isDuplicate.statusCode === 200) {
+      return isDuplicateResponse('modify category');
+    }
     const response = await CategoriesMutationsService.modifyCategoryById(
       category
     );
@@ -70,6 +74,20 @@ export class CategoriesController {
 
   static getAllCategories = async (): Promise<ApiResponse> => {
     const response = await CategoriesQueriesService.getAllCategories();
+    response.data = this.formatCategoriesResponse(response.data);
     return response;
+  };
+
+  private static formatCategoriesResponse = (
+    categories: any[]
+  ): CategoryFormData[] => {
+    const formattedCategories = [];
+    for (const category of categories) {
+      formattedCategories.push({
+        id: category.id_category,
+        name: category.name,
+      });
+    }
+    return formattedCategories;
   };
 }

@@ -11,13 +11,6 @@ categoriesRoutes.get(CATEGORIES_ROUTES.getAllCategories, async (req, res) => {
   res.status(statusCode).send({ response, data });
 });
 
-categoriesRoutes.post(CATEGORIES_ROUTES.createNewCategory, async (req, res) => {
-  const { statusCode, response } = await CategoriesController.createNewCategory(
-    req.body
-  );
-  res.status(statusCode).send(response);
-});
-
 // PROTECTED
 
 categoriesRoutes.post(CATEGORIES_ROUTES.deleteCategory, async (req, res) => {
@@ -44,8 +37,6 @@ categoriesRoutes.post(CATEGORIES_ROUTES.modifyCategory, async (req, res) => {
     res.status(401).send('Unauthorized');
   }
 });
-
-// PROTECTED
 
 categoriesRoutes.post(CATEGORIES_ROUTES.createNewCategory, async (req, res) => {
   const auth = await verifyAuthorization(req);
