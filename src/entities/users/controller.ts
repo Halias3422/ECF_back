@@ -122,9 +122,7 @@ export class UsersController {
     };
   };
 
-  // PRIVATE
-
-  private static getAuthenticatedUserFromSession = async (
+  static getAuthenticatedUserFromSession = async (
     userSessionInfo: UserSessionData
   ): Promise<ApiResponse> => {
     const isValid = verifyFormDataValidity(userSessionInfo, ['id', 'token']);
@@ -147,6 +145,8 @@ export class UsersController {
     }
     return retreivedUser;
   };
+
+  // PRIVATE
 
   private static getUserSessionInfo = async (
     email: string,

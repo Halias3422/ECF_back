@@ -1,5 +1,4 @@
 import bcrypt from 'bcrypt';
-import { createHash } from 'crypto';
 import {
   databaseQueryError,
   databaseQueryResponse,
@@ -8,7 +7,6 @@ import {
 import { ApiResponse } from '../common/constants';
 import { UsersMutationsService } from '../users/service.mutations';
 import { AdminAuthData, AdminSessionData } from './constants';
-import { AdminMutationsService } from './service.mutations';
 import { AdminQueriesService } from './service.queries';
 
 export class AdminController {

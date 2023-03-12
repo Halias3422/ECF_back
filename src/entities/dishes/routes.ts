@@ -59,13 +59,18 @@ dishesRoutes.post(DISHES_ROUTES.deleteDishItem, async (req, res) => {
   }
 });
 
-dishesRoutes.post(DISHES_ROUTES.saveDishImage, (req, res) => {
-  upload.dishes(req, res, (error) => {
-    if (error) {
-      return res.status(500).send('Error uploading image ');
-    }
-    return res.status(201).send('New dish saved');
-  });
+dishesRoutes.post(DISHES_ROUTES.saveDishImage, async (req, res) => {
+  const auth = await verifyAuthorization(req);
+  if (auth.statusCode === 200) {
+    upload.dishes(req, res, (error) => {
+      if (error) {
+        return res.status(500).send('Error uploading image ');
+      }
+      return res.status(201).send('New dish saved');
+    });
+  } else {
+    res.status(401).send('Unauthorized');
+  }
 });
 
 dishesRoutes.post(DISHES_ROUTES.deleteImage, async (req, res) => {

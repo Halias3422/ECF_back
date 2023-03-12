@@ -1,4 +1,7 @@
-import { verifyFormDataValidity } from '../common/apiResponses';
+import {
+  isDuplicateResponse,
+  verifyFormDataValidity,
+} from '../common/apiResponses';
 import { ApiResponse } from '../common/constants';
 import { CategoryFormData } from './constant';
 import { CategoriesMutationsService } from './service.mutations';
@@ -12,6 +15,12 @@ export class CategoriesController {
     const isValid = verifyFormDataValidity(newCategory, ['name']);
     if (isValid.statusCode !== 200) {
       return isValid;
+    }
+    const isDuplicate = await CategoriesQueriesService.getCategoryByName(
+      newCategory.name
+    );
+    if (isDuplicate.statusCode === 200) {
+      return isDuplicateResponse('create new category');
     }
     const response = await CategoriesMutationsService.createNewCategory(
       newCategory

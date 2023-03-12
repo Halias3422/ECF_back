@@ -51,13 +51,18 @@ dishesGalleryRoutes.post(
 
 dishesGalleryRoutes.post(
   DISHES_GALLERY_ROUTES.saveDishGalleryImage,
-  (req, res) => {
-    upload.dishesGallery(req, res, (error) => {
-      if (error) {
-        return res.status(500).send('Error uploading image ');
-      }
-      return res.status(201).send('New gallery dish saved');
-    });
+  async (req, res) => {
+    const auth = await verifyAuthorization(req);
+    if (auth.statusCode === 200) {
+      upload.dishesGallery(req, res, (error) => {
+        if (error) {
+          return res.status(500).send('Error uploading image ');
+        }
+        return res.status(201).send('New gallery dish saved');
+      });
+    } else {
+      res.status(401).send('Unauthorized');
+    }
   }
 );
 

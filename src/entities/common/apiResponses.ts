@@ -1,4 +1,5 @@
 import { AdminController } from '../admin/controller';
+import { UsersController } from '../users/controller';
 import { ApiResponse } from './constants';
 
 export const databaseQueryResponse = (
@@ -91,6 +92,22 @@ export const verifyAuthorization = async (req: any): Promise<ApiResponse> => {
           email: auth[1],
           token: auth[2],
         });
+      return isAuth;
+    }
+  }
+  return databaseQueryError('Unauthorized');
+};
+
+export const verifyUserAuthorization = async (
+  req: any
+): Promise<ApiResponse> => {
+  if (req.headers && req.headers.authorization) {
+    const auth = req.headers.authorization.split(':');
+    if (auth.length === 2) {
+      const isAuth = UsersController.getAuthenticatedUserFromSession({
+        id: auth[0],
+        token: auth[1],
+      });
       return isAuth;
     }
   }
