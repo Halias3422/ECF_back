@@ -13,18 +13,18 @@ export class UsersMutationsService {
     userInfo: UserAuthData,
     token: string
   ): Promise<ApiResponse> => {
-    const hashedPassword = await bcrypt.hash(userInfo.password, 10);
-    const DEFAULT = {
-      toSqlString: function () {
-        return 'DEFAULT';
-      },
-    };
-
-    const mutation = mysql2.format(
-      `INSERT INTO ${USERS_TABLE.name} VALUES (?, ?, ?, ?, ?, ?, ?)`,
-      [DEFAULT, userInfo.email, hashedPassword, 1, null, token, 0]
-    );
     try {
+      const hashedPassword = await bcrypt.hash(userInfo.password, 10);
+      const DEFAULT = {
+        toSqlString: function () {
+          return 'DEFAULT';
+        },
+      };
+
+      const mutation = mysql2.format(
+        `INSERT INTO ${USERS_TABLE.name} VALUES (?, ?, ?, ?, ?, ?, ?)`,
+        [DEFAULT, userInfo.email, hashedPassword, 1, null, token, 0]
+      );
       const [rows] = await dbConnexion.execute(mutation);
       return databaseMutationResponse(rows, 'create new user');
     } catch (error) {
