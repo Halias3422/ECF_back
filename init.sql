@@ -25,10 +25,10 @@ CREATE TABLE IF NOT EXISTS Formulas (
 CREATE TABLE IF NOT EXISTS Schedule (
 	id_schedule char(36) DEFAULT (UUID()) PRIMARY KEY,
 	day_of_week VARCHAR(20) NOT NULL,
-	morning_opening TIME,
-	morning_closing TIME,
-	afternoon_opening TIME,
-	afternoon_closing TIME
+	morning_opening VARCHAR(10),
+	morning_closing VARCHAR(10),
+	afternoon_opening VARCHAR(10),
+	afternoon_closing VARCHAR(10)
 );
 
 CREATE TABLE IF NOT EXISTS Categories (

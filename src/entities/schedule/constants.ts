@@ -1,5 +1,6 @@
 export const SCHEDULE_ROUTES = {
   getWeekSchedule: '/api/get-week-schedule',
+  modifyWeekSchedule: '/api/modify-week-schedule',
 };
 
 export const SCHEDULE_TABLE = {
@@ -13,3 +14,12 @@ export const SCHEDULE_TABLE = {
     afternoonClosing: 'afternoon_closing',
   },
 };
+
+export interface DaySchedule {
+  id?: string;
+  dayOfWeek: string;
+  morningOpening: string;
+  morningClosing: string;
+  afternoonOpening: string;
+  afternoonClosing: string;
+}
