@@ -7,7 +7,7 @@ export const menusRoutes = express.Router();
 
 menusRoutes.get(MENUS_ROUTES.getAllMenus, async (req, res) => {
   const { statusCode, response, data } = await MenuController.getAllMenus();
-  res.status(statusCode).send({ response, data });
+  return res.status(statusCode).send({ response, data });
 });
 
 //PROTECTED

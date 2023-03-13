@@ -63,6 +63,14 @@ CREATE TABLE IF NOT EXISTS Reservations (
 	Constraint FOREIGN KEY (user_id) REFERENCES Users(id_user)
 );
 
+CREATE TABLE IF NOT EXISTS Restaurant (
+	id_restaurant char(36) DEFAULT (UUID()) PRIMARY KEY,
+	seats_capacity INT NOT NULL
+);
+
+INSERT INTO Restaurant ()
+VALUES (DEFAULT, 45);
+
 INSERT INTO Categories ()
 VALUES (DEFAULT, 'Entrée');
 
