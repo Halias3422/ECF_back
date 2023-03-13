@@ -1,5 +1,7 @@
 export const FORMULAS_ROUTES = {
   deleteFormula: '/api/delete-formula',
+  modifyFormula: '/api/modify-formula',
+  createNewFormula: '/api/create-formula',
 };
 
 export const FORMULAS_TABLE = {
@@ -7,14 +9,15 @@ export const FORMULAS_TABLE = {
   columns: {
     id: 'id_formula',
     menuId: 'menu_id',
-    formulaTitle: 'formula_title',
+    title: 'formula_title',
     description: 'description',
     price: 'price',
   },
 };
 
 export interface FormulaData {
-  id: string;
+  id?: string;
+  menuId?: string;
   title: string;
   description: string;
   price: string;

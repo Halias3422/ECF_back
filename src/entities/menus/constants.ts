@@ -2,18 +2,21 @@ import { FormulaData } from '../formulas/constants';
 
 export const MENUS_ROUTES = {
   getAllMenus: '/api/get-all-menus',
+  createNewMenu: '/api/create-new-menu',
+  deleteMenu: '/api/delete-menu',
+  modifyMenu: '/api/modify-menu',
 };
 
 export const MENUS_TABLE = {
   name: 'Menus',
   columns: {
     id: 'id_menu',
-    menuTitle: 'menu_title',
+    title: 'menu_title',
   },
 };
 
 export interface FormattedMenu {
-  id: string;
+  id?: string;
   title: string;
   formulas: FormulaData[];
 }
