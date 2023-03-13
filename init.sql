@@ -25,10 +25,10 @@ CREATE TABLE IF NOT EXISTS Formulas (
 CREATE TABLE IF NOT EXISTS Schedule (
 	id_schedule char(36) DEFAULT (UUID()) PRIMARY KEY,
 	day_of_week VARCHAR(20) NOT NULL,
-	morning_opening TIME,
-	morning_closing TIME,
-	afternoon_opening TIME,
-	afternoon_closing TIME
+	morning_opening VARCHAR(10),
+	morning_closing VARCHAR(10),
+	afternoon_opening VARCHAR(10),
+	afternoon_closing VARCHAR(10)
 );
 
 CREATE TABLE IF NOT EXISTS Categories (
@@ -62,6 +62,14 @@ CREATE TABLE IF NOT EXISTS Reservations (
 	user_id char(36) NOT NULL,
 	Constraint FOREIGN KEY (user_id) REFERENCES Users(id_user)
 );
+
+CREATE TABLE IF NOT EXISTS Restaurant (
+	id_restaurant char(36) DEFAULT (UUID()) PRIMARY KEY,
+	seats_capacity INT NOT NULL
+);
+
+INSERT INTO Restaurant ()
+VALUES (DEFAULT, 45);
 
 INSERT INTO Categories ()
 VALUES (DEFAULT, 'Entrée');
