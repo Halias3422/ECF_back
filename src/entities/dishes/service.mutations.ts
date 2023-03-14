@@ -44,7 +44,7 @@ export class DishesMutationsService {
   ) => {
     try {
       const mutation = mysql2.format(
-        `UPDATE ${DISHES_TABLE.name} SET ${DISHES_TABLE.columns.title} = ?, ${DISHES_TABLE.columns.image} = ?, ${DISHES_TABLE.columns.description} = ?, ${DISHES_TABLE.columns.price} = ?, ${DISHES_TABLE.columns.category_id} = ? WHERE ${DISHES_TABLE.columns.id} = ?`,
+        `UPDATE ${DISHES_TABLE.name} SET ${DISHES_TABLE.columns.title} = ?, ${DISHES_TABLE.columns.image} = ?, ${DISHES_TABLE.columns.description} = ?, ${DISHES_TABLE.columns.price} = ?, ${DISHES_TABLE.columns.categoryId} = ? WHERE ${DISHES_TABLE.columns.id} = ?`,
         [
           dish.title,
           dish.image,

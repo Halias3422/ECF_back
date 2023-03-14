@@ -13,7 +13,7 @@ export const DISHES_GALLERY_ROUTES = {
 export const DISHES_GALLERY_TABLE = {
   name: 'Gallery_dishes',
   columns: {
-    id: 'id_gallery_dish',
+    id: 'id',
     title: 'title',
     image: 'image',
   },

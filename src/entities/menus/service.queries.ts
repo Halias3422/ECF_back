@@ -10,7 +10,7 @@ import { MENUS_TABLE } from './constants';
 export class MenusQueriesService {
   static getAllMenus = async (): Promise<ApiResponse> => {
     try {
-      const query = `SELECT ${MENUS_TABLE.columns.id} as id, ${MENUS_TABLE.columns.title} as title FROM ${MENUS_TABLE.name}`;
+      const query = `SELECT * FROM ${MENUS_TABLE.name}`;
 
       const [rows] = await dbConnexion.execute(query);
       return databaseQueryResponse(rows, 'get all menus');
@@ -22,7 +22,7 @@ export class MenusQueriesService {
   static getMenuByTitle = async (menuTitle: string): Promise<ApiResponse> => {
     try {
       const query = mysql2.format(
-        `SELECT ${MENUS_TABLE.columns.id} as id, ${MENUS_TABLE.columns.title} as title FROM ${MENUS_TABLE.name} WHERE ${MENUS_TABLE.columns.title} = ?`,
+        `SELECT * FROM ${MENUS_TABLE.name} WHERE ${MENUS_TABLE.columns.title} = ?`,
         [menuTitle]
       );
 
@@ -39,7 +39,7 @@ export class MenusQueriesService {
   ): Promise<ApiResponse> => {
     try {
       const query = mysql2.format(
-        `SELECT ${MENUS_TABLE.columns.id} as id, ${MENUS_TABLE.columns.title} as title FROM ${MENUS_TABLE.name} WHERE ${MENUS_TABLE.columns.title} = ? AND ${MENUS_TABLE.columns.id} != ?`,
+        `SELECT * WHERE ${MENUS_TABLE.columns.title} = ? AND ${MENUS_TABLE.columns.id} != ?`,
         [menuTitle, menuId]
       );
 

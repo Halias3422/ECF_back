@@ -10,8 +10,8 @@ export const MENUS_ROUTES = {
 export const MENUS_TABLE = {
   name: 'Menus',
   columns: {
-    id: 'id_menu',
-    title: 'menu_title',
+    id: 'id',
+    title: 'title',
   },
 };
 

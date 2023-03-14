@@ -7,9 +7,9 @@ export const FORMULAS_ROUTES = {
 export const FORMULAS_TABLE = {
   name: 'Formulas',
   columns: {
-    id: 'id_formula',
-    menuId: 'menu_id',
-    title: 'formula_title',
+    id: 'id',
+    menuId: 'menuId',
+    title: 'title',
     description: 'description',
     price: 'price',
   },

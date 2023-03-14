@@ -6,7 +6,7 @@ export const RESTAURANT_ROUTES = {
 export const RESTAURANT_TABLE = {
   name: 'Restaurant',
   columns: {
-    id: 'id_restaurant',
-    seatsCapacity: 'seats_capacity',
+    id: 'id',
+    seatsCapacity: 'seatsCapacity',
   },
 };

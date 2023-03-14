@@ -26,7 +26,7 @@ export class UsersQueriesService {
   ): Promise<ApiResponse> => {
     try {
       const query = mysql2.format(
-        `SELECT ${USERS_TABLE.columns.id} as id, ${USERS_TABLE.columns.email}, ${USERS_TABLE.columns.password}, ${USERS_TABLE.columns.defaultGuestNumber} as defaultGuestNumber, ${USERS_TABLE.columns.defaultAllergies} as defaultAllergies, ${USERS_TABLE.columns.sessionToken} as sessionToken FROM ${USERS_TABLE.name} WHERE ${USERS_TABLE.columns.sessionToken} = ?`,
+        `SELECT * FROM ${USERS_TABLE.name} WHERE ${USERS_TABLE.columns.sessionToken} = ?`,
         [sessionToken]
       );
       console.log('query = ' + query);
