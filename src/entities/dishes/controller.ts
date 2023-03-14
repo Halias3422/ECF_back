@@ -35,7 +35,7 @@ export class DishesController {
     }
     const response = await DishesMutationsService.createNewDish(
       dish,
-      dishCategory.data?.[0].id_category
+      dishCategory.data?.[0].id
     );
     if (response.statusCode !== 200) {
       return response;
@@ -112,7 +112,7 @@ export class DishesController {
     }
     const modifiedDish = await DishesMutationsService.modifyDishItemById(
       dish,
-      dishCategory.data[0].id_category
+      dishCategory.data[0].id
     );
     return modifiedDish;
   };
@@ -148,14 +148,14 @@ export class DishesController {
     const response: ResponseDishesByCategory[] = [];
     const retreivedCategoriesId: string[] = [];
     for (const dish of dishes) {
-      if (!retreivedCategoriesId.includes(JSON.stringify(dish.category_id))) {
-        retreivedCategoriesId.push(JSON.stringify(dish.category_id));
+      if (!retreivedCategoriesId.includes(JSON.stringify(dish.categoryId))) {
+        retreivedCategoriesId.push(JSON.stringify(dish.categoryId));
         const retreivedCategory =
-          await CategoriesQueriesService.getCategoryById(dish.category_id);
+          await CategoriesQueriesService.getCategoryById(dish.categoryId);
         if (retreivedCategory.statusCode === 200 && retreivedCategory.data) {
           response.push({
             category: {
-              id: retreivedCategory.data[0].id_category,
+              id: retreivedCategory.data[0].id,
               name: retreivedCategory.data[0].name,
             },
             dishes: [],
@@ -173,11 +173,11 @@ export class DishesController {
     for (let i = 0; i < retreivedCategories.length; i++) {
       for (const dish of dishes) {
         if (
-          JSON.stringify(dish.category_id) ===
+          JSON.stringify(dish.categoryId) ===
           JSON.stringify(retreivedCategories[i].category.id)
         ) {
           retreivedCategories[i].dishes.push({
-            id: dish.id_dish,
+            id: dish.id,
             title: dish.title,
             image: `${process.env.BACK_END_URL}${process.env.SERVER_PORT}/dishes/${dish.image}`,
             description: dish.description,

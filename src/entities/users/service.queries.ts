@@ -21,7 +21,7 @@ export class UsersQueriesService {
     }
   };
 
-  static getUserOptionalInfoBySessionToken = async (
+  static getUserBySessionToken = async (
     sessionToken: string
   ): Promise<ApiResponse> => {
     try {

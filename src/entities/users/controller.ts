@@ -7,7 +7,12 @@ import {
   verifyFormDataValidity,
 } from '../common/apiResponses';
 import { ApiResponse } from '../common/constants';
-import { UserAuthData, UserOptionalData, UserSessionData } from './constants';
+import {
+  UserAuthData,
+  UserData,
+  UserOptionalData,
+  UserSessionData,
+} from './constants';
 import { UsersMutationsService } from './service.mutations';
 import { UsersQueriesService } from './service.queries';
 
@@ -64,7 +69,7 @@ export class UsersController {
     if (retreivedUser.statusCode != 200 || !retreivedUser.data) {
       return retreivedUser;
     }
-    if (retreivedUser.data[0].is_admin === 1) {
+    if (retreivedUser.data[0].isAdmin === 1) {
       return await AdminController.protectedLogin(userInfo);
     }
     if (
@@ -99,8 +104,8 @@ export class UsersController {
     return {
       statusCode: 200,
       data: {
-        defaultGuestNumber: retreivedUser.data[0].default_guests_number,
-        defaultAllergies: retreivedUser.data[0].default_allergies,
+        defaultGuestNumber: retreivedUser.data[0].defaultGuestNumber,
+        defaultAllergies: retreivedUser.data[0].defaultAllergies,
       },
       response: 'user data found successfully',
     };
@@ -116,7 +121,7 @@ export class UsersController {
     return {
       statusCode: 200,
       data: {
-        role: retreivedUser.data[0].is_admin,
+        role: retreivedUser.data[0].isAdmin,
       },
       response: 'user role found successfully',
     };
@@ -129,18 +134,17 @@ export class UsersController {
     if (isValid.statusCode !== 200) {
       return isValid;
     }
-    const retreivedUser =
-      await UsersQueriesService.getUserOptionalInfoBySessionToken(
-        userSessionInfo.token
-      );
+    const retreivedUser = await UsersQueriesService.getUserBySessionToken(
+      userSessionInfo.token
+    );
     if (retreivedUser.statusCode !== 200) {
       return retreivedUser;
     }
-    const idIsValid = await this.verifyUserSessionItemValidity(
-      userSessionInfo.id,
-      retreivedUser.data[0].id_user
+    const sessionInfoIsValid = await this.verifyUserSessionInfoValidity(
+      userSessionInfo,
+      retreivedUser.data[0]
     );
-    if (!idIsValid) {
+    if (!sessionInfoIsValid) {
       return databaseQueryError('get user info');
     }
     return retreivedUser;
@@ -157,23 +161,27 @@ export class UsersController {
     if (user.statusCode !== 200 || !user.data) {
       return user;
     }
-    const hashedId = await bcrypt.hash(user.data[0].id_user, 10);
+    const hashedId = await bcrypt.hash(user.data[0].id, 10);
     return {
       statusCode: statusCode,
-      data: { session: `${hashedId}:${user.data[0].session_token}` },
+      data: { session: `${hashedId}:${user.data[0].sessionToken}` },
       response: context + ' successfully',
     };
   };
 
-  private static verifyUserSessionItemValidity = async (
-    sessionItem: string,
-    userItem: string
+  private static verifyUserSessionInfoValidity = async (
+    sessionItem: UserSessionData,
+    userInfo: UserData
   ): Promise<boolean> => {
     try {
-      return await bcrypt.compare(userItem, sessionItem);
+      const id = await bcrypt.compare(userInfo.id, sessionItem.id);
+      if (id && sessionItem.token === userInfo.sessionToken) {
+        return true;
+      }
     } catch (error) {
       return false;
     }
+    return false;
   };
 
   private static comparePassword = async (

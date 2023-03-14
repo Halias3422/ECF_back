@@ -6,12 +6,12 @@ export const SCHEDULE_ROUTES = {
 export const SCHEDULE_TABLE = {
   name: 'Schedule',
   columns: {
-    id: 'id_schedule',
-    dayOfWeek: 'day_of_week',
-    morningOpening: 'morning_opening',
-    morningClosing: 'morning_closing',
-    afternoonOpening: 'afternoon_opening',
-    afternoonClosing: 'afternoon_closing',
+    id: 'id',
+    dayOfWeek: 'dayOfWeek',
+    morningOpening: 'morningOpening',
+    morningClosing: 'morningClosing',
+    afternoonOpening: 'afternoonOpening',
+    afternoonClosing: 'afternoonClosing',
   },
 };
 

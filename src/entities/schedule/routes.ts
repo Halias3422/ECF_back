@@ -8,7 +8,7 @@ export const scheduleRoutes = express.Router();
 scheduleRoutes.get(SCHEDULE_ROUTES.getWeekSchedule, async (req, res) => {
   const { statusCode, response, data } =
     await ScheduleController.getWeekSchedule();
-  return res.status(statusCode).send({ response, data });
+  res.status(statusCode).send({ response, data });
 });
 
 scheduleRoutes.post(SCHEDULE_ROUTES.modifyWeekSchedule, async (req, res) => {
@@ -16,8 +16,8 @@ scheduleRoutes.post(SCHEDULE_ROUTES.modifyWeekSchedule, async (req, res) => {
   if (auth.statusCode === 200) {
     const { statusCode, response } =
       await ScheduleController.modifyWeekSchedule(req.body);
-    return res.status(statusCode).send(response);
+    res.status(statusCode).send(response);
   } else {
-    return res.status(401).send('Unauthorized');
+    res.status(401).send('Unauthorized');
   }
 });

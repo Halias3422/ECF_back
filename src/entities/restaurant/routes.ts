@@ -8,7 +8,7 @@ export const restaurantRoutes = express.Router();
 restaurantRoutes.get(RESTAURANT_ROUTES.getSeatsCapacity, async (req, res) => {
   const { statusCode, response, data } =
     await RestaurantController.getSeatsCapacity();
-  return res.status(statusCode).send({ response, data });
+  res.status(statusCode).send({ response, data });
 });
 
 // PROTECTED
@@ -20,9 +20,9 @@ restaurantRoutes.post(
     if (auth.statusCode === 200) {
       const { statusCode, response } =
         await RestaurantController.modifySeatsCapacity(req.body.seatsCapacity);
-      return res.status(statusCode).send(response);
+      res.status(statusCode).send(response);
     } else {
-      return res.status(401).send('Unauthorized');
+      res.status(401).send('Unauthorized');
     }
   }
 );

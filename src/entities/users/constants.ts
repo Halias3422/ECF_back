@@ -9,13 +9,13 @@ export const USERS_ROUTES = {
 export const USERS_TABLE = {
   name: 'Users',
   columns: {
-    id: 'id_user',
+    id: 'id',
     email: 'email',
     password: 'password',
-    defaultGuestNumber: 'default_guests_number',
-    defaultAllergies: 'default_allergies',
-    sessionToken: 'session_token',
-    isAdmin: 'is_admin',
+    defaultGuestNumber: 'defaultGuestNumber',
+    defaultAllergies: 'defaultAllergies',
+    sessionToken: 'sessionToken',
+    isAdmin: 'isAdmin',
   },
 };
 

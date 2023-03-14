@@ -8,7 +8,7 @@ export const CATEGORIES_ROUTES = {
 export const CATEGORIES_TABLE = {
   name: 'Categories',
   columns: {
-    id: 'id_category',
+    id: 'id',
     name: 'name',
   },
 };

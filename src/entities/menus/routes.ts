@@ -7,7 +7,7 @@ export const menusRoutes = express.Router();
 
 menusRoutes.get(MENUS_ROUTES.getAllMenus, async (req, res) => {
   const { statusCode, response, data } = await MenuController.getAllMenus();
-  return res.status(statusCode).send({ response, data });
+  res.status(statusCode).send({ response, data });
 });
 
 //PROTECTED
@@ -18,9 +18,9 @@ menusRoutes.post(MENUS_ROUTES.createNewMenu, async (req, res) => {
     const { statusCode, response } = await MenuController.createNewMenu(
       req.body
     );
-    return res.status(statusCode).send(response);
+    res.status(statusCode).send(response);
   } else {
-    return res.status(401).send('Unauthorized');
+    res.status(401).send('Unauthorized');
   }
 });
 
@@ -28,9 +28,9 @@ menusRoutes.post(MENUS_ROUTES.modifyMenu, async (req, res) => {
   const auth = await verifyAuthorization(req);
   if (auth.statusCode === 200) {
     const { statusCode, response } = await MenuController.modifyMenu(req.body);
-    return res.status(statusCode).send(response);
+    res.status(statusCode).send(response);
   } else {
-    return res.status(401).send('Unauthorized');
+    res.status(401).send('Unauthorized');
   }
 });
 
@@ -38,8 +38,8 @@ menusRoutes.post(MENUS_ROUTES.deleteMenu, async (req, res) => {
   const auth = await verifyAuthorization(req);
   if (auth.statusCode === 200) {
     const { statusCode, response } = await MenuController.deleteMenu(req.body);
-    return res.status(statusCode).send(response);
+    res.status(statusCode).send(response);
   } else {
-    return res.status(401).send('Unauthorized');
+    res.status(401).send('Unauthorized');
   }
 });

@@ -20,7 +20,7 @@ export class DishesGalleryController {
     const formattedDishes: DishesGalleryFormData[] = [];
     for (const dish of dishes.data) {
       formattedDishes.push({
-        id: dish.id_gallery_dish,
+        id: dish.id,
         image: `${process.env.BACK_END_URL}${process.env.SERVER_PORT}/dishesGallery/${dish.image}`,
         title: dish.title,
       });

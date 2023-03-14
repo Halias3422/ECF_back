@@ -11,8 +11,8 @@ export const DISHES_ROUTES = {
 export const DISHES_TABLE = {
   name: 'Dishes',
   columns: {
-    id: 'id_dish',
-    category_id: 'category_id',
+    id: 'id',
+    categoryId: 'categoryId',
     title: 'title',
     image: 'image',
     description: 'description',
