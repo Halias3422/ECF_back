@@ -142,7 +142,7 @@ export class UsersController {
     }
     const sessionInfoIsValid = await this.verifyUserSessionInfoValidity(
       userSessionInfo,
-      retreivedUser.data
+      retreivedUser.data[0]
     );
     if (!sessionInfoIsValid) {
       return databaseQueryError('get user info');
@@ -175,17 +175,13 @@ export class UsersController {
   ): Promise<boolean> => {
     try {
       const id = await bcrypt.compare(userInfo.id, sessionItem.id);
-      const token = await bcrypt.compare(
-        userInfo.sessionToken,
-        sessionItem.token
-      );
-      if (token && id) {
+      if (id && sessionItem.token === userInfo.sessionToken) {
         return true;
       }
-      return false;
     } catch (error) {
       return false;
     }
+    return false;
   };
 
   private static comparePassword = async (

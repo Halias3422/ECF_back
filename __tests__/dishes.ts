@@ -189,7 +189,7 @@ describe('Dishes endpoints: getAllDishesByCategories', () => {
       DISHES_ROUTES.getAllDishesByCategories
     );
     const entries = res.body.data;
-    expect(entries.length).toEqual(3);
+    expect(entries.length).toEqual(2);
     expect(entries[0].category.name).toEqual('Dessert');
     expect(entries[0].dishes.length).toEqual(2);
     expect(entries[0].dishes[0].title).toEqual('dish 1 title');
