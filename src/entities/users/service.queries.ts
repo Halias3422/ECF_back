@@ -29,7 +29,6 @@ export class UsersQueriesService {
         `SELECT * FROM ${USERS_TABLE.name} WHERE ${USERS_TABLE.columns.sessionToken} = ?`,
         [sessionToken]
       );
-      console.log('query = ' + query);
       const [rows] = await dbConnexion.execute(query);
       return databaseQueryResponse(rows, 'user');
     } catch (error) {

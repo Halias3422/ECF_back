@@ -148,10 +148,10 @@ export class DishesController {
     const response: ResponseDishesByCategory[] = [];
     const retreivedCategoriesId: string[] = [];
     for (const dish of dishes) {
-      if (!retreivedCategoriesId.includes(JSON.stringify(dish.category_id))) {
-        retreivedCategoriesId.push(JSON.stringify(dish.category_id));
+      if (!retreivedCategoriesId.includes(JSON.stringify(dish.categoryId))) {
+        retreivedCategoriesId.push(JSON.stringify(dish.categoryId));
         const retreivedCategory =
-          await CategoriesQueriesService.getCategoryById(dish.category_id);
+          await CategoriesQueriesService.getCategoryById(dish.categoryId);
         if (retreivedCategory.statusCode === 200 && retreivedCategory.data) {
           response.push({
             category: {
@@ -173,7 +173,7 @@ export class DishesController {
     for (let i = 0; i < retreivedCategories.length; i++) {
       for (const dish of dishes) {
         if (
-          JSON.stringify(dish.category_id) ===
+          JSON.stringify(dish.categoryId) ===
           JSON.stringify(retreivedCategories[i].category.id)
         ) {
           retreivedCategories[i].dishes.push({

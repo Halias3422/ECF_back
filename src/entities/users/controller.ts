@@ -69,7 +69,7 @@ export class UsersController {
     if (retreivedUser.statusCode != 200 || !retreivedUser.data) {
       return retreivedUser;
     }
-    if (retreivedUser.data[0].is_admin === 1) {
+    if (retreivedUser.data[0].isAdmin === 1) {
       return await AdminController.protectedLogin(userInfo);
     }
     if (
@@ -95,7 +95,6 @@ export class UsersController {
   static getUserOptionalInfo = async (
     userSessionInfo: UserSessionData
   ): Promise<ApiResponse> => {
-    console.log('userSessionInfo = ' + JSON.stringify(userSessionInfo));
     const retreivedUser = await this.getAuthenticatedUserFromSession(
       userSessionInfo
     );
@@ -105,8 +104,8 @@ export class UsersController {
     return {
       statusCode: 200,
       data: {
-        defaultGuestNumber: retreivedUser.data[0].default_guests_number,
-        defaultAllergies: retreivedUser.data[0].default_allergies,
+        defaultGuestNumber: retreivedUser.data[0].defaultGuestNumber,
+        defaultAllergies: retreivedUser.data[0].defaultAllergies,
       },
       response: 'user data found successfully',
     };
@@ -122,7 +121,7 @@ export class UsersController {
     return {
       statusCode: 200,
       data: {
-        role: retreivedUser.data[0].is_admin,
+        role: retreivedUser.data[0].isAdmin,
       },
       response: 'user role found successfully',
     };
@@ -165,7 +164,7 @@ export class UsersController {
     const hashedId = await bcrypt.hash(user.data[0].id, 10);
     return {
       statusCode: statusCode,
-      data: { session: `${hashedId}:${user.data[0].session_token}` },
+      data: { session: `${hashedId}:${user.data[0].sessionToken}` },
       response: context + ' successfully',
     };
   };

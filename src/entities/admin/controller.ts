@@ -92,7 +92,7 @@ export class AdminController {
       return {
         statusCode: statusCode,
         data: {
-          session: `${hashedId}:${hashedMail}:${user.data[0].session_token}`,
+          session: `${hashedId}:${hashedMail}:${user.data[0].sessionToken}`,
         },
         response: context + ' successfully',
       };
