@@ -62,6 +62,65 @@ export class UsersController {
     return response;
   };
 
+  static updateMail = async (
+    userInfo: UserAuthData,
+    dbUser: UserData
+  ): Promise<ApiResponse> => {
+    if (!(await this.comparePassword(dbUser.password, userInfo.password))) {
+      return {
+        statusCode: 400,
+        response: 'Mot de passe incorrect.',
+      };
+    }
+    const isSecure = this.verifyUserSignupConformity(userInfo);
+    if (isSecure.statusCode !== 200) {
+      return { ...isSecure, response: "Le nouveau mail n'est pas conforme" };
+    }
+    const modifiedMail = await UsersMutationsService.updateUserMail(
+      userInfo.email,
+      dbUser.id
+    );
+    if (modifiedMail.statusCode !== 200) {
+      return {
+        statusCode: 400,
+        response: 'Erreur lors du traitement. Veuillez réessayer plus tard',
+      };
+    }
+    return modifiedMail;
+  };
+
+  static updatePassword = async (
+    userInfo: any,
+    dbUser: UserData
+  ): Promise<ApiResponse> => {
+    if (!(await this.comparePassword(dbUser.password, userInfo.password))) {
+      return {
+        statusCode: 400,
+        response: 'Mot de passe incorrect.',
+      };
+    }
+    const isSecure = this.verifyUserSignupConformity({
+      email: dbUser.email,
+      password: userInfo.newPassword,
+    });
+    if (isSecure.statusCode !== 200) {
+      return {
+        ...isSecure,
+        response: "Le nouveau mot de passe n'est pas conforme",
+      };
+    }
+    const modifiedPassword = await UsersMutationsService.updateUserPassword(
+      userInfo.newPassword,
+      dbUser.id
+    );
+    if (modifiedPassword.statusCode !== 200) {
+      return {
+        statusCode: 400,
+        response: 'Erreur lors du traitement. Veuillez réessayer plus tard',
+      };
+    }
+    return modifiedPassword;
+  };
   static login = async (userInfo: UserAuthData): Promise<ApiResponse> => {
     const retreivedUser = await UsersQueriesService.getUserByEmail(
       userInfo.email
@@ -93,19 +152,14 @@ export class UsersController {
   // QUERIES
 
   static getUserOptionalInfo = async (
-    userSessionInfo: UserSessionData
+    authentifiedUser: UserData
   ): Promise<ApiResponse> => {
-    const retreivedUser = await this.getAuthenticatedUserFromSession(
-      userSessionInfo
-    );
-    if (retreivedUser.statusCode !== 200) {
-      return retreivedUser;
-    }
     return {
       statusCode: 200,
       data: {
-        defaultGuestNumber: retreivedUser.data[0].defaultGuestNumber,
-        defaultAllergies: retreivedUser.data[0].defaultAllergies,
+        email: authentifiedUser.email,
+        defaultGuestNumber: authentifiedUser.defaultGuestNumber,
+        defaultAllergies: authentifiedUser.defaultAllergies,
       },
       response: 'user data found successfully',
     };

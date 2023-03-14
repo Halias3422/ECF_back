@@ -4,6 +4,8 @@ export const USERS_ROUTES = {
   updateOptionalInfo: '/api/user-update-optional-info',
   getOptionalInfo: '/api/user-get-optional-info',
   getRole: '/api/user-get-role',
+  updateMail: '/api/user-update-mail',
+  updatePassword: '/api/user-update-password',
 };
 
 export const USERS_TABLE = {

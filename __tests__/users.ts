@@ -45,6 +45,16 @@ describe('Users verify authorization for protected endpoints', () => {
     const res = await request(server).get(USERS_ROUTES.getRole);
     expect(res.statusCode).toEqual(401);
   });
+
+  it('endpoint: updateMail', async () => {
+    const res = await request(server).post(USERS_ROUTES.updateMail);
+    expect(res.statusCode).toEqual(401);
+  });
+
+  it('endpoint: updatePassword', async () => {
+    const res = await request(server).post(USERS_ROUTES.updatePassword);
+    expect(res.statusCode).toEqual(401);
+  });
 });
 
 describe('Users endpoints: signup', () => {
@@ -251,5 +261,84 @@ describe('Users endpoints: login', () => {
       password: 'sup3rsecretp@sswor',
     });
     expect(login.statusCode).toEqual(400);
+  });
+});
+
+describe('Users endpoints: updateMail', () => {
+  beforeAll(async () => {
+    await emptyTestDatabase();
+    jest.restoreAllMocks();
+  });
+
+  afterAll(async () => {
+    server?.close();
+  });
+
+  it('should update a user email', async () => {
+    const userSignup = await request(server)
+      .post(USERS_ROUTES.signup)
+      .send(userSignUp);
+    expect(userSignup.statusCode).toEqual(201);
+    const res = await request(server)
+      .post(USERS_ROUTES.updateMail)
+      .set('Authorization', JSON.parse(userSignup.text).session)
+      .send({ email: 'toto@gmail.com', password: userSignUp.password });
+    expect(res.statusCode).toEqual(200);
+    const loggedIn = await request(server)
+      .post(USERS_ROUTES.login)
+      .send({ email: 'toto@gmail.com', password: userSignUp.password });
+    expect(loggedIn.statusCode).toEqual(200);
+  });
+
+  it('should not update an invalid email', async () => {
+    const userLogin = await request(server)
+      .post(USERS_ROUTES.login)
+      .send({ email: 'toto@gmail.com', password: userSignUp.password });
+    const res = await request(server)
+      .post(USERS_ROUTES.updateMail)
+      .set('Authorization', JSON.parse(userLogin.text).session)
+      .send({ email: 'toto.com', password: userSignUp.password });
+    expect(res.statusCode).toEqual(400);
+  });
+});
+
+describe('Users endpoints: updatePassword', () => {
+  beforeAll(async () => {
+    await emptyTestDatabase();
+    jest.restoreAllMocks();
+  });
+
+  afterAll(async () => {
+    server?.close();
+  });
+
+  it('should update a user password', async () => {
+    const userSignup = await request(server)
+      .post(USERS_ROUTES.signup)
+      .send(userSignUp);
+    expect(userSignup.statusCode).toEqual(201);
+    const res = await request(server)
+      .post(USERS_ROUTES.updatePassword)
+      .set('Authorization', JSON.parse(userSignup.text).session)
+      .send({
+        newPassword: 'newsecr3tp@ssword',
+        password: userSignUp.password,
+      });
+    expect(res.statusCode).toEqual(200);
+    const loggedIn = await request(server)
+      .post(USERS_ROUTES.login)
+      .send({ email: userSignUp.email, password: 'newsecr3tp@ssword' });
+    expect(loggedIn.statusCode).toEqual(200);
+  });
+
+  it('should not update an invalid password', async () => {
+    const userLogin = await request(server)
+      .post(USERS_ROUTES.login)
+      .send({ email: userSignUp.email, password: 'newsecr3tp@ssword' });
+    const res = await request(server)
+      .post(USERS_ROUTES.updateMail)
+      .set('Authorization', JSON.parse(userLogin.text).session)
+      .send({ newPassword: 'totoestla', password: userSignUp.password });
+    expect(res.statusCode).toEqual(400);
   });
 });

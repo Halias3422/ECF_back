@@ -35,11 +35,44 @@ export class UsersMutationsService {
   static updateUserOptionalData = async (
     userInfo: UserOptionalData
   ): Promise<ApiResponse> => {
-    const mutation = mysql2.format(
-      `UPDATE ${USERS_TABLE.name} SET ${USERS_TABLE.columns.defaultGuestNumber} = ?, ${USERS_TABLE.columns.defaultAllergies} = ? WHERE ${USERS_TABLE.columns.email} = ?`,
-      [userInfo.defaultGuestNumber, userInfo.defaultAllergies, userInfo.email]
-    );
     try {
+      const mutation = mysql2.format(
+        `UPDATE ${USERS_TABLE.name} SET ${USERS_TABLE.columns.defaultGuestNumber} = ?, ${USERS_TABLE.columns.defaultAllergies} = ? WHERE ${USERS_TABLE.columns.email} = ?`,
+        [userInfo.defaultGuestNumber, userInfo.defaultAllergies, userInfo.email]
+      );
+      const [rows] = await dbConnexion.execute(mutation);
+      return databaseMutationResponse(rows, 'update user optional data');
+    } catch (error) {
+      return databaseMutationError('update user optional data');
+    }
+  };
+
+  static updateUserMail = async (
+    newMail: string,
+    userId: string
+  ): Promise<ApiResponse> => {
+    try {
+      const mutation = mysql2.format(
+        `UPDATE ${USERS_TABLE.name} SET ${USERS_TABLE.columns.email} = ? WHERE ${USERS_TABLE.columns.id} = ?`,
+        [newMail, userId]
+      );
+      const [rows] = await dbConnexion.execute(mutation);
+      return databaseMutationResponse(rows, 'update user optional data');
+    } catch (error) {
+      return databaseMutationError('update user optional data');
+    }
+  };
+
+  static updateUserPassword = async (
+    newPassword: string,
+    userId: string
+  ): Promise<ApiResponse> => {
+    try {
+      const newHashedPassword = await bcrypt.hash(newPassword, 10);
+      const mutation = mysql2.format(
+        `UPDATE ${USERS_TABLE.name} SET ${USERS_TABLE.columns.password} = ? WHERE ${USERS_TABLE.columns.id} = ?`,
+        [newHashedPassword, userId]
+      );
       const [rows] = await dbConnexion.execute(mutation);
       return databaseMutationResponse(rows, 'update user optional data');
     } catch (error) {

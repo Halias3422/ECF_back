@@ -29,11 +29,37 @@ usersRoutes.post(USERS_ROUTES.updateOptionalInfo, async (req, res) => {
   }
 });
 
+usersRoutes.post(USERS_ROUTES.updateMail, async (req, res) => {
+  const auth = await verifyUserAuthorization(req);
+  if (auth.statusCode === 200) {
+    const { statusCode, response, data } = await UsersController.updateMail(
+      req.body,
+      auth.data[0]
+    );
+    res.status(statusCode).send({ response, data });
+  } else {
+    res.status(401).send('Unauthorized');
+  }
+});
+
+usersRoutes.post(USERS_ROUTES.updatePassword, async (req, res) => {
+  const auth = await verifyUserAuthorization(req);
+  if (auth.statusCode === 200) {
+    const { statusCode, response, data } = await UsersController.updatePassword(
+      req.body,
+      auth.data[0]
+    );
+    res.status(statusCode).send({ response, data });
+  } else {
+    res.status(401).send('Unauthorized');
+  }
+});
+
 usersRoutes.get(USERS_ROUTES.getOptionalInfo, async (req, res) => {
   const auth = await verifyUserAuthorization(req);
   if (auth.statusCode === 200) {
     const { statusCode, response, data } =
-      await UsersController.getUserOptionalInfo(auth.data);
+      await UsersController.getUserOptionalInfo(auth.data[0]);
     res.status(statusCode).send({ response, data });
   } else {
     res.status(401).send('Unauthorized');
