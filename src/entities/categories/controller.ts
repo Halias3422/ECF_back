@@ -84,7 +84,7 @@ export class CategoriesController {
     const formattedCategories = [];
     for (const category of categories) {
       formattedCategories.push({
-        id: category.id_category,
+        id: category.id,
         name: category.name,
       });
     }

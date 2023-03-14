@@ -35,7 +35,7 @@ export class DishesController {
     }
     const response = await DishesMutationsService.createNewDish(
       dish,
-      dishCategory.data?.[0].id_category
+      dishCategory.data?.[0].id
     );
     if (response.statusCode !== 200) {
       return response;
@@ -112,7 +112,7 @@ export class DishesController {
     }
     const modifiedDish = await DishesMutationsService.modifyDishItemById(
       dish,
-      dishCategory.data[0].id_category
+      dishCategory.data[0].id
     );
     return modifiedDish;
   };
@@ -155,7 +155,7 @@ export class DishesController {
         if (retreivedCategory.statusCode === 200 && retreivedCategory.data) {
           response.push({
             category: {
-              id: retreivedCategory.data[0].id_category,
+              id: retreivedCategory.data[0].id,
               name: retreivedCategory.data[0].name,
             },
             dishes: [],
@@ -177,7 +177,7 @@ export class DishesController {
           JSON.stringify(retreivedCategories[i].category.id)
         ) {
           retreivedCategories[i].dishes.push({
-            id: dish.id_dish,
+            id: dish.id,
             title: dish.title,
             image: `${process.env.BACK_END_URL}${process.env.SERVER_PORT}/dishes/${dish.image}`,
             description: dish.description,

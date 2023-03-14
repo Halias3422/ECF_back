@@ -62,7 +62,7 @@ export class AdminController {
     }
     const idIsValid = await this.verifyUserSessionItemValidity(
       userSessionInfo.id,
-      retreivedUser.data[0].id_user
+      retreivedUser.data[0].id
     );
     if (!idIsValid) {
       return databaseQueryError('get protected user info');
@@ -87,7 +87,7 @@ export class AdminController {
       return user;
     }
     try {
-      const hashedId = await bcrypt.hash(user.data[0].id_user, 10);
+      const hashedId = await bcrypt.hash(user.data[0].id, 10);
       const hashedMail = await bcrypt.hash(user.data[0].email, 10);
       return {
         statusCode: statusCode,

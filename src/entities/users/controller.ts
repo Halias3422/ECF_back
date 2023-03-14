@@ -162,7 +162,7 @@ export class UsersController {
     if (user.statusCode !== 200 || !user.data) {
       return user;
     }
-    const hashedId = await bcrypt.hash(user.data[0].id_user, 10);
+    const hashedId = await bcrypt.hash(user.data[0].id, 10);
     return {
       statusCode: statusCode,
       data: { session: `${hashedId}:${user.data[0].session_token}` },
