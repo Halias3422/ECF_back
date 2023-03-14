@@ -7,7 +7,12 @@ import {
   verifyFormDataValidity,
 } from '../common/apiResponses';
 import { ApiResponse } from '../common/constants';
-import { UserAuthData, UserOptionalData, UserSessionData } from './constants';
+import {
+  UserAuthData,
+  UserData,
+  UserOptionalData,
+  UserSessionData,
+} from './constants';
 import { UsersMutationsService } from './service.mutations';
 import { UsersQueriesService } from './service.queries';
 
@@ -90,6 +95,7 @@ export class UsersController {
   static getUserOptionalInfo = async (
     userSessionInfo: UserSessionData
   ): Promise<ApiResponse> => {
+    console.log('userSessionInfo = ' + JSON.stringify(userSessionInfo));
     const retreivedUser = await this.getAuthenticatedUserFromSession(
       userSessionInfo
     );
@@ -129,18 +135,17 @@ export class UsersController {
     if (isValid.statusCode !== 200) {
       return isValid;
     }
-    const retreivedUser =
-      await UsersQueriesService.getUserOptionalInfoBySessionToken(
-        userSessionInfo.token
-      );
+    const retreivedUser = await UsersQueriesService.getUserBySessionToken(
+      userSessionInfo.token
+    );
     if (retreivedUser.statusCode !== 200) {
       return retreivedUser;
     }
-    const idIsValid = await this.verifyUserSessionItemValidity(
-      userSessionInfo.id,
-      retreivedUser.data[0].id_user
+    const sessionInfoIsValid = await this.verifyUserSessionInfoValidity(
+      userSessionInfo,
+      retreivedUser.data
     );
-    if (!idIsValid) {
+    if (!sessionInfoIsValid) {
       return databaseQueryError('get user info');
     }
     return retreivedUser;
@@ -165,12 +170,20 @@ export class UsersController {
     };
   };
 
-  private static verifyUserSessionItemValidity = async (
-    sessionItem: string,
-    userItem: string
+  private static verifyUserSessionInfoValidity = async (
+    sessionItem: UserSessionData,
+    userInfo: UserData
   ): Promise<boolean> => {
     try {
-      return await bcrypt.compare(userItem, sessionItem);
+      const id = await bcrypt.compare(userInfo.id, sessionItem.id);
+      const token = await bcrypt.compare(
+        userInfo.sessionToken,
+        sessionItem.token
+      );
+      if (token && id) {
+        return true;
+      }
+      return false;
     } catch (error) {
       return false;
     }

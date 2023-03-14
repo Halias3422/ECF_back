@@ -21,14 +21,15 @@ export class UsersQueriesService {
     }
   };
 
-  static getUserOptionalInfoBySessionToken = async (
+  static getUserBySessionToken = async (
     sessionToken: string
   ): Promise<ApiResponse> => {
     try {
       const query = mysql2.format(
-        `SELECT * FROM ${USERS_TABLE.name} WHERE ${USERS_TABLE.columns.sessionToken} = ?`,
+        `SELECT ${USERS_TABLE.columns.id} as id, ${USERS_TABLE.columns.email}, ${USERS_TABLE.columns.password}, ${USERS_TABLE.columns.defaultGuestNumber} as defaultGuestNumber, ${USERS_TABLE.columns.defaultAllergies} as defaultAllergies, ${USERS_TABLE.columns.sessionToken} as sessionToken FROM ${USERS_TABLE.name} WHERE ${USERS_TABLE.columns.sessionToken} = ?`,
         [sessionToken]
       );
+      console.log('query = ' + query);
       const [rows] = await dbConnexion.execute(query);
       return databaseQueryResponse(rows, 'user');
     } catch (error) {

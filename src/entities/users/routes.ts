@@ -35,8 +35,9 @@ usersRoutes.get(USERS_ROUTES.getOptionalInfo, async (req, res) => {
     const { statusCode, response, data } =
       await UsersController.getUserOptionalInfo(auth.data);
     res.status(statusCode).send({ response, data });
+  } else {
+    res.status(401).send('Unauthorized');
   }
-  res.status(401).send('Unauthorized');
 });
 
 usersRoutes.get(USERS_ROUTES.getRole, async (req, res) => {
