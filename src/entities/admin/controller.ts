@@ -5,8 +5,11 @@ import {
   verifyFormDataValidity,
 } from '../common/apiResponses';
 import { ApiResponse } from '../common/constants';
+import { UserAuthData, UserData } from '../users/constants';
+import { UsersController } from '../users/controller';
 import { UsersMutationsService } from '../users/service.mutations';
 import { AdminAuthData, AdminSessionData } from './constants';
+import { AdminMutationsService } from './service.mutations';
 import { AdminQueriesService } from './service.queries';
 
 export class AdminController {
@@ -75,6 +78,66 @@ export class AdminController {
       return databaseQueryError('get protected user info');
     }
     return retreivedUser;
+  };
+
+  static updateMail = async (
+    userInfo: UserAuthData,
+    dbUser: UserData
+  ): Promise<ApiResponse> => {
+    if (!(await this.comparePassword(dbUser.password, userInfo.password))) {
+      return {
+        statusCode: 400,
+        response: 'Mot de passe incorrect.',
+      };
+    }
+    const isSecure = UsersController.verifyUserSignupConformity(userInfo);
+    if (isSecure.statusCode !== 200) {
+      return { ...isSecure, response: "Le nouveau mail n'est pas conforme" };
+    }
+    const modifiedMail = await AdminMutationsService.updateAdminMail(
+      userInfo.email,
+      dbUser.id
+    );
+    if (modifiedMail.statusCode !== 200) {
+      return {
+        statusCode: 400,
+        response: 'Erreur lors du traitement. Veuillez réessayer plus tard',
+      };
+    }
+    return await this.protectedLogin(userInfo);
+  };
+
+  static updatePassword = async (
+    userInfo: any,
+    dbUser: UserData
+  ): Promise<ApiResponse> => {
+    if (!(await this.comparePassword(dbUser.password, userInfo.password))) {
+      return {
+        statusCode: 400,
+        response: 'Mot de passe incorrect.',
+      };
+    }
+    const isSecure = UsersController.verifyUserSignupConformity({
+      email: dbUser.email,
+      password: userInfo.newPassword,
+    });
+    if (isSecure.statusCode !== 200) {
+      return {
+        ...isSecure,
+        response: "Le nouveau mot de passe n'est pas conforme",
+      };
+    }
+    const modifiedPassword = await AdminMutationsService.updateAdminPassword(
+      userInfo.newPassword,
+      dbUser.id
+    );
+    if (modifiedPassword.statusCode !== 200) {
+      return {
+        statusCode: 400,
+        response: 'Erreur lors du traitement. Veuillez réessayer plus tard',
+      };
+    }
+    return modifiedPassword;
   };
 
   private static getProtectedUserSessionInfo = async (

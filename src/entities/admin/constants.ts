@@ -8,3 +8,8 @@ export interface AdminSessionData {
   id: string;
   token: string;
 }
+
+export const ADMIN_ROUTES = {
+  getAuthenticatedProtectedUserFromSession:
+    '/api/get-authenticated-protected-user-from-session',
+};
