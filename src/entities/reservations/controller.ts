@@ -25,6 +25,13 @@ export class ReservationsController {
     return response;
   };
 
+  static getAllReservationsWithAssociatedMail =
+    async (): Promise<ApiResponse> => {
+      const response =
+        await ReservationsQueriesService.getAllReservationsWithAssociatedMail();
+      return response;
+    };
+
   // MUTATIONS
 
   static createReservation = async (

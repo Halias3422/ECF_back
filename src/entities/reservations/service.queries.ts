@@ -5,6 +5,7 @@ import {
   databaseQueryResponse,
 } from '../common/apiResponses';
 import { ApiResponse } from '../common/constants';
+import { USERS_TABLE } from '../users/constants';
 import { RESERVATIONS_TABLE } from './constants';
 
 export class ReservationsQueriesService {
@@ -44,4 +45,28 @@ export class ReservationsQueriesService {
       return databaseQueryError('get user reservations');
     }
   };
+
+  static getAllReservationsWithAssociatedMail =
+    async (): Promise<ApiResponse> => {
+      try {
+        const query = `SELECT ${RESERVATIONS_TABLE.name}.*, ${USERS_TABLE.name}.${USERS_TABLE.columns.email} as userMail FROM ${RESERVATIONS_TABLE.name} LEFT JOIN ${USERS_TABLE.name} ON ${RESERVATIONS_TABLE.name}.${RESERVATIONS_TABLE.columns.userId} = ${USERS_TABLE.name}.${USERS_TABLE.columns.id}`;
+
+        const [rows] = await dbConnexion.execute(query);
+        if (rows.length === 0) {
+          return {
+            statusCode: 200,
+            data: [],
+            response: 'No reservations found',
+          };
+        }
+        return databaseQueryResponse(
+          rows,
+          'get all reservations with associated user mail'
+        );
+      } catch (error) {
+        return databaseQueryError(
+          'get all reservations with associated user mail '
+        );
+      }
+    };
 }
