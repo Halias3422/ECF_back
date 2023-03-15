@@ -56,10 +56,11 @@ CREATE TABLE IF NOT EXISTS Gallery_dishes (
 CREATE TABLE IF NOT EXISTS Reservations (
 	id char(36) DEFAULT (UUID()) PRIMARY KEY,
 	guestNumber INT NOT NULL,
-	date DATE NOT NULL,
+	date VARCHAR(20) NOT NULL,
 	hour VARCHAR(10) NOT NULL,
+	service VARCHAR(20) NOT NULL,
 	allergies VARCHAR(1000) NOT NULL,
-	userId char(36) NOT NULL,
+	userId char(36),
 	Constraint FOREIGN KEY (userId) REFERENCES Users(id)
 );
 
