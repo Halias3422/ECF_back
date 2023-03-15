@@ -86,7 +86,7 @@ export class UsersController {
         response: 'Erreur lors du traitement. Veuillez réessayer plus tard',
       };
     }
-    return modifiedMail;
+    return await this.login(userInfo);
   };
 
   static updatePassword = async (
@@ -121,6 +121,7 @@ export class UsersController {
     }
     return modifiedPassword;
   };
+
   static login = async (userInfo: UserAuthData): Promise<ApiResponse> => {
     const retreivedUser = await UsersQueriesService.getUserByEmail(
       userInfo.email
@@ -267,9 +268,7 @@ export class UsersController {
 	[!@#\$%\^&\*] -> matches any of those special characters
 
 */
-  private static verifyUserSignupConformity = (
-    userInfo: UserAuthData
-  ): ApiResponse => {
+  static verifyUserSignupConformity = (userInfo: UserAuthData): ApiResponse => {
     if (userInfo.email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)) {
       if (
         userInfo.password.length > 7 &&

@@ -1,6 +1,9 @@
 import express from 'express';
 import { AdminController } from '../admin/controller';
-import { verifyUserAuthorization } from '../common/apiResponses';
+import {
+  verifyAuthorization,
+  verifyUserAuthorization,
+} from '../common/apiResponses';
 import { USERS_ROUTES } from './constants';
 import { UsersController } from './controller';
 
@@ -36,10 +39,20 @@ usersRoutes.post(USERS_ROUTES.updateMail, async (req, res) => {
       req.body,
       auth.data[0]
     );
-    res.status(statusCode).send({ response, data });
+    res.status(statusCode).send({ response, ...data });
+    return;
   } else {
-    res.status(401).send('Unauthorized');
+    const protectedAuth = await verifyAuthorization(req);
+    if (protectedAuth.statusCode === 200) {
+      const { statusCode, response, data } = await AdminController.updateMail(
+        req.body,
+        protectedAuth.data[0]
+      );
+      res.status(statusCode).send({ response, ...data });
+      return;
+    }
   }
+  res.status(401).send('Unauthorized');
 });
 
 usersRoutes.post(USERS_ROUTES.updatePassword, async (req, res) => {
@@ -50,9 +63,17 @@ usersRoutes.post(USERS_ROUTES.updatePassword, async (req, res) => {
       auth.data[0]
     );
     res.status(statusCode).send({ response, data });
+    return;
   } else {
-    res.status(401).send('Unauthorized');
+    const protectedAuth = await verifyAuthorization(req);
+    if (protectedAuth.statusCode === 200) {
+      const { statusCode, response, data } =
+        await AdminController.updatePassword(req.body, protectedAuth.data[0]);
+      res.status(statusCode).send({ response, data });
+      return;
+    }
   }
+  res.status(401).send('Unauthorized');
 });
 
 usersRoutes.get(USERS_ROUTES.getOptionalInfo, async (req, res) => {

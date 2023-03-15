@@ -53,13 +53,13 @@ export class UsersMutationsService {
   ): Promise<ApiResponse> => {
     try {
       const mutation = mysql2.format(
-        `UPDATE ${USERS_TABLE.name} SET ${USERS_TABLE.columns.email} = ? WHERE ${USERS_TABLE.columns.id} = ?`,
+        `UPDATE ${USERS_TABLE.name} SET ${USERS_TABLE.columns.email} = ? WHERE ${USERS_TABLE.columns.id} = ? AND ${USERS_TABLE.columns.isAdmin} = 0`,
         [newMail, userId]
       );
       const [rows] = await dbConnexion.execute(mutation);
-      return databaseMutationResponse(rows, 'update user optional data');
+      return databaseMutationResponse(rows, 'update user mail');
     } catch (error) {
-      return databaseMutationError('update user optional data');
+      return databaseMutationError('update user mail');
     }
   };
 
@@ -70,13 +70,13 @@ export class UsersMutationsService {
     try {
       const newHashedPassword = await bcrypt.hash(newPassword, 10);
       const mutation = mysql2.format(
-        `UPDATE ${USERS_TABLE.name} SET ${USERS_TABLE.columns.password} = ? WHERE ${USERS_TABLE.columns.id} = ?`,
+        `UPDATE ${USERS_TABLE.name} SET ${USERS_TABLE.columns.password} = ? WHERE ${USERS_TABLE.columns.id} = ? AND ${USERS_TABLE.columns.isAdmin} = 0`,
         [newHashedPassword, userId]
       );
       const [rows] = await dbConnexion.execute(mutation);
-      return databaseMutationResponse(rows, 'update user optional data');
+      return databaseMutationResponse(rows, 'update user password');
     } catch (error) {
-      return databaseMutationError('update user optional data');
+      return databaseMutationError('update user password');
     }
   };
 
