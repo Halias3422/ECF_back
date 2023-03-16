@@ -7,10 +7,7 @@ export const setupCurrentEnvironment = () => {
   }
 
   dotenv.config({
-    path: path.resolve(
-      __dirname,
-      `../../environment/${process.env.ENVIRONMENT}.env`
-    ),
+    path: path.resolve(__dirname, `../../${process.env.ENVIRONMENT}.env`),
   });
 
   console.log(

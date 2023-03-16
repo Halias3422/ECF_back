@@ -27,4 +27,4 @@
 /public
 
 #env
-/environment/production.env
+production.env
