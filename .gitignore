@@ -28,4 +28,4 @@
 
 #env
 .env
-/app/production.env
+/app/environment/production.env
