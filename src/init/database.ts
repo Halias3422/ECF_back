@@ -1,5 +1,4 @@
 import mysql2 from 'mysql2';
-import bcrypt from 'bcrypt';
 import { USERS_TABLE } from '../entities/users/constants';
 
 const testDatabaseConnexion = async (dbConnexion: any) => {
@@ -32,13 +31,20 @@ const addFirstUser = async (dbConnexion: any) => {
 };
 
 export const initDatabaseConnexion = () => {
+  // const dbConnexion = mysql2
+  //   .createPool({
+  //     host: process.env.DB_HOST,
+  //     user: process.env.DB_USER,
+  //     password: process.env.DB_PASSWORD,
+  //     database: process.env.DB_NAME,
+  //     port: parseInt(process.env.DB_PORT as string),
+  //   })
   const dbConnexion = mysql2
     .createPool({
       host: process.env.DB_HOST,
       user: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      port: parseInt(process.env.DB_PORT as string),
     })
     .promise();
   testDatabaseConnexion(dbConnexion);

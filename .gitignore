@@ -1,31 +1,30 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/app/node_modules
+/node_modules
 
 # next.js
-/app/.next
-/app/dist
+/.next
+/dist
 
 # production
-/app/build
+/build
 
 # misc
-/app/.DS_Store
+/.DS_Store
 
 # debug
-/app/npm-debug.log*
-/app/yarn-debug.log*
-/app/yarn-error.log*
-/app/.pnpm-debug.log*
+/npm-debug.log*
+/yarn-debug.log*
+/yarn-error.log*
+/.pnpm-debug.log*
 
 # typescript
-/app/*.tsbuildinfo
-/app/next-env.d.ts
+/*.tsbuildinfo
+/next-env.d.ts
 
 #images
-/app/public
+/public
 
 #env
-.env
-/app/environment/production.env
+/environment/production.env
