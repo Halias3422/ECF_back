@@ -18,9 +18,8 @@ const addFirstUser = async (dbConnexion: any) => {
     const users = `SELECT * FROM ${USERS_TABLE.name}`;
     const [rows] = await dbConnexion.execute(users);
     if (rows.length === 0) {
-      const hashedPwd = await bcrypt.hash('password@2', 10);
       const insert = mysql2.format(
-        `INSERT INTO ${USERS_TABLE.name} VALUES (DEFAULT, 'admin@mail.com', '${hashedPwd}', NULL, NULL, NULL, true)`
+        `INSERT INTO ${USERS_TABLE.name} VALUES (DEFAULT, 'admin@mail.com', '$2a$10$ibNTirYwGrrMwrJOq0GDje4lYAfKYaXaJV/TtLR4.7VBPHbhLu5eC', NULL, NULL, NULL, true)`
       );
       const [rows] = await dbConnexion.execute(insert);
       if (rows.affectedRows !== 1) {
