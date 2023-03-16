@@ -9,7 +9,7 @@
   "scripts": {
     "prettier": "prettier --write .",
     "dev": "nodemon ./src/index.ts",
-    "start": "ts-node-esm ./src/index.ts",
+    "start": "export ENVIRONMENT=production && ts-node-esm ./src/index.ts",
     "test": "prettier --check . && ENVIRONMENT=test jest --maxWorkers=1 --forceExit --watch"
   },
   "dependencies": {

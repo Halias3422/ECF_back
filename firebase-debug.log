@@ -1,0 +1,21 @@
+[debug] [2023-03-16T13:24:10.658Z] ----------------------------------------------------------------------
+[debug] [2023-03-16T13:24:10.659Z] Command:       /usr/bin/node /usr/bin/firebase init
+[debug] [2023-03-16T13:24:10.659Z] CLI Version:   11.24.1
+[debug] [2023-03-16T13:24:10.659Z] Platform:      linux
+[debug] [2023-03-16T13:24:10.659Z] Node Version:  v19.7.0
+[debug] [2023-03-16T13:24:10.659Z] Time:          Thu Mar 16 2023 14:24:10 GMT+0100 (Central European Standard Time)
+[debug] [2023-03-16T13:24:10.659Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2023-03-16T13:24:10.662Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2023-03-16T13:24:10.662Z] > authorizing via signed-in user (v.desaintexupery@gmail.com)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  /home/halias/Documents/Studi/ECF/repos/ECF_back
+
