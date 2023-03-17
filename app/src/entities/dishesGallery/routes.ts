@@ -1,5 +1,5 @@
 import express from "express";
-import { upload } from "../../index";
+// import { upload } from "../../index";
 import { verifyAuthorization } from "../common/apiResponses";
 import { DISHES_GALLERY_ROUTES } from "./constants";
 import { DishesGalleryController } from "./controller";
@@ -49,36 +49,36 @@ dishesGalleryRoutes.post(
   }
 );
 
-dishesGalleryRoutes.post(
-  DISHES_GALLERY_ROUTES.saveDishGalleryImage,
-  async (req, res) => {
-    const auth = await verifyAuthorization(req);
-    if (auth.statusCode === 200) {
-      upload.dishesGallery(req, res, (error) => {
-        if (error) {
-          return res.status(500).send("Error uploading image ");
-        }
-        return res.status(201).send("New gallery dish saved");
-      });
-    } else {
-      res.status(401).send("Unauthorized");
-    }
-  }
-);
+// dishesGalleryRoutes.post(
+//   DISHES_GALLERY_ROUTES.saveDishGalleryImage,
+//   async (req, res) => {
+//     const auth = await verifyAuthorization(req);
+//     if (auth.statusCode === 200) {
+//       upload.dishesGallery(req, res, (error) => {
+//         if (error) {
+//           return res.status(500).send("Error uploading image ");
+//         }
+//         return res.status(201).send("New gallery dish saved");
+//       });
+//     } else {
+//       res.status(401).send("Unauthorized");
+//     }
+//   }
+// );
 
-dishesGalleryRoutes.post(
-  DISHES_GALLERY_ROUTES.deleteImage,
-  async (req, res) => {
-    const auth = await verifyAuthorization(req);
-    if (auth.statusCode === 200) {
-      const { statusCode, response } =
-        await DishesGalleryController.deleteImage(req.body.image);
-      res.status(statusCode).send(response);
-    } else {
-      res.status(401).send("Unauthorized");
-    }
-  }
-);
+// dishesGalleryRoutes.post(
+//   DISHES_GALLERY_ROUTES.deleteImage,
+//   async (req, res) => {
+//     const auth = await verifyAuthorization(req);
+//     if (auth.statusCode === 200) {
+//       const { statusCode, response } =
+//         await DishesGalleryController.deleteImage(req.body.image);
+//       res.status(statusCode).send(response);
+//     } else {
+//       res.status(401).send("Unauthorized");
+//     }
+//   }
+// );
 
 dishesGalleryRoutes.post(
   DISHES_GALLERY_ROUTES.createNewDishGalleryItem,

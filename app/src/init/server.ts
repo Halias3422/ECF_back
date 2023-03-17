@@ -15,9 +15,6 @@ export const initExpressServer = () => {
     express.json()
   );
 
-  app.set("view engine", "ejs");
-  app.set("views", path.join(__dirname, "../views"));
-
   // init routing
   app.use("/", routes);
 

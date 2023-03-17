@@ -1,0 +1,28 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.routes = void 0;
+const express_1 = __importDefault(require("express"));
+const routes_1 = require("../entities/admin/routes");
+const routes_2 = require("../entities/categories/routes");
+const routes_3 = require("../entities/dishes/routes");
+const routes_4 = require("../entities/dishesGallery/routes");
+const routes_5 = require("../entities/formulas/routes");
+const routes_6 = require("../entities/menus/routes");
+const routes_7 = require("../entities/reservations/routes");
+const routes_8 = require("../entities/restaurant/routes");
+const routes_9 = require("../entities/schedule/routes");
+const routes_10 = require("../entities/users/routes");
+exports.routes = express_1.default.Router();
+exports.routes.use(routes_3.dishesRoutes);
+exports.routes.use(routes_4.dishesGalleryRoutes);
+exports.routes.use(routes_9.scheduleRoutes);
+exports.routes.use(routes_6.menusRoutes);
+exports.routes.use(routes_5.formulasRoutes);
+exports.routes.use(routes_2.categoriesRoutes);
+exports.routes.use(routes_10.usersRoutes);
+exports.routes.use(routes_1.adminRoutes);
+exports.routes.use(routes_8.restaurantRoutes);
+exports.routes.use(routes_7.reservationsRoutes);

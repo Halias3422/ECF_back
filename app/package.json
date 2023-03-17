@@ -8,9 +8,9 @@
   "private": true,
   "scripts": {
     "prettier": "prettier --write .",
-    "dev": "nodemon ./src/index.ts",
     "build": "tsc",
-    "start": "node dist/src/index.js",
+    "dev": "nodemon ./src/index.ts",
+    "start": "export ENVIRONMENT=production && node dist/index.js",
     "test": "prettier --check . && ENVIRONMENT=test jest --maxWorkers=1 --forceExit --watch"
   },
   "dependencies": {
