@@ -1,20 +1,7 @@
 import fs from 'fs';
+import path from 'path';
 import mysql2 from 'mysql2';
 import { USERS_TABLE } from '../entities/users/constants';
-
-const seedDatabase = async (dbConnexion: any) => {
-  const seedQuery = fs.readFileSync('../../init.sql', { encoding: 'utf-8' });
-  try {
-    await dbConnexion.execute(seedQuery);
-    console.log('Database seeded successfully');
-    await testDatabaseConnexion(dbConnexion);
-    await addFirstUser(dbConnexion);
-  } catch (error) {
-    throw new Error(
-      'Error: could not seed the database: ' + JSON.stringify(error)
-    );
-  }
-};
 
 const testDatabaseConnexion = async (dbConnexion: any) => {
   try {
@@ -46,17 +33,19 @@ const addFirstUser = async (dbConnexion: any) => {
 };
 
 export const initDatabaseConnexion = () => {
+  console.log(' DB_HOST = ' + process.env.DB_HOST);
+  console.log('DB_USER = ' + process.env.DB_USER);
+  console.log('DB_PASSWORD = ' + process.env.DB_PASSWORD);
+  console.log('DB_NAME = ' + process.env.DB_NAME);
   const dbConnexion = mysql2
     .createPool({
       host: process.env.DB_HOST,
       user: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      ssl: {
-        rejectUnauthorized: true,
-      },
     })
     .promise();
-  seedDatabase(dbConnexion);
+  testDatabaseConnexion(dbConnexion);
+  addFirstUser(dbConnexion);
   return dbConnexion;
 };

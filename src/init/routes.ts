@@ -12,6 +12,10 @@ import { usersRoutes } from '../entities/users/routes';
 
 export const routes = express.Router();
 
+routes.get('/', async (req, res) => {
+  res.status(200).send('HEALTHCHECK OK');
+});
+
 routes.use(dishesRoutes);
 routes.use(dishesGalleryRoutes);
 routes.use(scheduleRoutes);

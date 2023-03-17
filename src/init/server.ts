@@ -5,6 +5,7 @@ import { routes } from './routes';
 export const initExpressServer = () => {
   const app = express();
 
+  console.log('JE SUIS LA');
   app.use(
     cors({
       origin: '*',
@@ -23,8 +24,10 @@ export const initExpressServer = () => {
   // launch server
   let server = null;
   try {
-    server = app.listen(process.env.SERVER_PORT, () => {
-      console.log('Server is running on port ' + process.env.SERVER_PORT);
+    server = app.listen(process.env.PORT || '5000', () => {
+      console.log(
+        'Server is running on port ' + process.env.SERVER_PORT || 8080
+      );
     });
   } catch (error) {
     console.log('Unexpected Error while initializing server : ' + error);
