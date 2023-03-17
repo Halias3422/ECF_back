@@ -1,11 +1,11 @@
-import mysql2 from 'mysql2';
-import { dbConnexion } from '../..';
+import mysql2 from "mysql2";
+import { dbConnexion } from "../..";
 import {
   databaseMutationError,
   databaseMutationResponse,
-} from '../common/apiResponses';
-import { ApiResponse } from '../common/constants';
-import { FormulaData, FORMULAS_TABLE } from './constants';
+} from "../common/apiResponses";
+import { ApiResponse } from "../common/constants";
+import { FormulaData, FORMULAS_TABLE } from "./constants";
 
 export class FormulasMutationsService {
   static createNewFormula = async (
@@ -15,7 +15,7 @@ export class FormulasMutationsService {
     try {
       const DEFAULT = {
         toSqlString: function () {
-          return 'DEFAULT';
+          return "DEFAULT";
         },
       };
       const mutation = mysql2.format(
@@ -23,9 +23,9 @@ export class FormulasMutationsService {
         [DEFAULT, menuId, formula.title, formula.description, formula.price]
       );
       const [rows] = await dbConnexion.execute(mutation);
-      return databaseMutationResponse(rows, 'create formula');
+      return databaseMutationResponse(rows, "create formula");
     } catch (error: any) {
-      return databaseMutationError('create formula');
+      return databaseMutationError("create formula");
     }
   };
 
@@ -38,9 +38,9 @@ export class FormulasMutationsService {
         [formulaId]
       );
       const [rows] = await dbConnexion.execute(mutation);
-      return databaseMutationResponse(rows, 'delete formula by ID');
+      return databaseMutationResponse(rows, "delete formula by ID");
     } catch (error: any) {
-      return databaseMutationError('delete formula by ID');
+      return databaseMutationError("delete formula by ID");
     }
   };
 
@@ -53,9 +53,9 @@ export class FormulasMutationsService {
         [formula.title, formula.description, formula.price, formula.id]
       );
       const [rows] = await dbConnexion.execute(mutation);
-      return databaseMutationResponse(rows, 'modify formula by ID');
+      return databaseMutationResponse(rows, "modify formula by ID");
     } catch (error: any) {
-      return databaseMutationError('modify formula by ID');
+      return databaseMutationError("modify formula by ID");
     }
   };
 }

@@ -1,11 +1,11 @@
-import mysql2 from 'mysql2';
-import { dbConnexion } from '../..';
+import mysql2 from "mysql2";
+import { dbConnexion } from "../..";
 import {
   databaseQueryError,
   databaseQueryResponse,
-} from '../common/apiResponses';
-import { ApiResponse } from '../common/constants';
-import { FORMULAS_TABLE } from './constants';
+} from "../common/apiResponses";
+import { ApiResponse } from "../common/constants";
+import { FORMULAS_TABLE } from "./constants";
 
 export class FormulasQueriesService {
   static getAllFormulasFromMenuId = async (
@@ -17,9 +17,9 @@ export class FormulasQueriesService {
     );
     try {
       const [rows] = await dbConnexion.execute(query);
-      return databaseQueryResponse(rows, 'get all formulas by menu ID');
+      return databaseQueryResponse(rows, "get all formulas by menu ID");
     } catch (error) {
-      return databaseQueryError('get all formulas by menu ID');
+      return databaseQueryError("get all formulas by menu ID");
     }
   };
 }

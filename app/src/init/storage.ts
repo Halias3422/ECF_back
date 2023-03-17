@@ -1,8 +1,8 @@
-import multer from 'multer';
+import multer from "multer";
 
 export const initDishesGalleryStorage = () => {
   const storage = multer.diskStorage({
-    destination: 'public/dishesGallery/',
+    destination: "public/dishesGallery/",
     filename: (req, file, callback) => {
       callback(null, file.originalname);
     },
@@ -12,7 +12,7 @@ export const initDishesGalleryStorage = () => {
 
 export const initDishesStorage = () => {
   const storage = multer.diskStorage({
-    destination: 'public/dishes/',
+    destination: "public/dishes/",
     filename: (req, file, callback) => {
       callback(null, file.originalname);
     },

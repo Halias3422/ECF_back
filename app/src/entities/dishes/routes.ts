@@ -1,8 +1,8 @@
-import { upload } from '../../index';
-import express from 'express';
-import { verifyAuthorization } from '../common/apiResponses';
-import { DISHES_ROUTES } from './constants';
-import { DishesController } from './controller';
+import { upload } from "../../index";
+import express from "express";
+import { verifyAuthorization } from "../common/apiResponses";
+import { DISHES_ROUTES } from "./constants";
+import { DishesController } from "./controller";
 
 export const dishesRoutes = express.Router();
 
@@ -28,7 +28,7 @@ dishesRoutes.get(
         });
       res.status(statusCode).send(response);
     } else {
-      res.status(400).send('Wrong data sent');
+      res.status(400).send("Wrong data sent");
     }
   }
 );
@@ -43,7 +43,7 @@ dishesRoutes.post(DISHES_ROUTES.createNewDish, async (req, res) => {
     );
     res.status(statusCode).send(response);
   } else {
-    res.status(401).send('Unauthorized');
+    res.status(401).send("Unauthorized");
   }
 });
 
@@ -55,7 +55,7 @@ dishesRoutes.post(DISHES_ROUTES.deleteDishItem, async (req, res) => {
     );
     res.status(statusCode).send(response);
   } else {
-    res.status(401).send('Unauthorized');
+    res.status(401).send("Unauthorized");
   }
 });
 
@@ -64,12 +64,12 @@ dishesRoutes.post(DISHES_ROUTES.saveDishImage, async (req, res) => {
   if (auth.statusCode === 200) {
     upload.dishes(req, res, (error) => {
       if (error) {
-        return res.status(500).send('Error uploading image ');
+        return res.status(500).send("Error uploading image ");
       }
-      return res.status(201).send('New dish saved');
+      return res.status(201).send("New dish saved");
     });
   } else {
-    res.status(401).send('Unauthorized');
+    res.status(401).send("Unauthorized");
   }
 });
 
@@ -81,7 +81,7 @@ dishesRoutes.post(DISHES_ROUTES.deleteImage, async (req, res) => {
     );
     res.status(statusCode).send(response);
   } else {
-    res.status(401).send('Unauthorized');
+    res.status(401).send("Unauthorized");
   }
 });
 
@@ -93,6 +93,6 @@ dishesRoutes.post(DISHES_ROUTES.modifyDishItem, async (req, res) => {
     );
     res.status(statusCode).send(response);
   } else {
-    res.status(401).send('Unauthorized');
+    res.status(401).send("Unauthorized");
   }
 });

@@ -1,10 +1,10 @@
-import { dbConnexion } from '../..';
+import { dbConnexion } from "../..";
 import {
   databaseQueryError,
   databaseQueryResponse,
-} from '../common/apiResponses';
-import { ApiResponse } from '../common/constants';
-import { SCHEDULE_TABLE } from './constants';
+} from "../common/apiResponses";
+import { ApiResponse } from "../common/constants";
+import { SCHEDULE_TABLE } from "./constants";
 
 export class ScheduleQueriesService {
   static getWeekSchedule = async (): Promise<ApiResponse> => {
@@ -12,9 +12,9 @@ export class ScheduleQueriesService {
 
     try {
       const [rows] = await dbConnexion.execute(query);
-      return databaseQueryResponse(rows, 'get week schedule');
+      return databaseQueryResponse(rows, "get week schedule");
     } catch (error) {
-      return databaseQueryError('get week schedule');
+      return databaseQueryError("get week schedule");
     }
   };
 }

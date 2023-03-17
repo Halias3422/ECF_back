@@ -1,8 +1,8 @@
-import path from 'path';
-import { initDatabaseConnexion } from './init/database';
-import { setupCurrentEnvironment } from './init/environment';
-import { initExpressServer } from './init/server';
-import { initDishesGalleryStorage, initDishesStorage } from './init/storage';
+import path from "path";
+import { initDatabaseConnexion } from "./init/database";
+import { setupCurrentEnvironment } from "./init/environment";
+import { initExpressServer } from "./init/server";
+import { initDishesGalleryStorage, initDishesStorage } from "./init/storage";
 
 setupCurrentEnvironment();
 
@@ -12,4 +12,4 @@ export const upload = {
   dishes: initDishesStorage(),
 };
 export const dbConnexion = initDatabaseConnexion();
-export const rootDirectory = path.resolve(__dirname + '/..');
+export const rootDirectory = path.resolve(__dirname + "/..");

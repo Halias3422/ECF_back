@@ -1,11 +1,11 @@
-import mysql2 from 'mysql2';
-import { dbConnexion } from '../..';
+import mysql2 from "mysql2";
+import { dbConnexion } from "../..";
 import {
   databaseQueryError,
   databaseQueryResponse,
-} from '../common/apiResponses';
-import { ApiResponse } from '../common/constants';
-import { DISHES_TABLE, DishFormData } from './constants';
+} from "../common/apiResponses";
+import { ApiResponse } from "../common/constants";
+import { DISHES_TABLE, DishFormData } from "./constants";
 
 export class DishesQueriesService {
   static getDishByTitle = async (dishTitle: string): Promise<ApiResponse> => {
@@ -15,9 +15,9 @@ export class DishesQueriesService {
     );
     try {
       const [rows] = await dbConnexion.execute(query);
-      return databaseQueryResponse(rows, 'get dish by title');
+      return databaseQueryResponse(rows, "get dish by title");
     } catch (error) {
-      return databaseQueryError('get dish by title');
+      return databaseQueryError("get dish by title");
     }
   };
 
@@ -26,9 +26,9 @@ export class DishesQueriesService {
 
     try {
       const [rows] = await dbConnexion.execute(query);
-      return databaseQueryResponse(rows, 'get all dishes');
+      return databaseQueryResponse(rows, "get all dishes");
     } catch (error) {
-      return databaseQueryError('get all dishes');
+      return databaseQueryError("get all dishes");
     }
   };
 
@@ -49,9 +49,9 @@ export class DishesQueriesService {
       const [rows] = await dbConnexion.execute(query);
       if (rows.length > 0) {
       }
-      return databaseQueryResponse(rows, 'get dish by image or title');
+      return databaseQueryResponse(rows, "get dish by image or title");
     } catch (error) {
-      return databaseQueryError('get gallery dish by image or title');
+      return databaseQueryError("get gallery dish by image or title");
     }
   };
 }

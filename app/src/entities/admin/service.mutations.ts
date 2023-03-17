@@ -1,12 +1,12 @@
-import mysql2 from 'mysql2';
-import * as bcrypt from 'bcrypt';
-import { dbConnexion } from '../..';
+import mysql2 from "mysql2";
+import * as bcrypt from "bcrypt";
+import { dbConnexion } from "../..";
 import {
   databaseMutationError,
   databaseMutationResponse,
-} from '../common/apiResponses';
-import { ApiResponse } from '../common/constants';
-import { USERS_TABLE } from '../users/constants';
+} from "../common/apiResponses";
+import { ApiResponse } from "../common/constants";
+import { USERS_TABLE } from "../users/constants";
 
 export class AdminMutationsService {
   static updateAdminMail = async (
@@ -19,9 +19,9 @@ export class AdminMutationsService {
         [newMail, userId]
       );
       const [rows] = await dbConnexion.execute(mutation);
-      return databaseMutationResponse(rows, 'update user mail');
+      return databaseMutationResponse(rows, "update user mail");
     } catch (error) {
-      return databaseMutationError('update user mail');
+      return databaseMutationError("update user mail");
     }
   };
 
@@ -36,9 +36,9 @@ export class AdminMutationsService {
         [newHashedPassword, userId]
       );
       const [rows] = await dbConnexion.execute(mutation);
-      return databaseMutationResponse(rows, 'update user password');
+      return databaseMutationResponse(rows, "update user password");
     } catch (error) {
-      return databaseMutationError('update user password');
+      return databaseMutationError("update user password");
     }
   };
 }

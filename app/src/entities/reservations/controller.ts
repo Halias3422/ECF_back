@@ -1,9 +1,9 @@
-import { ApiResponse } from '../common/constants';
-import { UserData } from '../users/constants';
-import { UsersController } from '../users/controller';
-import { ReservationData } from './constants';
-import { ReservationsMutationsService } from './service.mutations';
-import { ReservationsQueriesService } from './service.queries';
+import { ApiResponse } from "../common/constants";
+import { UserData } from "../users/constants";
+import { UsersController } from "../users/controller";
+import { ReservationData } from "./constants";
+import { ReservationsMutationsService } from "./service.mutations";
+import { ReservationsQueriesService } from "./service.queries";
 
 export class ReservationsController {
   //QUERIES
@@ -40,7 +40,7 @@ export class ReservationsController {
   ): Promise<ApiResponse> => {
     let retreivedUser;
     if (userSession) {
-      const userSessionInfo = userSession.split(':');
+      const userSessionInfo = userSession.split(":");
       retreivedUser = await UsersController.getAuthenticatedUserFromSession({
         id: userSessionInfo[0],
         token: userSessionInfo[1],

@@ -1,11 +1,11 @@
-import mysql2 from 'mysql2';
-import { dbConnexion } from '../..';
+import mysql2 from "mysql2";
+import { dbConnexion } from "../..";
 import {
   databaseQueryError,
   databaseQueryResponse,
-} from '../common/apiResponses';
-import { ApiResponse } from '../common/constants';
-import { USERS_TABLE } from '../users/constants';
+} from "../common/apiResponses";
+import { ApiResponse } from "../common/constants";
+import { USERS_TABLE } from "../users/constants";
 
 export class AdminQueriesService {
   static getProtectedUserByEmail = async (
@@ -17,9 +17,9 @@ export class AdminQueriesService {
         [email]
       );
       const [rows] = await dbConnexion.execute(query);
-      return databaseQueryResponse(rows, 'user');
+      return databaseQueryResponse(rows, "user");
     } catch (error) {
-      return databaseQueryError('get user');
+      return databaseQueryError("get user");
     }
   };
 
@@ -32,9 +32,9 @@ export class AdminQueriesService {
         [token]
       );
       const [rows] = await dbConnexion.execute(query);
-      return databaseQueryResponse(rows, 'protected user');
+      return databaseQueryResponse(rows, "protected user");
     } catch (error) {
-      return databaseQueryError('get protected user');
+      return databaseQueryError("get protected user");
     }
   };
 }

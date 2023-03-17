@@ -1,6 +1,6 @@
-import { ApiResponse } from '../common/constants';
-import { RestaurantMutationsService } from './service.mutations';
-import { RestaurantQueriesService } from './service.queries';
+import { ApiResponse } from "../common/constants";
+import { RestaurantMutationsService } from "./service.mutations";
+import { RestaurantQueriesService } from "./service.queries";
 
 export class RestaurantController {
   // QUERIES

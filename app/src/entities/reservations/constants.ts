@@ -1,21 +1,21 @@
 export const RESERVATIONS_ROUTES = {
-  getAllPartialReservationsByDate: '/api/get-all-partial-reservations-by-date',
-  createReservation: '/api/create-reservation',
-  getUserReservations: '/api/get-user-reservations',
+  getAllPartialReservationsByDate: "/api/get-all-partial-reservations-by-date",
+  createReservation: "/api/create-reservation",
+  getUserReservations: "/api/get-user-reservations",
   getAllReservationsWithAssociatedMail:
-    '/api/get-all-reservations-with-associated-mail',
+    "/api/get-all-reservations-with-associated-mail",
 };
 
 export const RESERVATIONS_TABLE = {
-  name: 'Reservations',
+  name: "Reservations",
   columns: {
-    id: 'id',
-    guestNumber: 'guestNumber',
-    date: 'date',
-    hour: 'hour',
-    service: 'service',
-    allergies: 'allergies',
-    userId: 'userId',
+    id: "id",
+    guestNumber: "guestNumber",
+    date: "date",
+    hour: "hour",
+    service: "service",
+    allergies: "allergies",
+    userId: "userId",
   },
 };
 

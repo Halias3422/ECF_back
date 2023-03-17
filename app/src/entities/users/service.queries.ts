@@ -1,11 +1,11 @@
-import mysql2 from 'mysql2';
-import { dbConnexion } from '../..';
+import mysql2 from "mysql2";
+import { dbConnexion } from "../..";
 import {
   databaseQueryError,
   databaseQueryResponse,
-} from '../common/apiResponses';
-import { ApiResponse } from '../common/constants';
-import { USERS_TABLE } from './constants';
+} from "../common/apiResponses";
+import { ApiResponse } from "../common/constants";
+import { USERS_TABLE } from "./constants";
 
 export class UsersQueriesService {
   static getUserByEmail = async (email: string): Promise<ApiResponse> => {
@@ -15,9 +15,9 @@ export class UsersQueriesService {
         [email]
       );
       const [rows] = await dbConnexion.execute(query);
-      return databaseQueryResponse(rows, 'user');
+      return databaseQueryResponse(rows, "user");
     } catch (error) {
-      return databaseQueryError('get user');
+      return databaseQueryError("get user");
     }
   };
 
@@ -30,9 +30,9 @@ export class UsersQueriesService {
         [sessionToken]
       );
       const [rows] = await dbConnexion.execute(query);
-      return databaseQueryResponse(rows, 'user');
+      return databaseQueryResponse(rows, "user");
     } catch (error) {
-      return databaseQueryError('get user');
+      return databaseQueryError("get user");
     }
   };
 }

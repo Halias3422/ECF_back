@@ -1,11 +1,11 @@
-import mysql2 from 'mysql2';
-import { dbConnexion } from '../..';
+import mysql2 from "mysql2";
+import { dbConnexion } from "../..";
 import {
   databaseMutationError,
   databaseMutationResponse,
-} from '../common/apiResponses';
-import { ApiResponse } from '../common/constants';
-import { ReservationData, RESERVATIONS_TABLE } from './constants';
+} from "../common/apiResponses";
+import { ApiResponse } from "../common/constants";
+import { ReservationData, RESERVATIONS_TABLE } from "./constants";
 
 export class ReservationsMutationsService {
   static createReservation = async (
@@ -15,7 +15,7 @@ export class ReservationsMutationsService {
     try {
       const DEFAULT = {
         toSqlString: function () {
-          return 'DEFAULT';
+          return "DEFAULT";
         },
       };
       const mutation = mysql2.format(
@@ -31,9 +31,9 @@ export class ReservationsMutationsService {
         ]
       );
       const [rows] = await dbConnexion.execute(mutation);
-      return databaseMutationResponse(rows, 'create new reservation');
+      return databaseMutationResponse(rows, "create new reservation");
     } catch (error) {
-      return databaseMutationError('create new reservation');
+      return databaseMutationError("create new reservation");
     }
   };
 }

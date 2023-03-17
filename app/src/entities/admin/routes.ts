@@ -1,6 +1,6 @@
-import express from 'express';
-import { verifyAuthorization } from '../common/apiResponses';
-import { ADMIN_ROUTES } from './constants';
+import express from "express";
+import { verifyAuthorization } from "../common/apiResponses";
+import { ADMIN_ROUTES } from "./constants";
 
 export const adminRoutes = express.Router();
 

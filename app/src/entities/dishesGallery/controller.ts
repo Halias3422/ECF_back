@@ -1,15 +1,15 @@
-import { promises as fs } from 'fs';
-import { rootDirectory } from '../..';
+import { promises as fs } from "fs";
+import { rootDirectory } from "../..";
 import {
   databaseMutationError,
   databaseMutationResponse,
   databaseQueryResponse,
   verifyFormDataValidity,
-} from '../common/apiResponses';
-import { ApiResponse } from '../common/constants';
-import { DishesGalleryFormData } from './constants';
-import { DishesGalleryMutationsService } from './service.mutations';
-import { DishesGalleryQueriesService } from './service.queries';
+} from "../common/apiResponses";
+import { ApiResponse } from "../common/constants";
+import { DishesGalleryFormData } from "./constants";
+import { DishesGalleryMutationsService } from "./service.mutations";
+import { DishesGalleryQueriesService } from "./service.queries";
 
 export class DishesGalleryController {
   static getAllDishesGallery = async (): Promise<ApiResponse> => {
@@ -35,7 +35,7 @@ export class DishesGalleryController {
   static verifyIfDuplicateTitleOrImage = async (
     dish: DishesGalleryFormData
   ): Promise<ApiResponse> => {
-    const isValid = verifyFormDataValidity(dish, ['title', 'image']);
+    const isValid = verifyFormDataValidity(dish, ["title", "image"]);
     if (isValid.statusCode !== 200) {
       return isValid;
     }
@@ -45,10 +45,10 @@ export class DishesGalleryController {
       return {
         statusCode: 400,
         data: isDuplicate.data,
-        response: 'title or image already exists',
+        response: "title or image already exists",
       };
     }
-    return databaseQueryResponse(['a', 'b'], 'new item is not a duplicate');
+    return databaseQueryResponse(["a", "b"], "new item is not a duplicate");
   };
 
   // PROTECTED
@@ -56,7 +56,7 @@ export class DishesGalleryController {
   static createDishGalleryItem = async (
     dish: DishesGalleryFormData
   ): Promise<ApiResponse> => {
-    const isValid = verifyFormDataValidity(dish, ['title', 'image']);
+    const isValid = verifyFormDataValidity(dish, ["title", "image"]);
     if (isValid.statusCode !== 200) {
       return isValid;
     }
@@ -71,7 +71,7 @@ export class DishesGalleryController {
   static modifyDishGalleryItem = async (
     dish: DishesGalleryFormData
   ): Promise<ApiResponse> => {
-    const isValid = verifyFormDataValidity(dish, ['id', 'title', 'image']);
+    const isValid = verifyFormDataValidity(dish, ["id", "title", "image"]);
     if (!dish.id || isValid.statusCode !== 200) {
       return isValid;
     }
@@ -83,7 +83,7 @@ export class DishesGalleryController {
   static deleteDishGalleryItem = async (
     dish: DishesGalleryFormData
   ): Promise<ApiResponse> => {
-    const isValid = verifyFormDataValidity(dish, ['id', 'title', 'image']);
+    const isValid = verifyFormDataValidity(dish, ["id", "title", "image"]);
     if (!dish.id || isValid.statusCode !== 200) {
       return isValid;
     }
@@ -94,13 +94,13 @@ export class DishesGalleryController {
 
   static deleteImage = async (imageName: string): Promise<ApiResponse> => {
     try {
-      await fs.unlink(rootDirectory + '/public/dishesGallery/' + imageName);
+      await fs.unlink(rootDirectory + "/public/dishesGallery/" + imageName);
     } catch (error) {
-      return databaseMutationError('delete dish gallery image');
+      return databaseMutationError("delete dish gallery image");
     }
     return databaseMutationResponse(
       { affectedRows: 1 },
-      'delete dish gallery image'
+      "delete dish gallery image"
     );
   };
 }

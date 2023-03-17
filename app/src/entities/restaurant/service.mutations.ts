@@ -1,11 +1,11 @@
-import mysql2 from 'mysql2';
-import { dbConnexion } from '../..';
+import mysql2 from "mysql2";
+import { dbConnexion } from "../..";
 import {
   databaseMutationError,
   databaseMutationResponse,
-} from '../common/apiResponses';
-import { ApiResponse } from '../common/constants';
-import { RESTAURANT_TABLE } from './constants';
+} from "../common/apiResponses";
+import { ApiResponse } from "../common/constants";
+import { RESTAURANT_TABLE } from "./constants";
 
 export class RestaurantMutationsService {
   static modifySeatsCapacity = async (
@@ -17,9 +17,9 @@ export class RestaurantMutationsService {
         [newNumber]
       );
       const [rows] = await dbConnexion.execute(mutation);
-      return databaseMutationResponse(rows, 'modify seats capacity');
+      return databaseMutationResponse(rows, "modify seats capacity");
     } catch (error) {
-      return databaseMutationError('modify seats capacity');
+      return databaseMutationError("modify seats capacity");
     }
   };
 }

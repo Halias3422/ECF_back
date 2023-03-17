@@ -1,10 +1,10 @@
-import express from 'express';
+import express from "express";
 import {
   verifyAuthorization,
   verifyUserAuthorization,
-} from '../common/apiResponses';
-import { RESERVATIONS_ROUTES } from './constants';
-import { ReservationsController } from './controller';
+} from "../common/apiResponses";
+import { RESERVATIONS_ROUTES } from "./constants";
+import { ReservationsController } from "./controller";
 
 export const reservationsRoutes = express.Router();
 
@@ -41,7 +41,7 @@ reservationsRoutes.get(
         await ReservationsController.getUserReservations(auth.data[0]);
       res.status(statusCode).send({ response, data });
     } else {
-      res.status(401).send('Unauthorized');
+      res.status(401).send("Unauthorized");
     }
   }
 );
@@ -55,7 +55,7 @@ reservationsRoutes.get(
         await ReservationsController.getAllReservationsWithAssociatedMail();
       res.status(statusCode).send({ response, data });
     } else {
-      res.status(401).send('Unauthorized');
+      res.status(401).send("Unauthorized");
     }
   }
 );

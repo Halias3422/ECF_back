@@ -1,16 +1,16 @@
-import mysql2 from 'mysql2';
-import { dbConnexion } from '../..';
+import mysql2 from "mysql2";
+import { dbConnexion } from "../..";
 import {
   databaseMutationError,
   databaseMutationResponse,
-} from '../common/apiResponses';
-import { DishesGalleryFormData, DISHES_GALLERY_TABLE } from './constants';
+} from "../common/apiResponses";
+import { DishesGalleryFormData, DISHES_GALLERY_TABLE } from "./constants";
 
 export class DishesGalleryMutationsService {
   static createDishGalleryItem = async (dish: DishesGalleryFormData) => {
     const DEFAULT = {
       toSqlString: function () {
-        return 'DEFAULT';
+        return "DEFAULT";
       },
     };
     try {
@@ -19,9 +19,9 @@ export class DishesGalleryMutationsService {
         [DEFAULT, dish.title, dish.image]
       );
       const [rows] = await dbConnexion.execute(mutation);
-      return databaseMutationResponse(rows, 'create gallery dish item');
+      return databaseMutationResponse(rows, "create gallery dish item");
     } catch (error: any) {
-      return databaseMutationError('create gallery dish item');
+      return databaseMutationError("create gallery dish item");
     }
   };
 
@@ -32,9 +32,9 @@ export class DishesGalleryMutationsService {
         [dish.title, dish.image, dish.id]
       );
       const [rows] = await dbConnexion.execute(mutation);
-      return databaseMutationResponse(rows, 'modify gallery dish item');
+      return databaseMutationResponse(rows, "modify gallery dish item");
     } catch (error: any) {
-      return databaseMutationError('modify gallery dish item');
+      return databaseMutationError("modify gallery dish item");
     }
   };
 
@@ -45,9 +45,9 @@ export class DishesGalleryMutationsService {
         [dishId]
       );
       const [rows] = await dbConnexion.execute(mutation);
-      return databaseMutationResponse(rows, 'delete gallery dish item');
+      return databaseMutationResponse(rows, "delete gallery dish item");
     } catch (error: any) {
-      return databaseMutationError('delete gallery dish item');
+      return databaseMutationError("delete gallery dish item");
     }
   };
 }
