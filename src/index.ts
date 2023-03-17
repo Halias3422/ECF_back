@@ -13,3 +13,4 @@ export const upload = {
 };
 export const dbConnexion = initDatabaseConnexion();
 export const rootDirectory = path.resolve(__dirname + '/..');
+console.log('still here');
