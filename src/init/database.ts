@@ -25,6 +25,8 @@ const addFirstUser = async (dbConnexion: any) => {
       const [rows] = await dbConnexion.execute(insert);
       if (rows.affectedRows !== 1) {
         throw new Error('Error creating first user');
+      } else {
+        ('First user created.');
       }
     }
   } catch (error) {

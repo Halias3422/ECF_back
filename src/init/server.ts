@@ -5,11 +5,14 @@ import { routes } from './routes';
 export const initExpressServer = () => {
   const app = express();
 
+  const corsOptions = {
+    AccessControlAllowOrigin: '*',
+    origin: '*',
+    methods: 'GET, HEAD, PUT, PATCH, POST, DELETE, OPTIONS',
+  };
   console.log('JE SUIS LA');
   app.use(
-    cors({
-      origin: '*',
-    }),
+    cors(corsOptions),
     // necessary to handle incoming data
     express.urlencoded({ extended: true }),
     express.json()
