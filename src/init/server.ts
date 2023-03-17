@@ -24,7 +24,7 @@ export const initExpressServer = () => {
   // launch server
   let server = null;
   try {
-    server = app.listen(process.env.PORT || '5000', () => {
+    server = app.listen(process.env.SERVER_PORT || '5000', () => {
       console.log(
         'Server is running on port ' + process.env.SERVER_PORT || 8080
       );
