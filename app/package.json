@@ -7,7 +7,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-		"install": "yarn install --production"
+		"install": "yarn install --production",
     "prettier": "prettier --write .",
     "dev": "nodemon ./src/index.ts",
     "start": "export ENVIRONMENT=production && ts-node-esm ./src/index.ts",
