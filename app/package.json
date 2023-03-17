@@ -7,10 +7,10 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "install": "yarn --production --ignore-scripts",
     "prettier": "prettier --write .",
     "dev": "nodemon ./src/index.ts",
-    "start": "export ENVIRONMENT=production && ts-node-esm ./src/index.ts",
+    "build": "tsc",
+    "start": "node dist/src/index.js",
     "test": "prettier --check . && ENVIRONMENT=test jest --maxWorkers=1 --forceExit --watch"
   },
   "dependencies": {
@@ -22,7 +22,8 @@
     "express": "^4.18.2",
     "multer": "^1.4.5-lts.1",
     "mysql2": "^3.1.2",
-    "ts-node": "^10.9.1"
+    "ts-node": "^10.9.1",
+    "tsc": "^2.0.4"
   },
   "devDependencies": {
     "@types/cors": "^2.8.13",
