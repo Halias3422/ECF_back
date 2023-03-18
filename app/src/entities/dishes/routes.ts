@@ -1,5 +1,5 @@
 import express from "express";
-import { upload } from "../../index";
+import { uploadImage } from "../../index";
 import { verifyAuthorization } from "../common/apiResponses";
 import { DISHES_ROUTES } from "./constants";
 import { DishesController } from "./controller";
@@ -62,7 +62,7 @@ dishesRoutes.post(DISHES_ROUTES.deleteDishItem, async (req, res) => {
 dishesRoutes.post(DISHES_ROUTES.saveDishImage, async (req, res) => {
   const auth = await verifyAuthorization(req);
   if (auth.statusCode === 200) {
-    upload.dishes(req, res, async (error) => {
+    uploadImage(req, res, async (error) => {
       if (error) {
         return res.status(500).send("Error uploading image: " + error);
       }

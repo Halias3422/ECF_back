@@ -11,7 +11,7 @@ export const initStorage = () => {
   });
 };
 
-export const uploadDishImage = () => {
+export const initUploadImage = () => {
   const storage = multer.memoryStorage();
   return multer({ storage: storage }).single("image");
 };

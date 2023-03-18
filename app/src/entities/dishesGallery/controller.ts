@@ -1,6 +1,11 @@
+import {
+  DeleteObjectCommand,
+  DeleteObjectCommandInput,
+  PutObjectCommand,
+  PutObjectCommandInput,
+} from "@aws-sdk/client-s3";
 import { promises as fs } from "fs";
-import { rootDirectory } from "../..";
-// import { uploadImage } from "../../init/storage";
+import { rootDirectory, storage } from "../..";
 import {
   databaseMutationError,
   databaseMutationResponse,
@@ -8,7 +13,6 @@ import {
   verifyFormDataValidity,
 } from "../common/apiResponses";
 import { ApiResponse } from "../common/constants";
-import { DishImageData } from "../dishes/constants";
 import { DishesGalleryFormData } from "./constants";
 import { DishesGalleryMutationsService } from "./service.mutations";
 import { DishesGalleryQueriesService } from "./service.queries";
@@ -53,20 +57,39 @@ export class DishesGalleryController {
     return databaseQueryResponse(["a", "b"], "new item is not a duplicate");
   };
 
-  // static saveDishGalleryImage = async (
-  //   image: DishImageData
-  // ): Promise<ApiResponse> => {
-  //   const response = await uploadImage(image);
-  //   if (response) {
-  //     return databaseMutationResponse(
-  //       { affectedRows: 1 },
-  //       "save dish gallery image"
-  //     );
-  //   }
-  //   return databaseMutationError("save dish gallery image");
-  // };
-
   // PROTECTED
+
+  static saveDishGalleryImage = async (
+    dishImage: any
+  ): Promise<ApiResponse> => {
+    const params: PutObjectCommandInput = {
+      Bucket: process.env.AWS_BUCKET_NAME,
+      Key: "dishesGallery/DISHESGALLERY_" + dishImage.originalname,
+      Body: dishImage.buffer,
+      ACL: "public-read",
+    };
+    try {
+      await storage.send(new PutObjectCommand(params));
+      return { statusCode: 201, response: "dish gallery image saved" };
+    } catch (error) {
+      return databaseMutationError("save dish gallery image" + error);
+    }
+  };
+
+  static deleteDishGalleryImage = async (
+    imageName: string
+  ): Promise<ApiResponse> => {
+    const deleteParams: DeleteObjectCommandInput = {
+      Bucket: process.env.AWS_BUCKET_NAME,
+      Key: "dishesGallery/DISHESGALLERY_" + imageName,
+    };
+    try {
+      await storage.send(new DeleteObjectCommand(deleteParams));
+      return { statusCode: 200, response: "dish gallery image deleted" };
+    } catch (error) {
+      return databaseMutationError("delete dish gallery image" + error);
+    }
+  };
 
   static createDishGalleryItem = async (
     dish: DishesGalleryFormData
