@@ -1,4 +1,5 @@
 import express from "express";
+import { uploadImage } from "../../index";
 import { verifyAuthorization } from "../common/apiResponses";
 import { DISHES_ROUTES } from "./constants";
 import { DishesController } from "./controller";
@@ -61,7 +62,24 @@ dishesRoutes.post(DISHES_ROUTES.deleteDishItem, async (req, res) => {
 dishesRoutes.post(DISHES_ROUTES.saveDishImage, async (req, res) => {
   const auth = await verifyAuthorization(req);
   if (auth.statusCode === 200) {
-    const { statusCode, response } = await DishesController.saveDishImage(
+    uploadImage(req, res, async (error) => {
+      if (error) {
+        return res.status(500).send("Error uploading image: " + error);
+      }
+      const { statusCode, response } = await DishesController.saveDishImage(
+        req.file
+      );
+      return res.status(statusCode).send(response);
+    });
+  } else {
+    res.status(401).send("Unauthorized");
+  }
+});
+
+dishesRoutes.post(DISHES_ROUTES.deleteDishImage, async (req, res) => {
+  const auth = await verifyAuthorization(req);
+  if (auth.statusCode === 200) {
+    const { statusCode, response } = await DishesController.deleteDishImage(
       req.body
     );
     res.status(statusCode).send(response);
@@ -69,31 +87,6 @@ dishesRoutes.post(DISHES_ROUTES.saveDishImage, async (req, res) => {
     res.status(401).send("Unauthorized");
   }
 });
-// dishesRoutes.post(DISHES_ROUTES.saveDishImage, async (req, res) => {
-//   const auth = await verifyAuthorization(req);
-//   if (auth.statusCode === 200) {
-//     upload.dishes(req, res, (error) => {
-//       if (error) {
-//         return res.status(500).send("Error uploading image ");
-//       }
-//       return res.status(201).send("New dish saved");
-//     });
-//   } else {
-//     res.status(401).send("Unauthorized");
-//   }
-// });
-
-// dishesRoutes.post(DISHES_ROUTES.deleteImage, async (req, res) => {
-//   const auth = await verifyAuthorization(req);
-//   if (auth.statusCode === 200) {
-//     const { statusCode, response } = await DishesController.deleteImage(
-//       req.body.image
-//     );
-//     res.status(statusCode).send(response);
-//   } else {
-//     res.status(401).send("Unauthorized");
-//   }
-// });
 
 dishesRoutes.post(DISHES_ROUTES.modifyDishItem, async (req, res) => {
   const auth = await verifyAuthorization(req);

@@ -33,7 +33,7 @@ describe("Verify dishesGallery protected endpoints", () => {
 
   it("endpoint: deleteImage", async () => {
     const res = await request(server)
-      .post(DISHES_GALLERY_ROUTES.deleteImage)
+      .post(DISHES_GALLERY_ROUTES.deleteDishGalleryImage)
       .send({ image: "fake-image.jpg" });
     expect(res.statusCode).toEqual(401);
   });

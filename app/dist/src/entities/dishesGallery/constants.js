@@ -8,7 +8,7 @@ exports.DISHES_GALLERY_ROUTES = {
     createNewDishGalleryItem: "/api/create-new-dish-gallery-item",
     saveDishGalleryImage: "/api/save-dish-gallery-image",
     modifyDishGalleryItem: "/api/modify-dish-gallery-item",
-    deleteImage: "/api/delete-dish-gallery-image",
+    deleteDishGalleryImage: "/api/delete-dish-gallery-image",
     verifyIfDuplicateTitleOrImage: "/api/dish-gallery-verify-duplicate-title-or-image",
 };
 exports.DISHES_GALLERY_TABLE = {

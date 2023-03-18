@@ -48,7 +48,7 @@ describe("Dishes verify authorization for protected endpoints", () => {
 
   it("endpoint: delete image", async () => {
     const res = await request(server)
-      .post(DISHES_ROUTES.deleteImage)
+      .post(DISHES_ROUTES.deleteDishImage)
       .send("toto");
     expect(res.statusCode).toEqual(401);
   });

@@ -62,7 +62,7 @@ describe("Verify dishesGallery protected endpoints", () => {
     }));
     it("endpoint: deleteImage", () => __awaiter(void 0, void 0, void 0, function* () {
         const res = yield (0, supertest_1.default)(src_1.server)
-            .post(constants_1.DISHES_GALLERY_ROUTES.deleteImage)
+            .post(constants_1.DISHES_GALLERY_ROUTES.deleteDishGalleryImage)
             .send({ image: "fake-image.jpg" });
         expect(res.statusCode).toEqual(401);
     }));
