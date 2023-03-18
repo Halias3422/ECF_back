@@ -1,3 +1,9 @@
+import {
+  DeleteObjectCommand,
+  DeleteObjectCommandInput,
+  PutObjectCommand,
+  PutObjectCommandInput,
+} from "@aws-sdk/client-s3";
 import { promises as fs } from "fs";
 import { rootDirectory, storage } from "../..";
 import { CategoriesController } from "../categories/controller";
@@ -54,14 +60,32 @@ export class DishesController {
     return deletedDish;
   };
 
-  static saveDishImage = async (dishImage: FormDataEntryValue) => {
+  static saveDishImage = async (dishImage: any): Promise<ApiResponse> => {
+    const params: PutObjectCommandInput = {
+      Bucket: process.env.AWS_BUCKET_NAME,
+      Key: "dishes/DISHES_" + dishImage.originalname,
+      Body: dishImage.buffer,
+      ACL: "public-read",
+    };
     try {
-      console.log("dishImage = " + JSON.stringify(dishImage));
-      // await storage.putObject({})
+      await storage.send(new PutObjectCommand(params));
+      return { statusCode: 201, response: "dish image saved" };
     } catch (error) {
-      return databaseMutationError("save dish image " + error);
+      return databaseMutationError("save dish image" + error);
     }
-    return { statusCode: 200, response: "OK" };
+  };
+
+  static deleteDishImage = async (imageName: string): Promise<ApiResponse> => {
+    const deleteParams: DeleteObjectCommandInput = {
+      Bucket: process.env.AWS_BUCKET_NAME,
+      Key: "dishes/DISHES_" + imageName,
+    };
+    try {
+      await storage.send(new DeleteObjectCommand(deleteParams));
+      return { statusCode: 200, response: "dish image deleted" };
+    } catch (error) {
+      return databaseMutationError("delete dish image" + error);
+    }
   };
 
   // QUERIES
@@ -189,7 +213,7 @@ export class DishesController {
           retreivedCategories[i].dishes.push({
             id: dish.id,
             title: dish.title,
-            image: `${process.env.BACK_END_URL}${process.env.SERVER_PORT}/dishes/${dish.image}`,
+            image: `${process.env.AWS_URL}/dishes/DISHES_${dish.image}`,
             description: dish.description,
             price: dish.price,
             category: retreivedCategories[i].category.name,

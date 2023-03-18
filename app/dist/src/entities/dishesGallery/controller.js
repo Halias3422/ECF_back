@@ -13,6 +13,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.DishesGalleryController = void 0;
 const fs_1 = require("fs");
 const __1 = require("../..");
+// import { uploadImage } from "../../init/storage";
 const apiResponses_1 = require("../common/apiResponses");
 const service_mutations_1 = require("./service.mutations");
 const service_queries_1 = require("./service.queries");
@@ -29,7 +30,7 @@ DishesGalleryController.getAllDishesGallery = () => __awaiter(void 0, void 0, vo
     for (const dish of dishes.data) {
         formattedDishes.push({
             id: dish.id,
-            image: `${process.env.BACK_END_URL}${process.env.SERVER_PORT}/dishesGallery/${dish.image}`,
+            image: `${process.env.AWS_URL}/dishesGallery/DISHESGALLERY_${dish.image}`,
             title: dish.title,
         });
     }
@@ -54,6 +55,18 @@ DishesGalleryController.verifyIfDuplicateTitleOrImage = (dish) => __awaiter(void
     }
     return (0, apiResponses_1.databaseQueryResponse)(["a", "b"], "new item is not a duplicate");
 });
+// static saveDishGalleryImage = async (
+//   image: DishImageData
+// ): Promise<ApiResponse> => {
+//   const response = await uploadImage(image);
+//   if (response) {
+//     return databaseMutationResponse(
+//       { affectedRows: 1 },
+//       "save dish gallery image"
+//     );
+//   }
+//   return databaseMutationError("save dish gallery image");
+// };
 // PROTECTED
 DishesGalleryController.createDishGalleryItem = (dish) => __awaiter(void 0, void 0, void 0, function* () {
     const isValid = (0, apiResponses_1.verifyFormDataValidity)(dish, ["title", "image"]);

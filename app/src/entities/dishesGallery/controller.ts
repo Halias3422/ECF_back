@@ -1,5 +1,6 @@
 import { promises as fs } from "fs";
 import { rootDirectory } from "../..";
+// import { uploadImage } from "../../init/storage";
 import {
   databaseMutationError,
   databaseMutationResponse,
@@ -7,6 +8,7 @@ import {
   verifyFormDataValidity,
 } from "../common/apiResponses";
 import { ApiResponse } from "../common/constants";
+import { DishImageData } from "../dishes/constants";
 import { DishesGalleryFormData } from "./constants";
 import { DishesGalleryMutationsService } from "./service.mutations";
 import { DishesGalleryQueriesService } from "./service.queries";
@@ -21,7 +23,7 @@ export class DishesGalleryController {
     for (const dish of dishes.data) {
       formattedDishes.push({
         id: dish.id,
-        image: `${process.env.BACK_END_URL}${process.env.SERVER_PORT}/dishesGallery/${dish.image}`,
+        image: `${process.env.AWS_URL}/dishesGallery/DISHESGALLERY_${dish.image}`,
         title: dish.title,
       });
     }
@@ -50,6 +52,19 @@ export class DishesGalleryController {
     }
     return databaseQueryResponse(["a", "b"], "new item is not a duplicate");
   };
+
+  // static saveDishGalleryImage = async (
+  //   image: DishImageData
+  // ): Promise<ApiResponse> => {
+  //   const response = await uploadImage(image);
+  //   if (response) {
+  //     return databaseMutationResponse(
+  //       { affectedRows: 1 },
+  //       "save dish gallery image"
+  //     );
+  //   }
+  //   return databaseMutationError("save dish gallery image");
+  // };
 
   // PROTECTED
 

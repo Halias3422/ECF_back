@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.dishesRoutes = void 0;
 const express_1 = __importDefault(require("express"));
+const index_1 = require("../../index");
 const apiResponses_1 = require("../common/apiResponses");
 const constants_1 = require("./constants");
 const controller_1 = require("./controller");
@@ -63,37 +64,28 @@ exports.dishesRoutes.post(constants_1.DISHES_ROUTES.deleteDishItem, (req, res) =
 exports.dishesRoutes.post(constants_1.DISHES_ROUTES.saveDishImage, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const auth = yield (0, apiResponses_1.verifyAuthorization)(req);
     if (auth.statusCode === 200) {
-        const { statusCode, response } = yield controller_1.DishesController.saveDishImage(req.body);
+        index_1.upload.dishes(req, res, (error) => __awaiter(void 0, void 0, void 0, function* () {
+            if (error) {
+                return res.status(500).send("Error uploading image: " + error);
+            }
+            const { statusCode, response } = yield controller_1.DishesController.saveDishImage(req.file);
+            return res.status(statusCode).send(response);
+        }));
+    }
+    else {
+        res.status(401).send("Unauthorized");
+    }
+}));
+exports.dishesRoutes.post(constants_1.DISHES_ROUTES.deleteDishImage, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const auth = yield (0, apiResponses_1.verifyAuthorization)(req);
+    if (auth.statusCode === 200) {
+        const { statusCode, response } = yield controller_1.DishesController.deleteDishImage(req.body);
         res.status(statusCode).send(response);
     }
     else {
         res.status(401).send("Unauthorized");
     }
 }));
-// dishesRoutes.post(DISHES_ROUTES.saveDishImage, async (req, res) => {
-//   const auth = await verifyAuthorization(req);
-//   if (auth.statusCode === 200) {
-//     upload.dishes(req, res, (error) => {
-//       if (error) {
-//         return res.status(500).send("Error uploading image ");
-//       }
-//       return res.status(201).send("New dish saved");
-//     });
-//   } else {
-//     res.status(401).send("Unauthorized");
-//   }
-// });
-// dishesRoutes.post(DISHES_ROUTES.deleteImage, async (req, res) => {
-//   const auth = await verifyAuthorization(req);
-//   if (auth.statusCode === 200) {
-//     const { statusCode, response } = await DishesController.deleteImage(
-//       req.body.image
-//     );
-//     res.status(statusCode).send(response);
-//   } else {
-//     res.status(401).send("Unauthorized");
-//   }
-// });
 exports.dishesRoutes.post(constants_1.DISHES_ROUTES.modifyDishItem, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const auth = yield (0, apiResponses_1.verifyAuthorization)(req);
     if (auth.statusCode === 200) {

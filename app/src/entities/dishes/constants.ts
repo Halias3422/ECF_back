@@ -2,7 +2,7 @@ export const DISHES_ROUTES = {
   createNewDish: "/api/create-new-dish",
   getAllDishesByCategories: "/api/get-all-dishes-by-categories",
   deleteDishItem: "/api/delete-dish",
-  deleteImage: "/api/delete-dish-image",
+  deleteDishImage: "/api/delete-dish-image",
   verifyIfDuplicateTitleOrImage: "/api/dish-verify-duplicate-title-or-image",
   saveDishImage: "/api/save-dish-image",
   modifyDishItem: "/api/modify-dish-item",
@@ -27,6 +27,11 @@ export interface DishFormData {
   description: string;
   price: string;
   category: string;
+}
+
+export interface DishImageData {
+  file: Blob;
+  name: string;
 }
 
 export interface ResponseDishesByCategory {

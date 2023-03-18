@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DishesController = void 0;
+const client_s3_1 = require("@aws-sdk/client-s3");
 const fs_1 = require("fs");
 const __1 = require("../..");
 const controller_1 = require("../categories/controller");
@@ -51,14 +52,32 @@ DishesController.deleteDishItem = (dish) => __awaiter(void 0, void 0, void 0, fu
     return deletedDish;
 });
 DishesController.saveDishImage = (dishImage) => __awaiter(void 0, void 0, void 0, function* () {
+    const params = {
+        Bucket: process.env.AWS_BUCKET_NAME,
+        Key: "dishes/DISHES_" + dishImage.originalname,
+        Body: dishImage.buffer,
+        ACL: "public-read",
+    };
     try {
-        console.log("dishImage = " + JSON.stringify(dishImage));
-        // await storage.putObject({})
+        yield __1.storage.send(new client_s3_1.PutObjectCommand(params));
+        return { statusCode: 201, response: "dish image saved" };
     }
     catch (error) {
-        return (0, apiResponses_1.databaseMutationError)("save dish image " + error);
+        return (0, apiResponses_1.databaseMutationError)("save dish image" + error);
     }
-    return { statusCode: 200, response: "OK" };
+});
+DishesController.deleteDishImage = (imageName) => __awaiter(void 0, void 0, void 0, function* () {
+    const deleteParams = {
+        Bucket: process.env.AWS_BUCKET_NAME,
+        Key: "dishes/DISHES_" + imageName,
+    };
+    try {
+        yield __1.storage.send(new client_s3_1.DeleteObjectCommand(deleteParams));
+        return { statusCode: 200, response: "dish image deleted" };
+    }
+    catch (error) {
+        return (0, apiResponses_1.databaseMutationError)("delete dish image" + error);
+    }
 });
 // QUERIES
 DishesController.getDishByTitle = (dish) => __awaiter(void 0, void 0, void 0, function* () {
@@ -158,7 +177,7 @@ DishesController.formatGetDishesByCategoriesResponse = (dishes, retreivedCategor
                 retreivedCategories[i].dishes.push({
                     id: dish.id,
                     title: dish.title,
-                    image: `${process.env.BACK_END_URL}${process.env.SERVER_PORT}/dishes/${dish.image}`,
+                    image: `${process.env.AWS_URL}/dishes/DISHES_${dish.image}`,
                     description: dish.description,
                     price: dish.price,
                     category: retreivedCategories[i].category.name,
