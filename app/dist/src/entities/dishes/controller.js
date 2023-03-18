@@ -90,6 +90,7 @@ DishesController.getAllDishesByCategories = () => __awaiter(void 0, void 0, void
         const retreivedCategories = yield _a.getDishesCategoriesById(retreivedDishes.data);
         if (retreivedCategories.length > 0) {
             const response = yield _a.formatGetDishesByCategoriesResponse(retreivedDishes.data, retreivedCategories);
+            console.log("dishes = " + JSON.stringify(response));
             return {
                 statusCode: 200,
                 data: response,
