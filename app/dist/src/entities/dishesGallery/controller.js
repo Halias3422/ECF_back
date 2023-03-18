@@ -30,7 +30,7 @@ DishesGalleryController.getAllDishesGallery = () => __awaiter(void 0, void 0, vo
     for (const dish of dishes.data) {
         formattedDishes.push({
             id: dish.id,
-            image: `${process.env.AWS_URL}/dishesGallery/DISHESGALLERY_${dish.image}`,
+            image: `${process.env.NEXT_PUBLIC_AWS_URL}/dishesGallery/DISHESGALLERY_${dish.image}`,
             title: dish.title,
         });
     }

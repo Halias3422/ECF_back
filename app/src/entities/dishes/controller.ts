@@ -213,7 +213,7 @@ export class DishesController {
           retreivedCategories[i].dishes.push({
             id: dish.id,
             title: dish.title,
-            image: `${process.env.AWS_URL}/dishes/DISHES_${dish.image}`,
+            image: `${process.env.NEXT_PUBLIC_AWS_URL}/dishes/DISHES_${dish.image}`,
             description: dish.description,
             price: dish.price,
             category: retreivedCategories[i].category.name,
