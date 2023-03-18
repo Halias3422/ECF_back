@@ -1,4 +1,3 @@
-// import { upload } from "../../index";
 import express from "express";
 import { verifyAuthorization } from "../common/apiResponses";
 import { DISHES_ROUTES } from "./constants";
@@ -59,6 +58,17 @@ dishesRoutes.post(DISHES_ROUTES.deleteDishItem, async (req, res) => {
   }
 });
 
+dishesRoutes.post(DISHES_ROUTES.saveDishImage, async (req, res) => {
+  const auth = await verifyAuthorization(req);
+  if (auth.statusCode === 200) {
+    const { statusCode, response } = await DishesController.saveDishImage(
+      req.body
+    );
+    res.status(statusCode).send(response);
+  } else {
+    res.status(401).send("Unauthorized");
+  }
+});
 // dishesRoutes.post(DISHES_ROUTES.saveDishImage, async (req, res) => {
 //   const auth = await verifyAuthorization(req);
 //   if (auth.statusCode === 200) {

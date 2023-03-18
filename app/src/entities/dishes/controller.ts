@@ -1,5 +1,5 @@
 import { promises as fs } from "fs";
-import { rootDirectory } from "../..";
+import { rootDirectory, storage } from "../..";
 import { CategoriesController } from "../categories/controller";
 import { CategoriesQueriesService } from "../categories/service.queries";
 import {
@@ -52,6 +52,16 @@ export class DishesController {
       dish.id
     );
     return deletedDish;
+  };
+
+  static saveDishImage = async (dishImage: FormDataEntryValue) => {
+    try {
+      console.log("dishImage = " + JSON.stringify(dishImage));
+      // await storage.putObject({})
+    } catch (error) {
+      return databaseMutationError("save dish image " + error);
+    }
+    return { statusCode: 200, response: "OK" };
   };
 
   // QUERIES
