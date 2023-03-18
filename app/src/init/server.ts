@@ -1,6 +1,5 @@
 import cors from "cors";
 import express from "express";
-import path from "path";
 import { routes } from "./routes";
 
 export const initExpressServer = () => {
