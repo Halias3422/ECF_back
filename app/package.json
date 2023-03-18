@@ -12,7 +12,7 @@
     "ts.check": "tsc --project tsconfig.json",
     "add-build": "git add dist",
     "dev": "nodemon ./src/index.ts",
-    "start": "export ENVIRONMENT=production && node dist/index.js",
+    "start": "export ENVIRONMENT=production && node dist/src/index.js",
     "test": "prettier --check . && ENVIRONMENT=test jest --maxWorkers=1 --forceExit --watch"
   },
   "pre-commit": [
