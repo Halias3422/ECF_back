@@ -5,7 +5,6 @@
 
 # next.js
 /app/.next
-/app/dist
 
 # production
 /app/build
@@ -29,3 +28,4 @@
 #env
 app/environment/production.env
 .env
+.vercel
