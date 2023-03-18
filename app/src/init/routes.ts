@@ -12,6 +12,10 @@ import { usersRoutes } from "../entities/users/routes";
 
 export const routes = express.Router();
 
+routes.get("/", (req, res) => {
+  res.status(200).send("HEALTHY");
+});
+
 routes.use(dishesRoutes);
 routes.use(dishesGalleryRoutes);
 routes.use(scheduleRoutes);
