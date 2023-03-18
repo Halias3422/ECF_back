@@ -8,8 +8,8 @@
   ],
   "rewrites": [
     {
-      "src": "/(.*)",
-      "dest": "/dist/src/index.js"
+      "source": "/(.*)",
+      "destination": "/dist/src/index.js"
     }
   ],
   "outputDirectory": "dist",
