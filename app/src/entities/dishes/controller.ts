@@ -105,7 +105,6 @@ export class DishesController {
           retreivedDishes.data,
           retreivedCategories
         );
-        console.log("dishes = " + JSON.stringify(response));
         return {
           statusCode: 200,
           data: response,
