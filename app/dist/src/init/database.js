@@ -18,10 +18,10 @@ const constants_1 = require("../entities/users/constants");
 const testDatabaseConnexion = (dbConnexion) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield dbConnexion.execute(`SELECT * from ${constants_1.USERS_TABLE.name}`);
-        console.log("Connexion to the database successfully established.");
+        console.log('Connexion to the database successfully established.');
     }
     catch (error) {
-        throw new Error("Error: could not connect to the database: " + JSON.stringify(error));
+        throw new Error('Error: could not connect to the database: ' + JSON.stringify(error));
     }
 });
 const addFirstUser = (dbConnexion) => __awaiter(void 0, void 0, void 0, function* () {
@@ -32,12 +32,12 @@ const addFirstUser = (dbConnexion) => __awaiter(void 0, void 0, void 0, function
             const insert = mysql2_1.default.format(`INSERT INTO ${constants_1.USERS_TABLE.name} VALUES (DEFAULT, 'admin@mail.com', '$2a$10$ibNTirYwGrrMwrJOq0GDje4lYAfKYaXaJV/TtLR4.7VBPHbhLu5eC', NULL, NULL, NULL, true)`);
             const [rows] = yield dbConnexion.execute(insert);
             if (rows.affectedRows !== 1) {
-                throw new Error("Error creating first user");
+                throw new Error('Error creating first user');
             }
         }
     }
     catch (error) {
-        throw new Error("Error creating first user" + JSON.stringify(error));
+        throw new Error('Error creating first user' + JSON.stringify(error));
     }
 });
 const initDatabaseConnexion = () => {

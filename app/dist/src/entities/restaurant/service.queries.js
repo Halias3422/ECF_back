@@ -22,9 +22,9 @@ RestaurantQueriesService.getSeatsCapacity = () => __awaiter(void 0, void 0, void
     try {
         const query = `SELECT * FROM ${constants_1.RESTAURANT_TABLE.name}`;
         const [rows] = yield __1.dbConnexion.execute(query);
-        return (0, apiResponses_1.databaseQueryResponse)(rows, "get seats capacity");
+        return (0, apiResponses_1.databaseQueryResponse)(rows, 'get seats capacity');
     }
     catch (error) {
-        return (0, apiResponses_1.databaseQueryError)("get seats capacity");
+        return (0, apiResponses_1.databaseQueryError)('get seats capacity');
     }
 });

@@ -28,10 +28,10 @@ DishesGalleryQueriesService.getAllDishesGallery = () => __awaiter(void 0, void 0
         const [rows] = yield __1.dbConnexion.execute(query);
         if (rows.length > 0) {
         }
-        return (0, apiResponses_1.databaseQueryResponse)(rows, "get all dishes gallery");
+        return (0, apiResponses_1.databaseQueryResponse)(rows, 'get all dishes gallery');
     }
     catch (error) {
-        return (0, apiResponses_1.databaseQueryError)("get all dishes gallery");
+        return (0, apiResponses_1.databaseQueryError)('get all dishes gallery');
     }
 });
 DishesGalleryQueriesService.getGalleryDishById = (dishId) => __awaiter(void 0, void 0, void 0, function* () {
@@ -40,10 +40,10 @@ DishesGalleryQueriesService.getGalleryDishById = (dishId) => __awaiter(void 0, v
         const [rows] = yield __1.dbConnexion.execute(query);
         if (rows.length > 0) {
         }
-        return (0, apiResponses_1.databaseQueryResponse)(rows, "get gallery dish by ID");
+        return (0, apiResponses_1.databaseQueryResponse)(rows, 'get gallery dish by ID');
     }
     catch (error) {
-        return (0, apiResponses_1.databaseQueryError)("get gallery dish by ID");
+        return (0, apiResponses_1.databaseQueryError)('get gallery dish by ID');
     }
 });
 DishesGalleryQueriesService.getGalleryDishByTitle = (dishTitle) => __awaiter(void 0, void 0, void 0, function* () {
@@ -52,10 +52,10 @@ DishesGalleryQueriesService.getGalleryDishByTitle = (dishTitle) => __awaiter(voi
         const [rows] = yield __1.dbConnexion.execute(query);
         if (rows.length > 0) {
         }
-        return (0, apiResponses_1.databaseQueryResponse)(rows, "get gallery dish by title");
+        return (0, apiResponses_1.databaseQueryResponse)(rows, 'get gallery dish by title');
     }
     catch (error) {
-        return (0, apiResponses_1.databaseQueryError)("get gallery dish by title");
+        return (0, apiResponses_1.databaseQueryError)('get gallery dish by title');
     }
 });
 DishesGalleryQueriesService.getGalleryDishByImage = (dishImage) => __awaiter(void 0, void 0, void 0, function* () {
@@ -64,10 +64,10 @@ DishesGalleryQueriesService.getGalleryDishByImage = (dishImage) => __awaiter(voi
         const [rows] = yield __1.dbConnexion.execute(query);
         if (rows.length > 0) {
         }
-        return (0, apiResponses_1.databaseQueryResponse)(rows, "get gallery dish by image");
+        return (0, apiResponses_1.databaseQueryResponse)(rows, 'get gallery dish by image');
     }
     catch (error) {
-        return (0, apiResponses_1.databaseQueryError)("get gallery dish by image");
+        return (0, apiResponses_1.databaseQueryError)('get gallery dish by image');
     }
 });
 DishesGalleryQueriesService.getGalleryDishDuplicate = (dish) => __awaiter(void 0, void 0, void 0, function* () {
@@ -81,9 +81,9 @@ DishesGalleryQueriesService.getGalleryDishDuplicate = (dish) => __awaiter(void 0
         const [rows] = yield __1.dbConnexion.execute(query);
         if (rows.length > 0) {
         }
-        return (0, apiResponses_1.databaseQueryResponse)(rows, "get gallery dish by image or title");
+        return (0, apiResponses_1.databaseQueryResponse)(rows, 'get gallery dish by image or title');
     }
     catch (error) {
-        return (0, apiResponses_1.databaseQueryError)("get gallery dish by image or title");
+        return (0, apiResponses_1.databaseQueryError)('get gallery dish by image or title');
     }
 });

@@ -14,4 +14,4 @@ exports.server = (0, server_1.initExpressServer)();
 exports.storage = (0, storage_1.initStorage)();
 exports.uploadImage = (0, storage_1.initUploadImage)();
 exports.dbConnexion = (0, database_1.initDatabaseConnexion)();
-exports.rootDirectory = path_1.default.resolve(__dirname + "/..");
+exports.rootDirectory = path_1.default.resolve(__dirname + '/..');

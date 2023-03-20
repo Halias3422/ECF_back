@@ -30,24 +30,24 @@ ReservationsQueriesService.getAllPartialReservationsByDate = (date) => __awaiter
         if (rows.length === 0) {
             return {
                 statusCode: 200,
-                response: "No reservation scheduled on that day",
+                response: 'No reservation scheduled on that day',
                 data: [],
             };
         }
-        return (0, apiResponses_1.databaseQueryResponse)(rows, "get partial reservation info by day");
+        return (0, apiResponses_1.databaseQueryResponse)(rows, 'get partial reservation info by day');
     }
     catch (error) {
-        return (0, apiResponses_1.databaseQueryError)("get partial reservation info by day");
+        return (0, apiResponses_1.databaseQueryError)('get partial reservation info by day');
     }
 });
 ReservationsQueriesService.getUserReservations = (userId) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const query = mysql2_1.default.format(`SELECT * FROM ${constants_2.RESERVATIONS_TABLE.name} WHERE ${constants_2.RESERVATIONS_TABLE.columns.userId} = ?`, [userId]);
         const [rows] = yield __1.dbConnexion.execute(query);
-        return (0, apiResponses_1.databaseQueryResponse)(rows, "get user reservations");
+        return (0, apiResponses_1.databaseQueryResponse)(rows, 'get user reservations');
     }
     catch (error) {
-        return (0, apiResponses_1.databaseQueryError)("get user reservations");
+        return (0, apiResponses_1.databaseQueryError)('get user reservations');
     }
 });
 ReservationsQueriesService.getAllReservationsWithAssociatedMail = () => __awaiter(void 0, void 0, void 0, function* () {
@@ -58,12 +58,12 @@ ReservationsQueriesService.getAllReservationsWithAssociatedMail = () => __awaite
             return {
                 statusCode: 200,
                 data: [],
-                response: "No reservations found",
+                response: 'No reservations found',
             };
         }
-        return (0, apiResponses_1.databaseQueryResponse)(rows, "get all reservations with associated user mail");
+        return (0, apiResponses_1.databaseQueryResponse)(rows, 'get all reservations with associated user mail');
     }
     catch (error) {
-        return (0, apiResponses_1.databaseQueryError)("get all reservations with associated user mail ");
+        return (0, apiResponses_1.databaseQueryError)('get all reservations with associated user mail ');
     }
 });

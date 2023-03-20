@@ -22,9 +22,9 @@ ScheduleQueriesService.getWeekSchedule = () => __awaiter(void 0, void 0, void 0,
     const query = `SELECT * FROM ${constants_1.SCHEDULE_TABLE.name}`;
     try {
         const [rows] = yield __1.dbConnexion.execute(query);
-        return (0, apiResponses_1.databaseQueryResponse)(rows, "get week schedule");
+        return (0, apiResponses_1.databaseQueryResponse)(rows, 'get week schedule');
     }
     catch (error) {
-        return (0, apiResponses_1.databaseQueryError)("get week schedule");
+        return (0, apiResponses_1.databaseQueryError)('get week schedule');
     }
 });

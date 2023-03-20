@@ -1,7 +1,7 @@
-import express from "express";
-import { verifyAuthorization } from "../common/apiResponses";
-import { RESTAURANT_ROUTES } from "./constants";
-import { RestaurantController } from "./controller";
+import express from 'express';
+import { verifyAuthorization } from '../common/apiResponses';
+import { RESTAURANT_ROUTES } from './constants';
+import { RestaurantController } from './controller';
 
 export const restaurantRoutes = express.Router();
 
@@ -22,7 +22,7 @@ restaurantRoutes.post(
         await RestaurantController.modifySeatsCapacity(req.body.seatsCapacity);
       res.status(statusCode).send(response);
     } else {
-      res.status(401).send("Unauthorized");
+      res.status(401).send('Unauthorized');
     }
   }
 );

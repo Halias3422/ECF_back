@@ -1,11 +1,11 @@
 import {
   databaseMutationResponse,
   verifyFormDataValidity,
-} from "../common/apiResponses";
-import { ApiResponse } from "../common/constants";
-import { DaySchedule } from "./constants";
-import { ScheduleMutationsService } from "./service.mutations";
-import { ScheduleQueriesService } from "./service.queries";
+} from '../common/apiResponses';
+import { ApiResponse } from '../common/constants';
+import { DaySchedule } from './constants';
+import { ScheduleMutationsService } from './service.mutations';
+import { ScheduleQueriesService } from './service.queries';
 
 export class ScheduleController {
   static getWeekSchedule = async (): Promise<ApiResponse> => {
@@ -17,12 +17,12 @@ export class ScheduleController {
   ): Promise<ApiResponse> => {
     for (const daySchedule of weekSchedule) {
       const isValid = verifyFormDataValidity(daySchedule, [
-        "id",
-        "dayOfWeek",
-        "morningOpening",
-        "morningClosing",
-        "afternoonOpening",
-        "afternoonClosing",
+        'id',
+        'dayOfWeek',
+        'morningOpening',
+        'morningClosing',
+        'afternoonOpening',
+        'afternoonClosing',
       ]);
       if (isValid.statusCode !== 200) {
         return isValid;
@@ -36,7 +36,7 @@ export class ScheduleController {
     }
     return databaseMutationResponse(
       { affectedRows: 1 },
-      "modify week schedule"
+      'modify week schedule'
     );
   };
 }

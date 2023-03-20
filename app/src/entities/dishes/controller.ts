@@ -3,22 +3,22 @@ import {
   DeleteObjectCommandInput,
   PutObjectCommand,
   PutObjectCommandInput,
-} from "@aws-sdk/client-s3";
-import { promises as fs } from "fs";
-import { rootDirectory, storage } from "../..";
-import { CategoriesController } from "../categories/controller";
-import { CategoriesQueriesService } from "../categories/service.queries";
+} from '@aws-sdk/client-s3';
+import { promises as fs } from 'fs';
+import { rootDirectory, storage } from '../..';
+import { CategoriesController } from '../categories/controller';
+import { CategoriesQueriesService } from '../categories/service.queries';
 import {
   databaseMutationError,
   databaseMutationResponse,
   databaseQueryResponse,
   isDuplicateResponse,
   verifyFormDataValidity,
-} from "../common/apiResponses";
-import { ApiResponse } from "../common/constants";
-import { DishFormData, ResponseDishesByCategory } from "./constants";
-import { DishesMutationsService } from "./service.mutations";
-import { DishesQueriesService } from "./service.queries";
+} from '../common/apiResponses';
+import { ApiResponse } from '../common/constants';
+import { DishFormData, ResponseDishesByCategory } from './constants';
+import { DishesMutationsService } from './service.mutations';
+import { DishesQueriesService } from './service.queries';
 
 export class DishesController {
   // MUTATIONS
@@ -31,7 +31,7 @@ export class DishesController {
     if (
       (await DishesQueriesService.getDishDuplicate(dish)).statusCode === 200
     ) {
-      return isDuplicateResponse("create new dish");
+      return isDuplicateResponse('create new dish');
     }
     const dishCategory = await CategoriesQueriesService.getCategoryByName(
       dish.category
@@ -52,7 +52,7 @@ export class DishesController {
   static deleteDishItem = async (dish: DishFormData): Promise<ApiResponse> => {
     const isValid = this.verifyDishFormDataValidity(dish);
     if (!dish.id || isValid.statusCode !== 200) {
-      return { statusCode: 400, response: "data is invalid", data: [] };
+      return { statusCode: 400, response: 'data is invalid', data: [] };
     }
     const deletedDish = await DishesMutationsService.deleteDishItemById(
       dish.id
@@ -63,28 +63,28 @@ export class DishesController {
   static saveDishImage = async (dishImage: any): Promise<ApiResponse> => {
     const params: PutObjectCommandInput = {
       Bucket: process.env.AWS_BUCKET_NAME,
-      Key: "dishes/DISHES_" + dishImage.originalname,
+      Key: 'dishes/DISHES_' + dishImage.originalname,
       Body: dishImage.buffer,
-      ACL: "public-read",
+      ACL: 'public-read',
     };
     try {
       await storage.send(new PutObjectCommand(params));
-      return { statusCode: 201, response: "dish image saved" };
+      return { statusCode: 201, response: 'dish image saved' };
     } catch (error) {
-      return databaseMutationError("save dish image" + error);
+      return databaseMutationError('save dish image' + error);
     }
   };
 
   static deleteDishImage = async (imageName: string): Promise<ApiResponse> => {
     const deleteParams: DeleteObjectCommandInput = {
       Bucket: process.env.AWS_BUCKET_NAME,
-      Key: "dishes/DISHES_" + imageName,
+      Key: 'dishes/DISHES_' + imageName,
     };
     try {
       await storage.send(new DeleteObjectCommand(deleteParams));
-      return { statusCode: 200, response: "dish image deleted" };
+      return { statusCode: 200, response: 'dish image deleted' };
     } catch (error) {
-      return databaseMutationError("delete dish image" + error);
+      return databaseMutationError('delete dish image' + error);
     }
   };
 
@@ -108,7 +108,7 @@ export class DishesController {
         return {
           statusCode: 200,
           data: response,
-          response: "All dishes retreived successfully by categories",
+          response: 'All dishes retreived successfully by categories',
         };
       }
     }
@@ -127,16 +127,16 @@ export class DishesController {
       return {
         statusCode: 400,
         data: isDuplicate.data,
-        response: "title or image already exists",
+        response: 'title or image already exists',
       };
     }
-    return databaseQueryResponse(["a", "b"], "new item is not a duplicate");
+    return databaseQueryResponse(['a', 'b'], 'new item is not a duplicate');
   };
 
   static modifyDishItem = async (dish: DishFormData): Promise<ApiResponse> => {
     const isValid = this.verifyDishFormDataValidity(dish);
     if (!dish.id || isValid.statusCode !== 200) {
-      return { statusCode: 400, response: "data is invalid", data: [] };
+      return { statusCode: 400, response: 'data is invalid', data: [] };
     }
     const dishCategory = await CategoriesController.getCategoryByName(
       dish.category
@@ -153,11 +153,11 @@ export class DishesController {
 
   static deleteImage = async (imageName: string): Promise<ApiResponse> => {
     try {
-      await fs.unlink(rootDirectory + "/public/dishes/" + imageName);
+      await fs.unlink(rootDirectory + '/public/dishes/' + imageName);
     } catch (error) {
-      return databaseMutationError("delete dish image");
+      return databaseMutationError('delete dish image');
     }
-    return databaseMutationResponse({ affectedRows: 1 }, "delete dish image");
+    return databaseMutationResponse({ affectedRows: 1 }, 'delete dish image');
   };
 
   // PRIVATE METHODS
@@ -166,16 +166,16 @@ export class DishesController {
     dish: DishFormData
   ): ApiResponse => {
     const isValid = verifyFormDataValidity(dish, [
-      "title",
-      "image",
-      "description",
-      "price",
-      "category",
+      'title',
+      'image',
+      'description',
+      'price',
+      'category',
     ]);
     if (isValid.statusCode !== 200) {
       return isValid;
     }
-    return databaseQueryResponse([{ valid: "isvalid" }], "form data valid");
+    return databaseQueryResponse([{ valid: 'isvalid' }], 'form data valid');
   };
 
   private static getDishesCategoriesById = async (dishes: any[]) => {

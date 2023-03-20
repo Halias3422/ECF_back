@@ -26,29 +26,29 @@ CategoriesQueriesService.getCategoryById = (categoryId) => __awaiter(void 0, voi
     try {
         const query = mysql2_1.default.format(`SELECT * FROM ${constant_1.CATEGORIES_TABLE.name} WHERE ${constant_1.CATEGORIES_TABLE.columns.id} = ?`, [categoryId]);
         const [rows] = yield __1.dbConnexion.execute(query);
-        return (0, apiResponses_1.databaseQueryResponse)(rows, "category by ID");
+        return (0, apiResponses_1.databaseQueryResponse)(rows, 'category by ID');
     }
     catch (error) {
-        return (0, apiResponses_1.databaseQueryError)("get category by ID");
+        return (0, apiResponses_1.databaseQueryError)('get category by ID');
     }
 });
 CategoriesQueriesService.getCategoryByName = (categoryName) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const query = mysql2_1.default.format(`SELECT * FROM ${constant_1.CATEGORIES_TABLE.name} WHERE ${constant_1.CATEGORIES_TABLE.columns.name} = ?`, [categoryName]);
         const [rows] = yield __1.dbConnexion.execute(query);
-        return (0, apiResponses_1.databaseQueryResponse)(rows, "category by name");
+        return (0, apiResponses_1.databaseQueryResponse)(rows, 'category by name');
     }
     catch (error) {
-        return (0, apiResponses_1.databaseQueryError)("category by name");
+        return (0, apiResponses_1.databaseQueryError)('category by name');
     }
 });
 CategoriesQueriesService.getAllCategories = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const query = `SELECT * FROM ${constant_1.CATEGORIES_TABLE.name}`;
         const [rows] = yield __1.dbConnexion.execute(query);
-        return (0, apiResponses_1.databaseQueryResponse)(rows, "get all categories");
+        return (0, apiResponses_1.databaseQueryResponse)(rows, 'get all categories');
     }
     catch (error) {
-        return (0, apiResponses_1.databaseQueryError)("get all categories");
+        return (0, apiResponses_1.databaseQueryError)('get all categories');
     }
 });

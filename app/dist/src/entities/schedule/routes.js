@@ -29,6 +29,6 @@ exports.scheduleRoutes.post(constants_1.SCHEDULE_ROUTES.modifyWeekSchedule, (req
         res.status(statusCode).send(response);
     }
     else {
-        res.status(401).send("Unauthorized");
+        res.status(401).send('Unauthorized');
     }
 }));

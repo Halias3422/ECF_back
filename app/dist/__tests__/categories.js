@@ -41,104 +41,104 @@ const constant_1 = require("../src/entities/categories/constant");
 const database_1 = require("../src/testUtils/database");
 const apiResponse = __importStar(require("../src/entities/common/apiResponses"));
 const categoryForm = {
-    name: "Dessert",
+    name: 'Dessert',
 };
-describe("Categories verify authorization for protected endpoints", () => {
+describe('Categories verify authorization for protected endpoints', () => {
     afterAll(() => __awaiter(void 0, void 0, void 0, function* () {
         src_1.server === null || src_1.server === void 0 ? void 0 : src_1.server.close();
     }));
-    it("create new category", () => __awaiter(void 0, void 0, void 0, function* () {
+    it('create new category', () => __awaiter(void 0, void 0, void 0, function* () {
         const res = yield (0, supertest_1.default)(src_1.server)
             .post(constant_1.CATEGORIES_ROUTES.createNewCategory)
             .send(categoryForm);
         expect(res.statusCode).toEqual(401);
     }));
-    it("deleteCategory", () => __awaiter(void 0, void 0, void 0, function* () {
+    it('deleteCategory', () => __awaiter(void 0, void 0, void 0, function* () {
         const res = yield (0, supertest_1.default)(src_1.server)
             .post(constant_1.CATEGORIES_ROUTES.deleteCategory)
             .send(categoryForm);
         expect(res.statusCode).toEqual(401);
     }));
-    it("modifyCategory", () => __awaiter(void 0, void 0, void 0, function* () {
+    it('modifyCategory', () => __awaiter(void 0, void 0, void 0, function* () {
         const res = yield (0, supertest_1.default)(src_1.server)
             .post(constant_1.CATEGORIES_ROUTES.modifyCategory)
             .send(categoryForm);
         expect(res.statusCode).toEqual(401);
     }));
 });
-describe("Categories endpoints: createNewCategory", () => {
+describe('Categories endpoints: createNewCategory', () => {
     beforeAll(() => __awaiter(void 0, void 0, void 0, function* () {
         yield (0, database_1.emptyTestDatabase)();
-        jest.spyOn(apiResponse, "verifyAuthorization").mockImplementation(() => Promise.resolve({
+        jest.spyOn(apiResponse, 'verifyAuthorization').mockImplementation(() => Promise.resolve({
             statusCode: 200,
-            data: [{ placeholder: "placeholder" }],
-            response: "user logged in",
+            data: [{ placeholder: 'placeholder' }],
+            response: 'user logged in',
         }));
     }));
     afterAll(() => __awaiter(void 0, void 0, void 0, function* () {
         src_1.server === null || src_1.server === void 0 ? void 0 : src_1.server.close();
     }));
-    it("should create a new category", () => __awaiter(void 0, void 0, void 0, function* () {
+    it('should create a new category', () => __awaiter(void 0, void 0, void 0, function* () {
         const res = yield (0, supertest_1.default)(src_1.server)
             .post(constant_1.CATEGORIES_ROUTES.createNewCategory)
             .send(categoryForm);
         expect(res.statusCode).toEqual(201);
     }));
-    it("should not create a category with wrong data", () => __awaiter(void 0, void 0, void 0, function* () {
+    it('should not create a category with wrong data', () => __awaiter(void 0, void 0, void 0, function* () {
         const res = yield (0, supertest_1.default)(src_1.server)
             .post(constant_1.CATEGORIES_ROUTES.createNewCategory)
-            .send({ wrong: "data", fake: "property" });
+            .send({ wrong: 'data', fake: 'property' });
         expect(res.statusCode).toEqual(400);
     }));
-    it("should not create a new category with an existing name", () => __awaiter(void 0, void 0, void 0, function* () {
+    it('should not create a new category with an existing name', () => __awaiter(void 0, void 0, void 0, function* () {
         const res = yield (0, supertest_1.default)(src_1.server)
             .post(constant_1.CATEGORIES_ROUTES.createNewCategory)
             .send(categoryForm);
         expect(res.statusCode).toEqual(400);
     }));
 });
-describe("Categories endpoints: getAllCategories", () => {
+describe('Categories endpoints: getAllCategories', () => {
     beforeAll(() => __awaiter(void 0, void 0, void 0, function* () {
         yield (0, database_1.emptyTestDatabase)();
     }));
     afterAll(() => __awaiter(void 0, void 0, void 0, function* () {
         src_1.server === null || src_1.server === void 0 ? void 0 : src_1.server.close();
     }));
-    it("should retreive all the categories", () => __awaiter(void 0, void 0, void 0, function* () {
+    it('should retreive all the categories', () => __awaiter(void 0, void 0, void 0, function* () {
         const categoryOne = yield (0, supertest_1.default)(src_1.server)
             .post(constant_1.CATEGORIES_ROUTES.createNewCategory)
             .send(categoryForm);
         expect(categoryOne.statusCode).toEqual(201);
         const categoryTwo = yield (0, supertest_1.default)(src_1.server)
             .post(constant_1.CATEGORIES_ROUTES.createNewCategory)
-            .send({ name: "Burger" });
+            .send({ name: 'Burger' });
         expect(categoryTwo.statusCode).toEqual(201);
         const categoryThree = yield (0, supertest_1.default)(src_1.server)
             .post(constant_1.CATEGORIES_ROUTES.createNewCategory)
-            .send({ name: "Plat principal" });
+            .send({ name: 'Plat principal' });
         expect(categoryThree.statusCode).toEqual(201);
         const res = yield (0, supertest_1.default)(src_1.server).get(constant_1.CATEGORIES_ROUTES.getAllCategories);
         expect(res.statusCode).toEqual(200);
         const categories = JSON.parse(res.text).data;
         expect(categories.length).toEqual(3);
-        expect(categories[0].name).toEqual("Dessert");
-        expect(categories[1].name).toEqual("Burger");
-        expect(categories[2].name).toEqual("Plat principal");
+        expect(categories[0].name).toEqual('Dessert');
+        expect(categories[1].name).toEqual('Burger');
+        expect(categories[2].name).toEqual('Plat principal');
     }));
 });
-describe("Categories endpoints: ModifyCategory", () => {
+describe('Categories endpoints: ModifyCategory', () => {
     beforeAll(() => __awaiter(void 0, void 0, void 0, function* () {
         yield (0, database_1.emptyTestDatabase)();
-        jest.spyOn(apiResponse, "verifyAuthorization").mockImplementation(() => Promise.resolve({
+        jest.spyOn(apiResponse, 'verifyAuthorization').mockImplementation(() => Promise.resolve({
             statusCode: 200,
-            data: [{ placeholder: "placeholder" }],
-            response: "user logged in",
+            data: [{ placeholder: 'placeholder' }],
+            response: 'user logged in',
         }));
     }));
     afterAll(() => __awaiter(void 0, void 0, void 0, function* () {
         src_1.server === null || src_1.server === void 0 ? void 0 : src_1.server.close();
     }));
-    it("should modify the category", () => __awaiter(void 0, void 0, void 0, function* () {
+    it('should modify the category', () => __awaiter(void 0, void 0, void 0, function* () {
         const newCategory = yield (0, supertest_1.default)(src_1.server)
             .post(constant_1.CATEGORIES_ROUTES.createNewCategory)
             .send(categoryForm);
@@ -148,49 +148,49 @@ describe("Categories endpoints: ModifyCategory", () => {
         expect(retreived.statusCode).toEqual(200);
         const modified = yield (0, supertest_1.default)(src_1.server)
             .post(constant_1.CATEGORIES_ROUTES.modifyCategory)
-            .send({ id: foundCategory.id, name: "Burger" });
+            .send({ id: foundCategory.id, name: 'Burger' });
         expect(modified.statusCode).toEqual(200);
         const finalRetreived = yield (0, supertest_1.default)(src_1.server).get(constant_1.CATEGORIES_ROUTES.getAllCategories);
         expect(finalRetreived.statusCode).toEqual(200);
         const finalCategory = JSON.parse(finalRetreived.text).data[0];
-        expect(finalCategory.name).toEqual("Burger");
+        expect(finalCategory.name).toEqual('Burger');
     }));
-    it("should not modify the category if duplicate", () => __awaiter(void 0, void 0, void 0, function* () {
+    it('should not modify the category if duplicate', () => __awaiter(void 0, void 0, void 0, function* () {
         const retreived = yield (0, supertest_1.default)(src_1.server).get(constant_1.CATEGORIES_ROUTES.getAllCategories);
         const foundCategory = JSON.parse(retreived.text).data[0];
         expect(retreived.statusCode).toEqual(200);
         const newCategory = yield (0, supertest_1.default)(src_1.server)
             .post(constant_1.CATEGORIES_ROUTES.createNewCategory)
-            .send({ name: "Dessert" });
+            .send({ name: 'Dessert' });
         expect(newCategory.statusCode).toEqual(201);
         const res = yield (0, supertest_1.default)(src_1.server)
             .post(constant_1.CATEGORIES_ROUTES.modifyCategory)
-            .send({ id: foundCategory.id, name: "Dessert" });
+            .send({ id: foundCategory.id, name: 'Dessert' });
         expect(res.statusCode).toEqual(400);
     }));
-    it("should not modify if wrong id", () => __awaiter(void 0, void 0, void 0, function* () {
+    it('should not modify if wrong id', () => __awaiter(void 0, void 0, void 0, function* () {
         const res = yield (0, supertest_1.default)(src_1.server)
             .post(constant_1.CATEGORIES_ROUTES.modifyCategory)
-            .send({ id: "1243", name: "Salade" });
+            .send({ id: '1243', name: 'Salade' });
         expect(res.statusCode).toEqual(500);
     }));
 });
-describe("Categories endpoints: DeleteCategory", () => {
+describe('Categories endpoints: DeleteCategory', () => {
     beforeAll(() => __awaiter(void 0, void 0, void 0, function* () {
         yield (0, database_1.emptyTestDatabase)();
-        jest.spyOn(apiResponse, "verifyAuthorization").mockImplementation(() => Promise.resolve({
+        jest.spyOn(apiResponse, 'verifyAuthorization').mockImplementation(() => Promise.resolve({
             statusCode: 200,
-            data: [{ placeholder: "placeholder" }],
-            response: "user logged in",
+            data: [{ placeholder: 'placeholder' }],
+            response: 'user logged in',
         }));
     }));
     afterAll(() => __awaiter(void 0, void 0, void 0, function* () {
         src_1.server === null || src_1.server === void 0 ? void 0 : src_1.server.close();
     }));
-    it("should delete the category", () => __awaiter(void 0, void 0, void 0, function* () {
+    it('should delete the category', () => __awaiter(void 0, void 0, void 0, function* () {
         const newCategory = yield (0, supertest_1.default)(src_1.server)
             .post(constant_1.CATEGORIES_ROUTES.createNewCategory)
-            .send({ name: "Dessert" });
+            .send({ name: 'Dessert' });
         expect(newCategory.statusCode).toEqual(201);
         const retreived = yield (0, supertest_1.default)(src_1.server).get(constant_1.CATEGORIES_ROUTES.getAllCategories);
         const foundCategory = JSON.parse(retreived.text).data[0];
@@ -202,17 +202,17 @@ describe("Categories endpoints: DeleteCategory", () => {
         const finalRetreive = yield (0, supertest_1.default)(src_1.server).get(constant_1.CATEGORIES_ROUTES.getAllCategories);
         expect(JSON.parse(finalRetreive.text).data.length).toEqual(0);
     }));
-    it("should not delete a category with wrong ID", () => __awaiter(void 0, void 0, void 0, function* () {
+    it('should not delete a category with wrong ID', () => __awaiter(void 0, void 0, void 0, function* () {
         const newCategory = yield (0, supertest_1.default)(src_1.server)
             .post(constant_1.CATEGORIES_ROUTES.createNewCategory)
-            .send({ name: "Dessert" });
+            .send({ name: 'Dessert' });
         expect(newCategory.statusCode).toEqual(201);
         const retreived = yield (0, supertest_1.default)(src_1.server).get(constant_1.CATEGORIES_ROUTES.getAllCategories);
         const foundCategory = JSON.parse(retreived.text).data[0];
         expect(retreived.statusCode).toEqual(200);
         const res = yield (0, supertest_1.default)(src_1.server)
             .post(constant_1.CATEGORIES_ROUTES.deleteCategory)
-            .send({ id: "123", name: foundCategory.name });
+            .send({ id: '123', name: foundCategory.name });
         expect(res.statusCode).toEqual(500);
         const finalRetreive = yield (0, supertest_1.default)(src_1.server).get(constant_1.CATEGORIES_ROUTES.getAllCategories);
         expect(JSON.parse(finalRetreive.text).data.length).toEqual(1);

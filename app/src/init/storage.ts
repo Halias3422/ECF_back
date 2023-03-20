@@ -1,5 +1,5 @@
-import { S3Client } from "@aws-sdk/client-s3";
-import multer from "multer";
+import { S3Client } from '@aws-sdk/client-s3';
+import multer from 'multer';
 
 export const initStorage = () => {
   return new S3Client({
@@ -13,5 +13,5 @@ export const initStorage = () => {
 
 export const initUploadImage = () => {
   const storage = multer.memoryStorage();
-  return multer({ storage: storage }).single("image");
+  return multer({ storage: storage }).single('image');
 };

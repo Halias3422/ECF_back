@@ -1,7 +1,7 @@
-import express from "express";
-import { verifyAuthorization } from "../common/apiResponses";
-import { MENUS_ROUTES } from "./constants";
-import { MenuController } from "./controller";
+import express from 'express';
+import { verifyAuthorization } from '../common/apiResponses';
+import { MENUS_ROUTES } from './constants';
+import { MenuController } from './controller';
 
 export const menusRoutes = express.Router();
 
@@ -20,7 +20,7 @@ menusRoutes.post(MENUS_ROUTES.createNewMenu, async (req, res) => {
     );
     res.status(statusCode).send(response);
   } else {
-    res.status(401).send("Unauthorized");
+    res.status(401).send('Unauthorized');
   }
 });
 
@@ -30,7 +30,7 @@ menusRoutes.post(MENUS_ROUTES.modifyMenu, async (req, res) => {
     const { statusCode, response } = await MenuController.modifyMenu(req.body);
     res.status(statusCode).send(response);
   } else {
-    res.status(401).send("Unauthorized");
+    res.status(401).send('Unauthorized');
   }
 });
 
@@ -40,6 +40,6 @@ menusRoutes.post(MENUS_ROUTES.deleteMenu, async (req, res) => {
     const { statusCode, response } = await MenuController.deleteMenu(req.body);
     res.status(statusCode).send(response);
   } else {
-    res.status(401).send("Unauthorized");
+    res.status(401).send('Unauthorized');
   }
 });

@@ -18,6 +18,6 @@ const initStorage = () => {
 exports.initStorage = initStorage;
 const initUploadImage = () => {
     const storage = multer_1.default.memoryStorage();
-    return (0, multer_1.default)({ storage: storage }).single("image");
+    return (0, multer_1.default)({ storage: storage }).single('image');
 };
 exports.initUploadImage = initUploadImage;

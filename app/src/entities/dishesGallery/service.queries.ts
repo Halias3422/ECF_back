@@ -1,11 +1,11 @@
-import mysql2 from "mysql2";
-import { dbConnexion } from "../..";
+import mysql2 from 'mysql2';
+import { dbConnexion } from '../..';
 import {
   databaseQueryError,
   databaseQueryResponse,
-} from "../common/apiResponses";
-import { ApiResponse } from "../common/constants";
-import { DishesGalleryFormData, DISHES_GALLERY_TABLE } from "./constants";
+} from '../common/apiResponses';
+import { ApiResponse } from '../common/constants';
+import { DishesGalleryFormData, DISHES_GALLERY_TABLE } from './constants';
 
 export class DishesGalleryQueriesService {
   static getAllDishesGallery = async (): Promise<ApiResponse> => {
@@ -14,9 +14,9 @@ export class DishesGalleryQueriesService {
       const [rows] = await dbConnexion.execute(query);
       if (rows.length > 0) {
       }
-      return databaseQueryResponse(rows, "get all dishes gallery");
+      return databaseQueryResponse(rows, 'get all dishes gallery');
     } catch (error) {
-      return databaseQueryError("get all dishes gallery");
+      return databaseQueryError('get all dishes gallery');
     }
   };
 
@@ -29,9 +29,9 @@ export class DishesGalleryQueriesService {
       const [rows] = await dbConnexion.execute(query);
       if (rows.length > 0) {
       }
-      return databaseQueryResponse(rows, "get gallery dish by ID");
+      return databaseQueryResponse(rows, 'get gallery dish by ID');
     } catch (error) {
-      return databaseQueryError("get gallery dish by ID");
+      return databaseQueryError('get gallery dish by ID');
     }
   };
 
@@ -47,9 +47,9 @@ export class DishesGalleryQueriesService {
       const [rows] = await dbConnexion.execute(query);
       if (rows.length > 0) {
       }
-      return databaseQueryResponse(rows, "get gallery dish by title");
+      return databaseQueryResponse(rows, 'get gallery dish by title');
     } catch (error) {
-      return databaseQueryError("get gallery dish by title");
+      return databaseQueryError('get gallery dish by title');
     }
   };
 
@@ -65,9 +65,9 @@ export class DishesGalleryQueriesService {
       const [rows] = await dbConnexion.execute(query);
       if (rows.length > 0) {
       }
-      return databaseQueryResponse(rows, "get gallery dish by image");
+      return databaseQueryResponse(rows, 'get gallery dish by image');
     } catch (error) {
-      return databaseQueryError("get gallery dish by image");
+      return databaseQueryError('get gallery dish by image');
     }
   };
 
@@ -88,9 +88,9 @@ export class DishesGalleryQueriesService {
       const [rows] = await dbConnexion.execute(query);
       if (rows.length > 0) {
       }
-      return databaseQueryResponse(rows, "get gallery dish by image or title");
+      return databaseQueryResponse(rows, 'get gallery dish by image or title');
     } catch (error) {
-      return databaseQueryError("get gallery dish by image or title");
+      return databaseQueryError('get gallery dish by image or title');
     }
   };
 }

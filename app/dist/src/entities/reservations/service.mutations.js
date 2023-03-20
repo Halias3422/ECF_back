@@ -26,7 +26,7 @@ ReservationsMutationsService.createReservation = (reservation, userId) => __awai
     try {
         const DEFAULT = {
             toSqlString: function () {
-                return "DEFAULT";
+                return 'DEFAULT';
             },
         };
         const mutation = mysql2_1.default.format(`INSERT INTO ${constants_1.RESERVATIONS_TABLE.name} VALUES (?, ?, ?, ?, ?, ?, ?)`, [
@@ -39,9 +39,9 @@ ReservationsMutationsService.createReservation = (reservation, userId) => __awai
             userId || null,
         ]);
         const [rows] = yield __1.dbConnexion.execute(mutation);
-        return (0, apiResponses_1.databaseMutationResponse)(rows, "create new reservation");
+        return (0, apiResponses_1.databaseMutationResponse)(rows, 'create new reservation');
     }
     catch (error) {
-        return (0, apiResponses_1.databaseMutationError)("create new reservation");
+        return (0, apiResponses_1.databaseMutationError)('create new reservation');
     }
 });

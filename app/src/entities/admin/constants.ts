@@ -11,5 +11,5 @@ export interface AdminSessionData {
 
 export const ADMIN_ROUTES = {
   getAuthenticatedProtectedUserFromSession:
-    "/api/get-authenticated-protected-user-from-session",
+    '/api/get-authenticated-protected-user-from-session',
 };

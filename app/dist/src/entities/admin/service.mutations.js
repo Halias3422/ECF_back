@@ -50,10 +50,10 @@ AdminMutationsService.updateAdminMail = (newMail, userId) => __awaiter(void 0, v
     try {
         const mutation = mysql2_1.default.format(`UPDATE ${constants_1.USERS_TABLE.name} SET ${constants_1.USERS_TABLE.columns.email} = ? WHERE ${constants_1.USERS_TABLE.columns.id} = ? AND ${constants_1.USERS_TABLE.columns.isAdmin} = 1`, [newMail, userId]);
         const [rows] = yield __1.dbConnexion.execute(mutation);
-        return (0, apiResponses_1.databaseMutationResponse)(rows, "update user mail");
+        return (0, apiResponses_1.databaseMutationResponse)(rows, 'update user mail');
     }
     catch (error) {
-        return (0, apiResponses_1.databaseMutationError)("update user mail");
+        return (0, apiResponses_1.databaseMutationError)('update user mail');
     }
 });
 AdminMutationsService.updateAdminPassword = (newPassword, userId) => __awaiter(void 0, void 0, void 0, function* () {
@@ -61,9 +61,9 @@ AdminMutationsService.updateAdminPassword = (newPassword, userId) => __awaiter(v
         const newHashedPassword = yield bcrypt.hash(newPassword, 10);
         const mutation = mysql2_1.default.format(`UPDATE ${constants_1.USERS_TABLE.name} SET ${constants_1.USERS_TABLE.columns.password} = ? WHERE ${constants_1.USERS_TABLE.columns.id} = ? AND ${constants_1.USERS_TABLE.columns.isAdmin} = 1`, [newHashedPassword, userId]);
         const [rows] = yield __1.dbConnexion.execute(mutation);
-        return (0, apiResponses_1.databaseMutationResponse)(rows, "update user password");
+        return (0, apiResponses_1.databaseMutationResponse)(rows, 'update user password');
     }
     catch (error) {
-        return (0, apiResponses_1.databaseMutationError)("update user password");
+        return (0, apiResponses_1.databaseMutationError)('update user password');
     }
 });

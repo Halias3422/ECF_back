@@ -1,11 +1,11 @@
-import mysql2 from "mysql2";
-import { dbConnexion } from "../..";
+import mysql2 from 'mysql2';
+import { dbConnexion } from '../..';
 import {
   databaseMutationError,
   databaseMutationResponse,
-} from "../common/apiResponses";
-import { ApiResponse } from "../common/constants";
-import { CATEGORIES_TABLE, CategoryFormData } from "./constant";
+} from '../common/apiResponses';
+import { ApiResponse } from '../common/constants';
+import { CATEGORIES_TABLE, CategoryFormData } from './constant';
 
 export class CategoriesMutationsService {
   static createNewCategory = async (
@@ -13,7 +13,7 @@ export class CategoriesMutationsService {
   ): Promise<ApiResponse> => {
     const DEFAULT = {
       toSqlString: function () {
-        return "DEFAULT";
+        return 'DEFAULT';
       },
     };
     const mutation = mysql2.format(
@@ -22,9 +22,9 @@ export class CategoriesMutationsService {
     );
     try {
       const [rows] = await dbConnexion.execute(mutation);
-      return databaseMutationResponse(rows, "create new category");
+      return databaseMutationResponse(rows, 'create new category');
     } catch (error: any) {
-      return databaseMutationError("create new category");
+      return databaseMutationError('create new category');
     }
   };
 
@@ -37,9 +37,9 @@ export class CategoriesMutationsService {
         [categoryId]
       );
       const [rows] = await dbConnexion.execute(mutation);
-      return databaseMutationResponse(rows, "delete category by ID");
+      return databaseMutationResponse(rows, 'delete category by ID');
     } catch (error: any) {
-      return databaseMutationError("delete category by ID");
+      return databaseMutationError('delete category by ID');
     }
   };
 
@@ -52,9 +52,9 @@ export class CategoriesMutationsService {
         [category.name, category.id]
       );
       const [rows] = await dbConnexion.execute(mutation);
-      return databaseMutationResponse(rows, "delete category by ID");
+      return databaseMutationResponse(rows, 'delete category by ID');
     } catch (error: any) {
-      return databaseMutationError("delete category by ID");
+      return databaseMutationError('delete category by ID');
     }
   };
 }

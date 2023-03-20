@@ -1,18 +1,18 @@
 import {
   isDuplicateResponse,
   verifyFormDataValidity,
-} from "../common/apiResponses";
-import { ApiResponse } from "../common/constants";
-import { CategoryFormData } from "./constant";
-import { CategoriesMutationsService } from "./service.mutations";
-import { CategoriesQueriesService } from "./service.queries";
+} from '../common/apiResponses';
+import { ApiResponse } from '../common/constants';
+import { CategoryFormData } from './constant';
+import { CategoriesMutationsService } from './service.mutations';
+import { CategoriesQueriesService } from './service.queries';
 
 export class CategoriesController {
   // MUTATIONS
   static createNewCategory = async (
     newCategory: CategoryFormData
   ): Promise<ApiResponse> => {
-    const isValid = verifyFormDataValidity(newCategory, ["name"]);
+    const isValid = verifyFormDataValidity(newCategory, ['name']);
     if (isValid.statusCode !== 200) {
       return isValid;
     }
@@ -20,7 +20,7 @@ export class CategoriesController {
       newCategory.name
     );
     if (isDuplicate.statusCode === 200) {
-      return isDuplicateResponse("create new category");
+      return isDuplicateResponse('create new category');
     }
     const response = await CategoriesMutationsService.createNewCategory(
       newCategory
@@ -34,7 +34,7 @@ export class CategoriesController {
   static deleteCategory = async (
     category: CategoryFormData
   ): Promise<ApiResponse> => {
-    const isValid = verifyFormDataValidity(category, ["id", "name"]);
+    const isValid = verifyFormDataValidity(category, ['id', 'name']);
     if (isValid.statusCode !== 200) {
       return isValid;
     }
@@ -47,13 +47,13 @@ export class CategoriesController {
   static modifyCategory = async (
     category: CategoryFormData
   ): Promise<ApiResponse> => {
-    const isValid = verifyFormDataValidity(category, ["id", "name"]);
+    const isValid = verifyFormDataValidity(category, ['id', 'name']);
     if (isValid.statusCode !== 200) {
       return isValid;
     }
     const isDuplicate = await this.getCategoryByName(category.name);
     if (isDuplicate.statusCode === 200) {
-      return isDuplicateResponse("modify category");
+      return isDuplicateResponse('modify category');
     }
     const response = await CategoriesMutationsService.modifyCategoryById(
       category

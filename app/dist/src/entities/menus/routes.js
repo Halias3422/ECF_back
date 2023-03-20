@@ -30,7 +30,7 @@ exports.menusRoutes.post(constants_1.MENUS_ROUTES.createNewMenu, (req, res) => _
         res.status(statusCode).send(response);
     }
     else {
-        res.status(401).send("Unauthorized");
+        res.status(401).send('Unauthorized');
     }
 }));
 exports.menusRoutes.post(constants_1.MENUS_ROUTES.modifyMenu, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -40,7 +40,7 @@ exports.menusRoutes.post(constants_1.MENUS_ROUTES.modifyMenu, (req, res) => __aw
         res.status(statusCode).send(response);
     }
     else {
-        res.status(401).send("Unauthorized");
+        res.status(401).send('Unauthorized');
     }
 }));
 exports.menusRoutes.post(constants_1.MENUS_ROUTES.deleteMenu, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -50,6 +50,6 @@ exports.menusRoutes.post(constants_1.MENUS_ROUTES.deleteMenu, (req, res) => __aw
         res.status(statusCode).send(response);
     }
     else {
-        res.status(401).send("Unauthorized");
+        res.status(401).send('Unauthorized');
     }
 }));

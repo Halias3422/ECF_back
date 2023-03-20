@@ -25,35 +25,35 @@ _a = DishesGalleryMutationsService;
 DishesGalleryMutationsService.createDishGalleryItem = (dish) => __awaiter(void 0, void 0, void 0, function* () {
     const DEFAULT = {
         toSqlString: function () {
-            return "DEFAULT";
+            return 'DEFAULT';
         },
     };
     try {
         const mutation = mysql2_1.default.format(`INSERT INTO ${constants_1.DISHES_GALLERY_TABLE.name} VALUES (?, ?, ?)`, [DEFAULT, dish.title, dish.image]);
         const [rows] = yield __1.dbConnexion.execute(mutation);
-        return (0, apiResponses_1.databaseMutationResponse)(rows, "create gallery dish item");
+        return (0, apiResponses_1.databaseMutationResponse)(rows, 'create gallery dish item');
     }
     catch (error) {
-        return (0, apiResponses_1.databaseMutationError)("create gallery dish item");
+        return (0, apiResponses_1.databaseMutationError)('create gallery dish item');
     }
 });
 DishesGalleryMutationsService.modifyDishGalleryItemById = (dish) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const mutation = mysql2_1.default.format(`UPDATE ${constants_1.DISHES_GALLERY_TABLE.name} SET ${constants_1.DISHES_GALLERY_TABLE.columns.title} = ?, ${constants_1.DISHES_GALLERY_TABLE.columns.image} = ? WHERE ${constants_1.DISHES_GALLERY_TABLE.columns.id} = ?`, [dish.title, dish.image, dish.id]);
         const [rows] = yield __1.dbConnexion.execute(mutation);
-        return (0, apiResponses_1.databaseMutationResponse)(rows, "modify gallery dish item");
+        return (0, apiResponses_1.databaseMutationResponse)(rows, 'modify gallery dish item');
     }
     catch (error) {
-        return (0, apiResponses_1.databaseMutationError)("modify gallery dish item");
+        return (0, apiResponses_1.databaseMutationError)('modify gallery dish item');
     }
 });
 DishesGalleryMutationsService.deleteDishGalleryItemById = (dishId) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const mutation = mysql2_1.default.format(`DELETE FROM ${constants_1.DISHES_GALLERY_TABLE.name} WHERE ${constants_1.DISHES_GALLERY_TABLE.columns.id} = ?`, [dishId]);
         const [rows] = yield __1.dbConnexion.execute(mutation);
-        return (0, apiResponses_1.databaseMutationResponse)(rows, "delete gallery dish item");
+        return (0, apiResponses_1.databaseMutationResponse)(rows, 'delete gallery dish item');
     }
     catch (error) {
-        return (0, apiResponses_1.databaseMutationError)("delete gallery dish item");
+        return (0, apiResponses_1.databaseMutationError)('delete gallery dish item');
     }
 });

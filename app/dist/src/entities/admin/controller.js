@@ -31,19 +31,19 @@ AdminController.protectedLogin = (userInfo) => __awaiter(void 0, void 0, void 0,
         return retreivedUser;
     }
     if (!(yield _a.comparePassword(retreivedUser.data[0].password, userInfo.password))) {
-        return (0, apiResponses_1.databaseQueryResponse)([], "user");
+        return (0, apiResponses_1.databaseQueryResponse)([], 'user');
     }
     const updatedUser = yield service_mutations_1.UsersMutationsService.updateUserToken(userInfo.email, _a.generateUserSessionToken());
     if (updatedUser.statusCode !== 200) {
         return updatedUser;
     }
-    return yield _a.getProtectedUserSessionInfo(userInfo.email, needPasswordReset ? 303 : 200, needPasswordReset ? "password reset needed" : "user logged in");
+    return yield _a.getProtectedUserSessionInfo(userInfo.email, needPasswordReset ? 303 : 200, needPasswordReset ? 'password reset needed' : 'user logged in');
 });
 AdminController.getAuthenticatedProtectedUserFromSession = (userSessionInfo) => __awaiter(void 0, void 0, void 0, function* () {
     const isValid = (0, apiResponses_1.verifyFormDataValidity)(userSessionInfo, [
-        "id",
-        "email",
-        "token",
+        'id',
+        'email',
+        'token',
     ]);
     if (isValid.statusCode !== 200) {
         return isValid;
@@ -54,11 +54,11 @@ AdminController.getAuthenticatedProtectedUserFromSession = (userSessionInfo) => 
     }
     const idIsValid = yield _a.verifyUserSessionItemValidity(userSessionInfo.id, retreivedUser.data[0].id);
     if (!idIsValid) {
-        return (0, apiResponses_1.databaseQueryError)("get protected user info");
+        return (0, apiResponses_1.databaseQueryError)('get protected user info');
     }
     const emailIsValid = yield _a.verifyUserSessionItemValidity(userSessionInfo.email, retreivedUser.data[0].email);
     if (!emailIsValid) {
-        return (0, apiResponses_1.databaseQueryError)("get protected user info");
+        return (0, apiResponses_1.databaseQueryError)('get protected user info');
     }
     return retreivedUser;
 });
@@ -66,7 +66,7 @@ AdminController.updateMail = (userInfo, dbUser) => __awaiter(void 0, void 0, voi
     if (!(yield _a.comparePassword(dbUser.password, userInfo.password))) {
         return {
             statusCode: 400,
-            response: "Mot de passe incorrect.",
+            response: 'Mot de passe incorrect.',
         };
     }
     const isSecure = controller_1.UsersController.verifyUserSignupConformity(userInfo);
@@ -77,7 +77,7 @@ AdminController.updateMail = (userInfo, dbUser) => __awaiter(void 0, void 0, voi
     if (modifiedMail.statusCode !== 200) {
         return {
             statusCode: 400,
-            response: "Erreur lors du traitement. Veuillez réessayer plus tard",
+            response: 'Erreur lors du traitement. Veuillez réessayer plus tard',
         };
     }
     return yield _a.protectedLogin(userInfo);
@@ -86,7 +86,7 @@ AdminController.updatePassword = (userInfo, dbUser) => __awaiter(void 0, void 0,
     if (!(yield _a.comparePassword(dbUser.password, userInfo.password))) {
         return {
             statusCode: 400,
-            response: "Mot de passe incorrect.",
+            response: 'Mot de passe incorrect.',
         };
     }
     const isSecure = controller_1.UsersController.verifyUserSignupConformity({
@@ -100,7 +100,7 @@ AdminController.updatePassword = (userInfo, dbUser) => __awaiter(void 0, void 0,
     if (modifiedPassword.statusCode !== 200) {
         return {
             statusCode: 400,
-            response: "Erreur lors du traitement. Veuillez réessayer plus tard",
+            response: 'Erreur lors du traitement. Veuillez réessayer plus tard',
         };
     }
     return modifiedPassword;
@@ -118,11 +118,11 @@ AdminController.getProtectedUserSessionInfo = (email, statusCode, context) => __
             data: {
                 session: `${hashedId}:${hashedMail}:${user.data[0].sessionToken}`,
             },
-            response: context + " successfully",
+            response: context + ' successfully',
         };
     }
     catch (error) {
-        return (0, apiResponses_1.databaseQueryError)("get session info");
+        return (0, apiResponses_1.databaseQueryError)('get session info');
     }
 });
 AdminController.comparePassword = (dbPass, userPass) => __awaiter(void 0, void 0, void 0, function* () {
@@ -143,8 +143,8 @@ AdminController.verifyUserSessionItemValidity = (sessionItem, userItem) => __awa
     }
 });
 AdminController.generateUserSessionToken = () => {
-    const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    let token = "";
+    const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let token = '';
     for (let i = 0; i < 500; i++) {
         token += chars[Math.floor(Math.random() * chars.length)];
     }

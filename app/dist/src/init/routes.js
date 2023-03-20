@@ -16,8 +16,8 @@ const routes_8 = require("../entities/restaurant/routes");
 const routes_9 = require("../entities/schedule/routes");
 const routes_10 = require("../entities/users/routes");
 exports.routes = express_1.default.Router();
-exports.routes.get("/", (req, res) => {
-    res.status(200).send("HEALTHY");
+exports.routes.get('/', (req, res) => {
+    res.status(200).send('HEALTHY');
 });
 exports.routes.use(routes_3.dishesRoutes);
 exports.routes.use(routes_4.dishesGalleryRoutes);

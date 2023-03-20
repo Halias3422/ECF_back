@@ -26,19 +26,19 @@ UsersQueriesService.getUserByEmail = (email) => __awaiter(void 0, void 0, void 0
     try {
         const query = mysql2_1.default.format(`SELECT * FROM ${constants_1.USERS_TABLE.name} WHERE ${constants_1.USERS_TABLE.columns.email} = ?`, [email]);
         const [rows] = yield __1.dbConnexion.execute(query);
-        return (0, apiResponses_1.databaseQueryResponse)(rows, "user");
+        return (0, apiResponses_1.databaseQueryResponse)(rows, 'user');
     }
     catch (error) {
-        return (0, apiResponses_1.databaseQueryError)("get user");
+        return (0, apiResponses_1.databaseQueryError)('get user');
     }
 });
 UsersQueriesService.getUserBySessionToken = (sessionToken) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const query = mysql2_1.default.format(`SELECT * FROM ${constants_1.USERS_TABLE.name} WHERE ${constants_1.USERS_TABLE.columns.sessionToken} = ?`, [sessionToken]);
         const [rows] = yield __1.dbConnexion.execute(query);
-        return (0, apiResponses_1.databaseQueryResponse)(rows, "user");
+        return (0, apiResponses_1.databaseQueryResponse)(rows, 'user');
     }
     catch (error) {
-        return (0, apiResponses_1.databaseQueryError)("get user");
+        return (0, apiResponses_1.databaseQueryError)('get user');
     }
 });

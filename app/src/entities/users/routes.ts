@@ -1,11 +1,11 @@
-import express from "express";
-import { AdminController } from "../admin/controller";
+import express from 'express';
+import { AdminController } from '../admin/controller';
 import {
   verifyAuthorization,
   verifyUserAuthorization,
-} from "../common/apiResponses";
-import { USERS_ROUTES } from "./constants";
-import { UsersController } from "./controller";
+} from '../common/apiResponses';
+import { USERS_ROUTES } from './constants';
+import { UsersController } from './controller';
 
 export const usersRoutes = express.Router();
 
@@ -28,7 +28,7 @@ usersRoutes.post(USERS_ROUTES.updateOptionalInfo, async (req, res) => {
       await UsersController.updateOptionalInfo(req.body);
     res.status(statusCode).send({ response, data });
   } else {
-    res.status(401).send("Unauthorized");
+    res.status(401).send('Unauthorized');
   }
 });
 
@@ -52,7 +52,7 @@ usersRoutes.post(USERS_ROUTES.updateMail, async (req, res) => {
       return;
     }
   }
-  res.status(401).send("Unauthorized");
+  res.status(401).send('Unauthorized');
 });
 
 usersRoutes.post(USERS_ROUTES.updatePassword, async (req, res) => {
@@ -73,7 +73,7 @@ usersRoutes.post(USERS_ROUTES.updatePassword, async (req, res) => {
       return;
     }
   }
-  res.status(401).send("Unauthorized");
+  res.status(401).send('Unauthorized');
 });
 
 usersRoutes.get(USERS_ROUTES.getOptionalInfo, async (req, res) => {
@@ -83,13 +83,13 @@ usersRoutes.get(USERS_ROUTES.getOptionalInfo, async (req, res) => {
       await UsersController.getUserOptionalInfo(auth.data[0]);
     res.status(statusCode).send({ response, data });
   } else {
-    res.status(401).send("Unauthorized");
+    res.status(401).send('Unauthorized');
   }
 });
 
 usersRoutes.get(USERS_ROUTES.getRole, async (req, res) => {
   if (req.headers && req.headers.authorization) {
-    const auth = req.headers.authorization.split(":");
+    const auth = req.headers.authorization.split(':');
     if (auth.length === 2) {
       const { statusCode, response, data } = await UsersController.getUserRole({
         id: auth[0],
@@ -108,6 +108,6 @@ usersRoutes.get(USERS_ROUTES.getRole, async (req, res) => {
       }
     }
   } else {
-    res.status(401).send("Unauthorized");
+    res.status(401).send('Unauthorized');
   }
 });

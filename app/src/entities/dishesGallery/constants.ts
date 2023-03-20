@@ -1,21 +1,21 @@
 export const DISHES_GALLERY_ROUTES = {
-  getAllDishesGallery: "/api/get-all-dishes-gallery",
-  getDishImageByName: "/api/get-dish-image-by-name",
-  deleteDishGalleryItem: "/api/delete-dish-gallery-item",
-  createNewDishGalleryItem: "/api/create-new-dish-gallery-item",
-  saveDishGalleryImage: "/api/save-dish-gallery-image",
-  modifyDishGalleryItem: "/api/modify-dish-gallery-item",
-  deleteDishGalleryImage: "/api/delete-dish-gallery-image",
+  getAllDishesGallery: '/api/get-all-dishes-gallery',
+  getDishImageByName: '/api/get-dish-image-by-name',
+  deleteDishGalleryItem: '/api/delete-dish-gallery-item',
+  createNewDishGalleryItem: '/api/create-new-dish-gallery-item',
+  saveDishGalleryImage: '/api/save-dish-gallery-image',
+  modifyDishGalleryItem: '/api/modify-dish-gallery-item',
+  deleteDishGalleryImage: '/api/delete-dish-gallery-image',
   verifyIfDuplicateTitleOrImage:
-    "/api/dish-gallery-verify-duplicate-title-or-image",
+    '/api/dish-gallery-verify-duplicate-title-or-image',
 };
 
 export const DISHES_GALLERY_TABLE = {
-  name: "Gallery_dishes",
+  name: 'Gallery_dishes',
   columns: {
-    id: "id",
-    title: "title",
-    image: "image",
+    id: 'id',
+    title: 'title',
+    image: 'image',
   },
 };
 

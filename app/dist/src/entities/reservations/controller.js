@@ -35,7 +35,7 @@ ReservationsController.getAllReservationsWithAssociatedMail = () => __awaiter(vo
 ReservationsController.createReservation = (reservation, userSession) => __awaiter(void 0, void 0, void 0, function* () {
     let retreivedUser;
     if (userSession) {
-        const userSessionInfo = userSession.split(":");
+        const userSessionInfo = userSession.split(':');
         retreivedUser = yield controller_1.UsersController.getAuthenticatedUserFromSession({
             id: userSessionInfo[0],
             token: userSessionInfo[1],

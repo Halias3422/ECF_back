@@ -1,17 +1,17 @@
 export const SCHEDULE_ROUTES = {
-  getWeekSchedule: "/api/get-week-schedule",
-  modifyWeekSchedule: "/api/modify-week-schedule",
+  getWeekSchedule: '/api/get-week-schedule',
+  modifyWeekSchedule: '/api/modify-week-schedule',
 };
 
 export const SCHEDULE_TABLE = {
-  name: "Schedule",
+  name: 'Schedule',
   columns: {
-    id: "id",
-    dayOfWeek: "dayOfWeek",
-    morningOpening: "morningOpening",
-    morningClosing: "morningClosing",
-    afternoonOpening: "afternoonOpening",
-    afternoonClosing: "afternoonClosing",
+    id: 'id',
+    dayOfWeek: 'dayOfWeek',
+    morningOpening: 'morningOpening',
+    morningClosing: 'morningClosing',
+    afternoonOpening: 'afternoonOpening',
+    afternoonClosing: 'afternoonClosing',
   },
 };
 

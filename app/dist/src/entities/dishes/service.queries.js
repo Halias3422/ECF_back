@@ -26,20 +26,20 @@ DishesQueriesService.getDishByTitle = (dishTitle) => __awaiter(void 0, void 0, v
     const query = mysql2_1.default.format(`SELECT * FROM ${constants_1.DISHES_TABLE.name} WHERE ${constants_1.DISHES_TABLE.name}.${constants_1.DISHES_TABLE.columns.title} = ?`, [dishTitle]);
     try {
         const [rows] = yield __1.dbConnexion.execute(query);
-        return (0, apiResponses_1.databaseQueryResponse)(rows, "get dish by title");
+        return (0, apiResponses_1.databaseQueryResponse)(rows, 'get dish by title');
     }
     catch (error) {
-        return (0, apiResponses_1.databaseQueryError)("get dish by title");
+        return (0, apiResponses_1.databaseQueryError)('get dish by title');
     }
 });
 DishesQueriesService.getAllDishes = () => __awaiter(void 0, void 0, void 0, function* () {
     const query = `SELECT * FROM ${constants_1.DISHES_TABLE.name}`;
     try {
         const [rows] = yield __1.dbConnexion.execute(query);
-        return (0, apiResponses_1.databaseQueryResponse)(rows, "get all dishes");
+        return (0, apiResponses_1.databaseQueryResponse)(rows, 'get all dishes');
     }
     catch (error) {
-        return (0, apiResponses_1.databaseQueryError)("get all dishes");
+        return (0, apiResponses_1.databaseQueryError)('get all dishes');
     }
 });
 DishesQueriesService.getDishDuplicate = (dish) => __awaiter(void 0, void 0, void 0, function* () {
@@ -53,9 +53,9 @@ DishesQueriesService.getDishDuplicate = (dish) => __awaiter(void 0, void 0, void
         const [rows] = yield __1.dbConnexion.execute(query);
         if (rows.length > 0) {
         }
-        return (0, apiResponses_1.databaseQueryResponse)(rows, "get dish by image or title");
+        return (0, apiResponses_1.databaseQueryResponse)(rows, 'get dish by image or title');
     }
     catch (error) {
-        return (0, apiResponses_1.databaseQueryError)("get gallery dish by image or title");
+        return (0, apiResponses_1.databaseQueryError)('get gallery dish by image or title');
     }
 });

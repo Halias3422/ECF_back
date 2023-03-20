@@ -30,7 +30,7 @@ exports.categoriesRoutes.post(constant_1.CATEGORIES_ROUTES.deleteCategory, (req,
         res.status(statusCode).send(response);
     }
     else {
-        res.status(401).send("Unauthorized");
+        res.status(401).send('Unauthorized');
     }
 }));
 exports.categoriesRoutes.post(constant_1.CATEGORIES_ROUTES.modifyCategory, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -40,7 +40,7 @@ exports.categoriesRoutes.post(constant_1.CATEGORIES_ROUTES.modifyCategory, (req,
         res.status(statusCode).send(response);
     }
     else {
-        res.status(401).send("Unauthorized");
+        res.status(401).send('Unauthorized');
     }
 }));
 exports.categoriesRoutes.post(constant_1.CATEGORIES_ROUTES.createNewCategory, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -50,6 +50,6 @@ exports.categoriesRoutes.post(constant_1.CATEGORIES_ROUTES.createNewCategory, (r
         res.status(statusCode).send(response);
     }
     else {
-        res.status(401).send("Unauthorized");
+        res.status(401).send('Unauthorized');
     }
 }));

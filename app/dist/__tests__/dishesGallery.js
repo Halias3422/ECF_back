@@ -41,107 +41,107 @@ const constants_1 = require("../src/entities/dishesGallery/constants");
 const database_1 = require("../src/testUtils/database");
 const apiResponse = __importStar(require("../src/entities/common/apiResponses"));
 const fakeDishGallery = {
-    image: "fake-image.jpg",
-    title: "fake title",
+    image: 'fake-image.jpg',
+    title: 'fake title',
 };
-describe("Verify dishesGallery protected endpoints", () => {
+describe('Verify dishesGallery protected endpoints', () => {
     afterAll(() => {
         src_1.server === null || src_1.server === void 0 ? void 0 : src_1.server.close();
     });
-    it("endpoint: deleteDishGalleryItem", () => __awaiter(void 0, void 0, void 0, function* () {
+    it('endpoint: deleteDishGalleryItem', () => __awaiter(void 0, void 0, void 0, function* () {
         const res = yield (0, supertest_1.default)(src_1.server)
             .post(constants_1.DISHES_GALLERY_ROUTES.deleteDishGalleryItem)
-            .send(Object.assign({ id: "123" }, fakeDishGallery));
+            .send(Object.assign({ id: '123' }, fakeDishGallery));
         expect(res.statusCode).toEqual(401);
     }));
-    it("endpoint: saveDishGalleryImage", () => __awaiter(void 0, void 0, void 0, function* () {
+    it('endpoint: saveDishGalleryImage', () => __awaiter(void 0, void 0, void 0, function* () {
         const res = yield (0, supertest_1.default)(src_1.server)
             .post(constants_1.DISHES_GALLERY_ROUTES.saveDishGalleryImage)
-            .send({ image: "fake-image.jpg" });
+            .send({ image: 'fake-image.jpg' });
         expect(res.statusCode).toEqual(401);
     }));
-    it("endpoint: deleteImage", () => __awaiter(void 0, void 0, void 0, function* () {
+    it('endpoint: deleteImage', () => __awaiter(void 0, void 0, void 0, function* () {
         const res = yield (0, supertest_1.default)(src_1.server)
             .post(constants_1.DISHES_GALLERY_ROUTES.deleteDishGalleryImage)
-            .send({ image: "fake-image.jpg" });
+            .send({ image: 'fake-image.jpg' });
         expect(res.statusCode).toEqual(401);
     }));
-    it("endpoint: createNewDishGalleryItem", () => __awaiter(void 0, void 0, void 0, function* () {
+    it('endpoint: createNewDishGalleryItem', () => __awaiter(void 0, void 0, void 0, function* () {
         const res = yield (0, supertest_1.default)(src_1.server)
             .post(constants_1.DISHES_GALLERY_ROUTES.createNewDishGalleryItem)
             .send(fakeDishGallery);
         expect(res.statusCode).toEqual(401);
     }));
-    it("endpoint: modigyDishGalleryItem", () => __awaiter(void 0, void 0, void 0, function* () {
+    it('endpoint: modigyDishGalleryItem', () => __awaiter(void 0, void 0, void 0, function* () {
         const res = yield (0, supertest_1.default)(src_1.server)
             .post(constants_1.DISHES_GALLERY_ROUTES.modifyDishGalleryItem)
             .send(fakeDishGallery);
         expect(res.statusCode).toEqual(401);
     }));
 });
-describe("DishesGallery endpoint: createNewDishGalleryItem", () => {
+describe('DishesGallery endpoint: createNewDishGalleryItem', () => {
     beforeAll(() => __awaiter(void 0, void 0, void 0, function* () {
         yield (0, database_1.emptyTestDatabase)();
-        jest.spyOn(apiResponse, "verifyAuthorization").mockImplementation(() => Promise.resolve({
+        jest.spyOn(apiResponse, 'verifyAuthorization').mockImplementation(() => Promise.resolve({
             statusCode: 200,
-            data: [{ placeholder: "placeholder" }],
-            response: "user logged in",
+            data: [{ placeholder: 'placeholder' }],
+            response: 'user logged in',
         }));
     }));
     afterAll(() => {
         src_1.server === null || src_1.server === void 0 ? void 0 : src_1.server.close();
     });
-    it("should create a new dish gallery item", () => __awaiter(void 0, void 0, void 0, function* () {
+    it('should create a new dish gallery item', () => __awaiter(void 0, void 0, void 0, function* () {
         const res = yield (0, supertest_1.default)(src_1.server)
             .post(constants_1.DISHES_GALLERY_ROUTES.createNewDishGalleryItem)
             .send(fakeDishGallery);
         expect(res.statusCode).toEqual(201);
     }));
-    it("should not create a new dish gallery item with wrong data", () => __awaiter(void 0, void 0, void 0, function* () {
+    it('should not create a new dish gallery item with wrong data', () => __awaiter(void 0, void 0, void 0, function* () {
         const res = yield (0, supertest_1.default)(src_1.server)
             .post(constants_1.DISHES_GALLERY_ROUTES.createNewDishGalleryItem)
-            .send({ name: "toto", image: "image.jpg" });
+            .send({ name: 'toto', image: 'image.jpg' });
         expect(res.statusCode).toEqual(400);
     }));
 });
-describe("DishesGallery endpoint: getAllDishesGallery", () => {
+describe('DishesGallery endpoint: getAllDishesGallery', () => {
     beforeAll(() => __awaiter(void 0, void 0, void 0, function* () {
         yield (0, database_1.emptyTestDatabase)();
     }));
     afterAll(() => {
         src_1.server === null || src_1.server === void 0 ? void 0 : src_1.server.close();
     });
-    it("should retreive all the dishes", () => __awaiter(void 0, void 0, void 0, function* () {
+    it('should retreive all the dishes', () => __awaiter(void 0, void 0, void 0, function* () {
         const dishOne = yield (0, supertest_1.default)(src_1.server)
             .post(constants_1.DISHES_GALLERY_ROUTES.createNewDishGalleryItem)
             .send(fakeDishGallery);
         expect(dishOne.statusCode).toEqual(201);
         const dishTwo = yield (0, supertest_1.default)(src_1.server)
             .post(constants_1.DISHES_GALLERY_ROUTES.createNewDishGalleryItem)
-            .send({ title: "second dish", image: "second-image.jpg" });
+            .send({ title: 'second dish', image: 'second-image.jpg' });
         expect(dishTwo.statusCode).toEqual(201);
         const dishThree = yield (0, supertest_1.default)(src_1.server)
             .post(constants_1.DISHES_GALLERY_ROUTES.createNewDishGalleryItem)
-            .send({ title: "third dish", image: "third-image.jpg" });
+            .send({ title: 'third dish', image: 'third-image.jpg' });
         expect(dishThree.statusCode).toEqual(201);
         const res = yield (0, supertest_1.default)(src_1.server).get(constants_1.DISHES_GALLERY_ROUTES.getAllDishesGallery);
         expect(res.statusCode).toEqual(200);
         expect(JSON.parse(res.text).data.length).toEqual(3);
     }));
 });
-describe("DishesGallery endpoint: modifyDishGalleryItem", () => {
+describe('DishesGallery endpoint: modifyDishGalleryItem', () => {
     beforeAll(() => __awaiter(void 0, void 0, void 0, function* () {
         yield (0, database_1.emptyTestDatabase)();
-        jest.spyOn(apiResponse, "verifyAuthorization").mockImplementation(() => Promise.resolve({
+        jest.spyOn(apiResponse, 'verifyAuthorization').mockImplementation(() => Promise.resolve({
             statusCode: 200,
-            data: [{ placeholder: "placeholder" }],
-            response: "user logged in",
+            data: [{ placeholder: 'placeholder' }],
+            response: 'user logged in',
         }));
     }));
     afterAll(() => {
         src_1.server === null || src_1.server === void 0 ? void 0 : src_1.server.close();
     });
-    it("should modify an existing dish gallery item", () => __awaiter(void 0, void 0, void 0, function* () {
+    it('should modify an existing dish gallery item', () => __awaiter(void 0, void 0, void 0, function* () {
         const newDish = yield (0, supertest_1.default)(src_1.server)
             .post(constants_1.DISHES_GALLERY_ROUTES.createNewDishGalleryItem)
             .send(fakeDishGallery);
@@ -151,40 +151,40 @@ describe("DishesGallery endpoint: modifyDishGalleryItem", () => {
         const dish = JSON.parse(retreivedDish.text).data[0];
         const res = yield (0, supertest_1.default)(src_1.server)
             .post(constants_1.DISHES_GALLERY_ROUTES.modifyDishGalleryItem)
-            .send(Object.assign(Object.assign({}, dish), { title: "new title", image: "new-image.jpg" }));
+            .send(Object.assign(Object.assign({}, dish), { title: 'new title', image: 'new-image.jpg' }));
         expect(res.statusCode).toEqual(200);
         const newRetreivedDish = yield (0, supertest_1.default)(src_1.server).get(constants_1.DISHES_GALLERY_ROUTES.getAllDishesGallery);
         expect(newRetreivedDish.statusCode).toEqual(200);
         const finalDish = JSON.parse(newRetreivedDish.text).data[0];
-        expect(finalDish.title).toEqual("new title");
-        expect(finalDish.image).toContain("new-image.jpg");
+        expect(finalDish.title).toEqual('new title');
+        expect(finalDish.image).toContain('new-image.jpg');
     }));
-    it("should not modify a non-existing gallery item", () => __awaiter(void 0, void 0, void 0, function* () {
+    it('should not modify a non-existing gallery item', () => __awaiter(void 0, void 0, void 0, function* () {
         const res = yield (0, supertest_1.default)(src_1.server)
             .post(constants_1.DISHES_GALLERY_ROUTES.modifyDishGalleryItem)
-            .send({ id: "123", title: "anything", image: "whatever.jpg" });
+            .send({ id: '123', title: 'anything', image: 'whatever.jpg' });
         expect(res.statusCode).toEqual(500);
     }));
 });
-describe("DishesGallery endpoint: deleteDishGalleryItem", () => {
+describe('DishesGallery endpoint: deleteDishGalleryItem', () => {
     beforeAll(() => __awaiter(void 0, void 0, void 0, function* () {
         yield (0, database_1.emptyTestDatabase)();
-        jest.spyOn(apiResponse, "verifyAuthorization").mockImplementation(() => Promise.resolve({
+        jest.spyOn(apiResponse, 'verifyAuthorization').mockImplementation(() => Promise.resolve({
             statusCode: 200,
-            data: [{ placeholder: "placeholder" }],
-            response: "user logged in",
+            data: [{ placeholder: 'placeholder' }],
+            response: 'user logged in',
         }));
     }));
     afterAll(() => {
         src_1.server === null || src_1.server === void 0 ? void 0 : src_1.server.close();
     });
-    it("should not delete a non existing item", () => __awaiter(void 0, void 0, void 0, function* () {
+    it('should not delete a non existing item', () => __awaiter(void 0, void 0, void 0, function* () {
         const res = yield (0, supertest_1.default)(src_1.server)
             .post(constants_1.DISHES_GALLERY_ROUTES.deleteDishGalleryItem)
-            .send({ id: "123", title: "anything", image: "image.jpg" });
+            .send({ id: '123', title: 'anything', image: 'image.jpg' });
         expect(res.statusCode).toEqual(500);
     }));
-    it("should delete an existing item", () => __awaiter(void 0, void 0, void 0, function* () {
+    it('should delete an existing item', () => __awaiter(void 0, void 0, void 0, function* () {
         const newDish = yield (0, supertest_1.default)(src_1.server)
             .post(constants_1.DISHES_GALLERY_ROUTES.createNewDishGalleryItem)
             .send(fakeDishGallery);

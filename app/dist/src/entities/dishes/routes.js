@@ -37,7 +37,7 @@ exports.dishesRoutes.get(constants_1.DISHES_ROUTES.verifyIfDuplicateTitleOrImage
         res.status(statusCode).send(response);
     }
     else {
-        res.status(400).send("Wrong data sent");
+        res.status(400).send('Wrong data sent');
     }
 }));
 // PROTECTED
@@ -48,7 +48,7 @@ exports.dishesRoutes.post(constants_1.DISHES_ROUTES.createNewDish, (req, res) =>
         res.status(statusCode).send(response);
     }
     else {
-        res.status(401).send("Unauthorized");
+        res.status(401).send('Unauthorized');
     }
 }));
 exports.dishesRoutes.post(constants_1.DISHES_ROUTES.deleteDishItem, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -58,7 +58,7 @@ exports.dishesRoutes.post(constants_1.DISHES_ROUTES.deleteDishItem, (req, res) =
         res.status(statusCode).send(response);
     }
     else {
-        res.status(401).send("Unauthorized");
+        res.status(401).send('Unauthorized');
     }
 }));
 exports.dishesRoutes.post(constants_1.DISHES_ROUTES.saveDishImage, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -66,14 +66,14 @@ exports.dishesRoutes.post(constants_1.DISHES_ROUTES.saveDishImage, (req, res) =>
     if (auth.statusCode === 200) {
         (0, index_1.uploadImage)(req, res, (error) => __awaiter(void 0, void 0, void 0, function* () {
             if (error) {
-                return res.status(500).send("Error uploading image: " + error);
+                return res.status(500).send('Error uploading image: ' + error);
             }
             const { statusCode, response } = yield controller_1.DishesController.saveDishImage(req.file);
             return res.status(statusCode).send(response);
         }));
     }
     else {
-        res.status(401).send("Unauthorized");
+        res.status(401).send('Unauthorized');
     }
 }));
 exports.dishesRoutes.post(constants_1.DISHES_ROUTES.deleteDishImage, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -83,7 +83,7 @@ exports.dishesRoutes.post(constants_1.DISHES_ROUTES.deleteDishImage, (req, res) 
         res.status(statusCode).send(response);
     }
     else {
-        res.status(401).send("Unauthorized");
+        res.status(401).send('Unauthorized');
     }
 }));
 exports.dishesRoutes.post(constants_1.DISHES_ROUTES.modifyDishItem, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -93,6 +93,6 @@ exports.dishesRoutes.post(constants_1.DISHES_ROUTES.modifyDishItem, (req, res) =
         res.status(statusCode).send(response);
     }
     else {
-        res.status(401).send("Unauthorized");
+        res.status(401).send('Unauthorized');
     }
 }));

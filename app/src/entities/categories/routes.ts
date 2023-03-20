@@ -1,7 +1,7 @@
-import express from "express";
-import { verifyAuthorization } from "../common/apiResponses";
-import { CATEGORIES_ROUTES } from "./constant";
-import { CategoriesController } from "./controller";
+import express from 'express';
+import { verifyAuthorization } from '../common/apiResponses';
+import { CATEGORIES_ROUTES } from './constant';
+import { CategoriesController } from './controller';
 
 export const categoriesRoutes = express.Router();
 
@@ -21,7 +21,7 @@ categoriesRoutes.post(CATEGORIES_ROUTES.deleteCategory, async (req, res) => {
     );
     res.status(statusCode).send(response);
   } else {
-    res.status(401).send("Unauthorized");
+    res.status(401).send('Unauthorized');
   }
 });
 
@@ -33,7 +33,7 @@ categoriesRoutes.post(CATEGORIES_ROUTES.modifyCategory, async (req, res) => {
     );
     res.status(statusCode).send(response);
   } else {
-    res.status(401).send("Unauthorized");
+    res.status(401).send('Unauthorized');
   }
 });
 
@@ -44,6 +44,6 @@ categoriesRoutes.post(CATEGORIES_ROUTES.createNewCategory, async (req, res) => {
       await CategoriesController.createNewCategory(req.body);
     res.status(statusCode).send(response);
   } else {
-    res.status(401).send("Unauthorized");
+    res.status(401).send('Unauthorized');
   }
 });

@@ -1,7 +1,7 @@
-import express from "express";
-import { verifyAuthorization } from "../common/apiResponses";
-import { SCHEDULE_ROUTES } from "./constants";
-import { ScheduleController } from "./controller";
+import express from 'express';
+import { verifyAuthorization } from '../common/apiResponses';
+import { SCHEDULE_ROUTES } from './constants';
+import { ScheduleController } from './controller';
 
 export const scheduleRoutes = express.Router();
 
@@ -18,6 +18,6 @@ scheduleRoutes.post(SCHEDULE_ROUTES.modifyWeekSchedule, async (req, res) => {
       await ScheduleController.modifyWeekSchedule(req.body);
     res.status(statusCode).send(response);
   } else {
-    res.status(401).send("Unauthorized");
+    res.status(401).send('Unauthorized');
   }
 });

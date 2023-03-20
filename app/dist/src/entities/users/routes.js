@@ -35,7 +35,7 @@ exports.usersRoutes.post(constants_1.USERS_ROUTES.updateOptionalInfo, (req, res)
         res.status(statusCode).send({ response, data });
     }
     else {
-        res.status(401).send("Unauthorized");
+        res.status(401).send('Unauthorized');
     }
 }));
 exports.usersRoutes.post(constants_1.USERS_ROUTES.updateMail, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -53,7 +53,7 @@ exports.usersRoutes.post(constants_1.USERS_ROUTES.updateMail, (req, res) => __aw
             return;
         }
     }
-    res.status(401).send("Unauthorized");
+    res.status(401).send('Unauthorized');
 }));
 exports.usersRoutes.post(constants_1.USERS_ROUTES.updatePassword, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const auth = yield (0, apiResponses_1.verifyUserAuthorization)(req);
@@ -70,7 +70,7 @@ exports.usersRoutes.post(constants_1.USERS_ROUTES.updatePassword, (req, res) => 
             return;
         }
     }
-    res.status(401).send("Unauthorized");
+    res.status(401).send('Unauthorized');
 }));
 exports.usersRoutes.get(constants_1.USERS_ROUTES.getOptionalInfo, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const auth = yield (0, apiResponses_1.verifyUserAuthorization)(req);
@@ -79,12 +79,12 @@ exports.usersRoutes.get(constants_1.USERS_ROUTES.getOptionalInfo, (req, res) => 
         res.status(statusCode).send({ response, data });
     }
     else {
-        res.status(401).send("Unauthorized");
+        res.status(401).send('Unauthorized');
     }
 }));
 exports.usersRoutes.get(constants_1.USERS_ROUTES.getRole, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (req.headers && req.headers.authorization) {
-        const auth = req.headers.authorization.split(":");
+        const auth = req.headers.authorization.split(':');
         if (auth.length === 2) {
             const { statusCode, response, data } = yield controller_2.UsersController.getUserRole({
                 id: auth[0],
@@ -104,6 +104,6 @@ exports.usersRoutes.get(constants_1.USERS_ROUTES.getRole, (req, res) => __awaite
         }
     }
     else {
-        res.status(401).send("Unauthorized");
+        res.status(401).send('Unauthorized');
     }
 }));

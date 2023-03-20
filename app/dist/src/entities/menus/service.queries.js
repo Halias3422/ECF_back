@@ -26,29 +26,29 @@ MenusQueriesService.getAllMenus = () => __awaiter(void 0, void 0, void 0, functi
     try {
         const query = `SELECT * FROM ${constants_1.MENUS_TABLE.name}`;
         const [rows] = yield __1.dbConnexion.execute(query);
-        return (0, apiResponses_1.databaseQueryResponse)(rows, "get all menus");
+        return (0, apiResponses_1.databaseQueryResponse)(rows, 'get all menus');
     }
     catch (error) {
-        return (0, apiResponses_1.databaseQueryError)("get all menus");
+        return (0, apiResponses_1.databaseQueryError)('get all menus');
     }
 });
 MenusQueriesService.getMenuByTitle = (menuTitle) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const query = mysql2_1.default.format(`SELECT * FROM ${constants_1.MENUS_TABLE.name} WHERE ${constants_1.MENUS_TABLE.columns.title} = ?`, [menuTitle]);
         const [rows] = yield __1.dbConnexion.execute(query);
-        return (0, apiResponses_1.databaseQueryResponse)(rows, "get menu by title");
+        return (0, apiResponses_1.databaseQueryResponse)(rows, 'get menu by title');
     }
     catch (error) {
-        return (0, apiResponses_1.databaseQueryError)("get menu by title");
+        return (0, apiResponses_1.databaseQueryError)('get menu by title');
     }
 });
 MenusQueriesService.verifyDuplicateMenuByTitleAndId = (menuTitle, menuId) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const query = mysql2_1.default.format(`SELECT * WHERE ${constants_1.MENUS_TABLE.columns.title} = ? AND ${constants_1.MENUS_TABLE.columns.id} != ?`, [menuTitle, menuId]);
         const [rows] = yield __1.dbConnexion.execute(query);
-        return (0, apiResponses_1.databaseQueryResponse)(rows, "verify menu duplicate by title and id");
+        return (0, apiResponses_1.databaseQueryResponse)(rows, 'verify menu duplicate by title and id');
     }
     catch (error) {
-        return (0, apiResponses_1.databaseQueryError)("verify meny duplicate by title and id");
+        return (0, apiResponses_1.databaseQueryError)('verify meny duplicate by title and id');
     }
 });

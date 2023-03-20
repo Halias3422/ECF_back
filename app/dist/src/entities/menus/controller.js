@@ -45,7 +45,7 @@ MenuController.getAllMenus = () => __awaiter(void 0, void 0, void 0, function* (
     return retreivedMenus;
 });
 MenuController.getMenuByTitle = (menu) => __awaiter(void 0, void 0, void 0, function* () {
-    const isValid = (0, apiResponses_1.verifyFormDataValidity)(menu, ["title", "formulas"]);
+    const isValid = (0, apiResponses_1.verifyFormDataValidity)(menu, ['title', 'formulas']);
     if (isValid.statusCode !== 200) {
         return isValid;
     }
@@ -53,7 +53,7 @@ MenuController.getMenuByTitle = (menu) => __awaiter(void 0, void 0, void 0, func
     return retreivedMenu;
 });
 MenuController.verifyDuplicateMenuByTitleAndId = (menu) => __awaiter(void 0, void 0, void 0, function* () {
-    const isValid = (0, apiResponses_1.verifyFormDataValidity)(menu, ["title", "formulas"]);
+    const isValid = (0, apiResponses_1.verifyFormDataValidity)(menu, ['title', 'formulas']);
     if (isValid.statusCode !== 200) {
         return isValid;
     }
@@ -62,13 +62,13 @@ MenuController.verifyDuplicateMenuByTitleAndId = (menu) => __awaiter(void 0, voi
 });
 // MUTATIONS
 MenuController.createNewMenu = (menu) => __awaiter(void 0, void 0, void 0, function* () {
-    const isValid = (0, apiResponses_1.verifyFormDataValidity)(menu, ["title", "formulas"]);
+    const isValid = (0, apiResponses_1.verifyFormDataValidity)(menu, ['title', 'formulas']);
     if (isValid.statusCode !== 200) {
         return isValid;
     }
     const isDuplicate = yield _a.getMenuByTitle(menu);
     if (isDuplicate.statusCode === 200) {
-        return (0, apiResponses_1.isDuplicateResponse)("create new menu");
+        return (0, apiResponses_1.isDuplicateResponse)('create new menu');
     }
     const createdMenu = yield service_mutations_1.MenuMutationsService.createNewMenu(menu);
     if (createdMenu.statusCode !== 200) {
@@ -87,13 +87,13 @@ MenuController.createNewMenu = (menu) => __awaiter(void 0, void 0, void 0, funct
     return Object.assign(Object.assign({}, createdMenu), { statusCode: 201 });
 });
 MenuController.modifyMenu = (menu) => __awaiter(void 0, void 0, void 0, function* () {
-    const isValid = (0, apiResponses_1.verifyFormDataValidity)(menu, ["id", "title", "formulas"]);
+    const isValid = (0, apiResponses_1.verifyFormDataValidity)(menu, ['id', 'title', 'formulas']);
     if (isValid.statusCode !== 200) {
         return isValid;
     }
     const isDuplicate = yield _a.verifyDuplicateMenuByTitleAndId(menu);
     if (isDuplicate.statusCode === 200) {
-        return (0, apiResponses_1.isDuplicateResponse)("modify menu");
+        return (0, apiResponses_1.isDuplicateResponse)('modify menu');
     }
     const modifiedFormulas = yield _a.handleModifiedMenuFormulas(menu);
     if (modifiedFormulas.statusCode !== 200) {
@@ -103,7 +103,7 @@ MenuController.modifyMenu = (menu) => __awaiter(void 0, void 0, void 0, function
     return modifiedMenu;
 });
 MenuController.deleteMenu = (menu) => __awaiter(void 0, void 0, void 0, function* () {
-    const isValid = (0, apiResponses_1.verifyFormDataValidity)(menu, ["id", "title", "formulas"]);
+    const isValid = (0, apiResponses_1.verifyFormDataValidity)(menu, ['id', 'title', 'formulas']);
     if (isValid.statusCode !== 200) {
         return isValid;
     }
@@ -154,6 +154,6 @@ MenuController.handleModifiedMenuFormulas = (menu) => __awaiter(void 0, void 0, 
     return {
         statusCode: 200,
         data: [],
-        response: "formula updated successfully",
+        response: 'formula updated successfully',
     };
 });

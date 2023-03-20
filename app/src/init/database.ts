@@ -1,14 +1,14 @@
-import mysql2 from "mysql2";
+import mysql2 from 'mysql2';
 
-import { USERS_TABLE } from "../entities/users/constants";
+import { USERS_TABLE } from '../entities/users/constants';
 
 const testDatabaseConnexion = async (dbConnexion: any) => {
   try {
     await dbConnexion.execute(`SELECT * from ${USERS_TABLE.name}`);
-    console.log("Connexion to the database successfully established.");
+    console.log('Connexion to the database successfully established.');
   } catch (error) {
     throw new Error(
-      "Error: could not connect to the database: " + JSON.stringify(error)
+      'Error: could not connect to the database: ' + JSON.stringify(error)
     );
   }
 };
@@ -23,11 +23,11 @@ const addFirstUser = async (dbConnexion: any) => {
       );
       const [rows] = await dbConnexion.execute(insert);
       if (rows.affectedRows !== 1) {
-        throw new Error("Error creating first user");
+        throw new Error('Error creating first user');
       }
     }
   } catch (error) {
-    throw new Error("Error creating first user" + JSON.stringify(error));
+    throw new Error('Error creating first user' + JSON.stringify(error));
   }
 };
 

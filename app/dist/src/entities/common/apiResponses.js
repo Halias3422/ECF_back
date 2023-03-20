@@ -17,13 +17,13 @@ const databaseQueryResponse = (rows, queryName) => {
         return {
             statusCode: 200,
             data: rows,
-            response: "Query " + queryName + " successfully executed.",
+            response: 'Query ' + queryName + ' successfully executed.',
         };
     }
     return {
         statusCode: 400,
         data: [],
-        response: "Error: did not find " + queryName + ".",
+        response: 'Error: did not find ' + queryName + '.',
     };
 };
 exports.databaseQueryResponse = databaseQueryResponse;
@@ -31,7 +31,7 @@ const databaseQueryError = (queryName) => {
     return {
         statusCode: 500,
         data: [],
-        response: "Error: could not execute the query " + queryName + ".",
+        response: 'Error: could not execute the query ' + queryName + '.',
     };
 };
 exports.databaseQueryError = databaseQueryError;
@@ -39,28 +39,28 @@ const databaseMutationResponse = (rows, mutationName) => {
     if (rows.affectedRows > 0) {
         return {
             statusCode: 200,
-            response: "Mutation " + mutationName + " successfully executed.",
+            response: 'Mutation ' + mutationName + ' successfully executed.',
         };
     }
     return {
         statusCode: 500,
-        response: "Error: could not execute the mutation " + mutationName + ".",
+        response: 'Error: could not execute the mutation ' + mutationName + '.',
     };
 };
 exports.databaseMutationResponse = databaseMutationResponse;
 const databaseMutationError = (mutationName) => {
     return {
         statusCode: 400,
-        response: "Error: could not execute the mutation " + mutationName + ".",
+        response: 'Error: could not execute the mutation ' + mutationName + '.',
     };
 };
 exports.databaseMutationError = databaseMutationError;
 const isDuplicateResponse = (mutationName) => {
     return {
         statusCode: 400,
-        response: "Error: could not execute the mutation " +
+        response: 'Error: could not execute the mutation ' +
             mutationName +
-            " because duplicate was found in the database.",
+            ' because duplicate was found in the database.',
     };
 };
 exports.isDuplicateResponse = isDuplicateResponse;
@@ -69,21 +69,21 @@ const verifyFormDataValidity = (formData, formAttributes) => {
         if (formData[attribute] === undefined) {
             return {
                 statusCode: 400,
-                response: "Error: wrong data sent. " +
+                response: 'Error: wrong data sent. ' +
                     attribute +
-                    " atttribute is not defined.",
+                    ' atttribute is not defined.',
             };
         }
     }
     return {
         statusCode: 200,
-        response: "Form data is valid.",
+        response: 'Form data is valid.',
     };
 };
 exports.verifyFormDataValidity = verifyFormDataValidity;
 const verifyAuthorization = (req) => __awaiter(void 0, void 0, void 0, function* () {
     if (req.headers && req.headers.authorization) {
-        const auth = req.headers.authorization.split(":");
+        const auth = req.headers.authorization.split(':');
         if (auth.length === 3) {
             const isAuth = yield controller_1.AdminController.getAuthenticatedProtectedUserFromSession({
                 id: auth[0],
@@ -93,12 +93,12 @@ const verifyAuthorization = (req) => __awaiter(void 0, void 0, void 0, function*
             return isAuth;
         }
     }
-    return (0, exports.databaseQueryError)("Unauthorized");
+    return (0, exports.databaseQueryError)('Unauthorized');
 });
 exports.verifyAuthorization = verifyAuthorization;
 const verifyUserAuthorization = (req) => __awaiter(void 0, void 0, void 0, function* () {
     if (req.headers && req.headers.authorization) {
-        const auth = req.headers.authorization.split(":");
+        const auth = req.headers.authorization.split(':');
         if (auth.length === 2) {
             const isAuth = controller_2.UsersController.getAuthenticatedUserFromSession({
                 id: auth[0],
@@ -107,6 +107,6 @@ const verifyUserAuthorization = (req) => __awaiter(void 0, void 0, void 0, funct
             return isAuth;
         }
     }
-    return (0, exports.databaseQueryError)("Unauthorized");
+    return (0, exports.databaseQueryError)('Unauthorized');
 });
 exports.verifyUserAuthorization = verifyUserAuthorization;

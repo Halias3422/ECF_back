@@ -16,16 +16,16 @@ exports.emptyTestDatabase = void 0;
 const mysql2_1 = __importDefault(require("mysql2"));
 const __1 = require("..");
 const emptyTestDatabase = () => __awaiter(void 0, void 0, void 0, function* () {
-    if (process.env.ENVIRONMENT === "test") {
-        const tablesQuery = mysql2_1.default.format(`SELECT table_name FROM information_schema.tables WHERE TABLE_SCHEMA = (?)`, process.env.DB_NAME);
+    if (process.env.ENVIRONMENT === 'test') {
+        const tablesQuery = mysql2_1.default.format(`SELECT table_name FROM information_schema.tables WHERE TABLE_SCHEMA = (?)`, process.env.MYSQL_DATABASE);
         const tables = yield __1.dbConnexion.execute(tablesQuery);
-        yield __1.dbConnexion.execute("SET foreign_key_checks = 0");
+        yield __1.dbConnexion.execute('SET foreign_key_checks = 0');
         for (const table of tables[0]) {
             for (const key in table) {
                 yield __1.dbConnexion.execute(`TRUNCATE TABLE ${table[key]}`);
             }
         }
-        yield __1.dbConnexion.execute("SET foreign_key_checks = 1");
+        yield __1.dbConnexion.execute('SET foreign_key_checks = 1');
     }
 });
 exports.emptyTestDatabase = emptyTestDatabase;

@@ -26,7 +26,7 @@ DishesMutationsService.createNewDish = (newDish, dishCategoryId) => __awaiter(vo
     //necessary to set DEFAULT value for id
     const DEFAULT = {
         toSqlString: function () {
-            return "DEFAULT";
+            return 'DEFAULT';
         },
     };
     try {
@@ -39,10 +39,10 @@ DishesMutationsService.createNewDish = (newDish, dishCategoryId) => __awaiter(vo
             newDish.price,
         ]);
         const [rows] = yield __1.dbConnexion.execute(mutation);
-        return (0, apiResponses_1.databaseMutationResponse)(rows, "create new dish");
+        return (0, apiResponses_1.databaseMutationResponse)(rows, 'create new dish');
     }
     catch (error) {
-        return (0, apiResponses_1.databaseMutationError)("create new dish");
+        return (0, apiResponses_1.databaseMutationError)('create new dish');
     }
 });
 DishesMutationsService.modifyDishItemById = (dish, categoryId) => __awaiter(void 0, void 0, void 0, function* () {
@@ -56,19 +56,19 @@ DishesMutationsService.modifyDishItemById = (dish, categoryId) => __awaiter(void
             dish.id,
         ]);
         const [rows] = yield __1.dbConnexion.execute(mutation);
-        return (0, apiResponses_1.databaseMutationResponse)(rows, "modify dish item");
+        return (0, apiResponses_1.databaseMutationResponse)(rows, 'modify dish item');
     }
     catch (error) {
-        return (0, apiResponses_1.databaseMutationError)("modify dish item");
+        return (0, apiResponses_1.databaseMutationError)('modify dish item');
     }
 });
 DishesMutationsService.deleteDishItemById = (dishId) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const mutation = mysql2_1.default.format(`DELETE FROM ${constants_1.DISHES_TABLE.name} WHERE ${constants_1.DISHES_TABLE.columns.id} = ?`, [dishId]);
         const [rows] = yield __1.dbConnexion.execute(mutation);
-        return (0, apiResponses_1.databaseMutationResponse)(rows, "delete dish by ID");
+        return (0, apiResponses_1.databaseMutationResponse)(rows, 'delete dish by ID');
     }
     catch (error) {
-        return (0, apiResponses_1.databaseMutationError)("delete dish by ID");
+        return (0, apiResponses_1.databaseMutationError)('delete dish by ID');
     }
 });

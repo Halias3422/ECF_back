@@ -1,7 +1,7 @@
-import { verifyFormDataValidity } from "../common/apiResponses";
-import { ApiResponse } from "../common/constants";
-import { FormulaData } from "./constants";
-import { FormulasMutationsService } from "./service.mutations";
+import { verifyFormDataValidity } from '../common/apiResponses';
+import { ApiResponse } from '../common/constants';
+import { FormulaData } from './constants';
+import { FormulasMutationsService } from './service.mutations';
 
 export class FormulasController {
   // MUTATIONS
@@ -10,9 +10,9 @@ export class FormulasController {
     menuId: string
   ): Promise<ApiResponse> => {
     const isValid = verifyFormDataValidity(formula, [
-      "title",
-      "description",
-      "price",
+      'title',
+      'description',
+      'price',
     ]);
     if (isValid.statusCode !== 200) {
       return isValid;
@@ -25,10 +25,10 @@ export class FormulasController {
   };
   static deleteFormula = async (formula: FormulaData): Promise<ApiResponse> => {
     const isValid = verifyFormDataValidity(formula, [
-      "id",
-      "title",
-      "description",
-      "price",
+      'id',
+      'title',
+      'description',
+      'price',
     ]);
     if (isValid.statusCode !== 200) {
       return isValid;
@@ -41,10 +41,10 @@ export class FormulasController {
 
   static modifyFormula = async (formula: FormulaData): Promise<ApiResponse> => {
     const isValid = verifyFormDataValidity(formula, [
-      "id",
-      "title",
-      "description",
-      "price",
+      'id',
+      'title',
+      'description',
+      'price',
     ]);
     if (isValid.statusCode !== 200) {
       return isValid;

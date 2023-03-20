@@ -1,11 +1,11 @@
-import mysql2 from "mysql2";
-import { dbConnexion } from "../..";
+import mysql2 from 'mysql2';
+import { dbConnexion } from '../..';
 import {
   databaseQueryError,
   databaseQueryResponse,
-} from "../common/apiResponses";
-import { ApiResponse } from "../common/constants";
-import { MENUS_TABLE } from "./constants";
+} from '../common/apiResponses';
+import { ApiResponse } from '../common/constants';
+import { MENUS_TABLE } from './constants';
 
 export class MenusQueriesService {
   static getAllMenus = async (): Promise<ApiResponse> => {
@@ -13,9 +13,9 @@ export class MenusQueriesService {
       const query = `SELECT * FROM ${MENUS_TABLE.name}`;
 
       const [rows] = await dbConnexion.execute(query);
-      return databaseQueryResponse(rows, "get all menus");
+      return databaseQueryResponse(rows, 'get all menus');
     } catch (error) {
-      return databaseQueryError("get all menus");
+      return databaseQueryError('get all menus');
     }
   };
 
@@ -27,9 +27,9 @@ export class MenusQueriesService {
       );
 
       const [rows] = await dbConnexion.execute(query);
-      return databaseQueryResponse(rows, "get menu by title");
+      return databaseQueryResponse(rows, 'get menu by title');
     } catch (error) {
-      return databaseQueryError("get menu by title");
+      return databaseQueryError('get menu by title');
     }
   };
 
@@ -46,10 +46,10 @@ export class MenusQueriesService {
       const [rows] = await dbConnexion.execute(query);
       return databaseQueryResponse(
         rows,
-        "verify menu duplicate by title and id"
+        'verify menu duplicate by title and id'
       );
     } catch (error) {
-      return databaseQueryError("verify meny duplicate by title and id");
+      return databaseQueryError('verify meny duplicate by title and id');
     }
   };
 }

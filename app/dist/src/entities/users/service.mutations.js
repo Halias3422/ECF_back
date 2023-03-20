@@ -28,35 +28,35 @@ UsersMutationsService.createNewUser = (userInfo, token) => __awaiter(void 0, voi
         const hashedPassword = yield bcrypt_1.default.hash(userInfo.password, 10);
         const DEFAULT = {
             toSqlString: function () {
-                return "DEFAULT";
+                return 'DEFAULT';
             },
         };
         const mutation = mysql2_1.default.format(`INSERT INTO ${constants_1.USERS_TABLE.name} VALUES (?, ?, ?, ?, ?, ?, ?)`, [DEFAULT, userInfo.email, hashedPassword, 1, null, token, 0]);
         const [rows] = yield __1.dbConnexion.execute(mutation);
-        return (0, apiResponses_1.databaseMutationResponse)(rows, "create new user");
+        return (0, apiResponses_1.databaseMutationResponse)(rows, 'create new user');
     }
     catch (error) {
-        return (0, apiResponses_1.databaseMutationError)("create new user");
+        return (0, apiResponses_1.databaseMutationError)('create new user');
     }
 });
 UsersMutationsService.updateUserOptionalData = (userInfo) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const mutation = mysql2_1.default.format(`UPDATE ${constants_1.USERS_TABLE.name} SET ${constants_1.USERS_TABLE.columns.defaultGuestNumber} = ?, ${constants_1.USERS_TABLE.columns.defaultAllergies} = ? WHERE ${constants_1.USERS_TABLE.columns.email} = ?`, [userInfo.defaultGuestNumber, userInfo.defaultAllergies, userInfo.email]);
         const [rows] = yield __1.dbConnexion.execute(mutation);
-        return (0, apiResponses_1.databaseMutationResponse)(rows, "update user optional data");
+        return (0, apiResponses_1.databaseMutationResponse)(rows, 'update user optional data');
     }
     catch (error) {
-        return (0, apiResponses_1.databaseMutationError)("update user optional data");
+        return (0, apiResponses_1.databaseMutationError)('update user optional data');
     }
 });
 UsersMutationsService.updateUserMail = (newMail, userId) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const mutation = mysql2_1.default.format(`UPDATE ${constants_1.USERS_TABLE.name} SET ${constants_1.USERS_TABLE.columns.email} = ? WHERE ${constants_1.USERS_TABLE.columns.id} = ? AND ${constants_1.USERS_TABLE.columns.isAdmin} = 0`, [newMail, userId]);
         const [rows] = yield __1.dbConnexion.execute(mutation);
-        return (0, apiResponses_1.databaseMutationResponse)(rows, "update user mail");
+        return (0, apiResponses_1.databaseMutationResponse)(rows, 'update user mail');
     }
     catch (error) {
-        return (0, apiResponses_1.databaseMutationError)("update user mail");
+        return (0, apiResponses_1.databaseMutationError)('update user mail');
     }
 });
 UsersMutationsService.updateUserPassword = (newPassword, userId) => __awaiter(void 0, void 0, void 0, function* () {
@@ -64,19 +64,19 @@ UsersMutationsService.updateUserPassword = (newPassword, userId) => __awaiter(vo
         const newHashedPassword = yield bcrypt_1.default.hash(newPassword, 10);
         const mutation = mysql2_1.default.format(`UPDATE ${constants_1.USERS_TABLE.name} SET ${constants_1.USERS_TABLE.columns.password} = ? WHERE ${constants_1.USERS_TABLE.columns.id} = ? AND ${constants_1.USERS_TABLE.columns.isAdmin} = 0`, [newHashedPassword, userId]);
         const [rows] = yield __1.dbConnexion.execute(mutation);
-        return (0, apiResponses_1.databaseMutationResponse)(rows, "update user password");
+        return (0, apiResponses_1.databaseMutationResponse)(rows, 'update user password');
     }
     catch (error) {
-        return (0, apiResponses_1.databaseMutationError)("update user password");
+        return (0, apiResponses_1.databaseMutationError)('update user password');
     }
 });
 UsersMutationsService.updateUserToken = (userEmail, token) => __awaiter(void 0, void 0, void 0, function* () {
     const mutation = mysql2_1.default.format(`UPDATE ${constants_1.USERS_TABLE.name} SET ${constants_1.USERS_TABLE.columns.sessionToken} = ? WHERE ${constants_1.USERS_TABLE.columns.email} = ?`, [token, userEmail]);
     try {
         const [rows] = yield __1.dbConnexion.execute(mutation);
-        return (0, apiResponses_1.databaseMutationResponse)(rows, "update user session token");
+        return (0, apiResponses_1.databaseMutationResponse)(rows, 'update user session token');
     }
     catch (error) {
-        return (0, apiResponses_1.databaseMutationError)("update user session token");
+        return (0, apiResponses_1.databaseMutationError)('update user session token');
     }
 });

@@ -1,9 +1,9 @@
-import path from "path";
-import dotenv from "dotenv";
+import path from 'path';
+import dotenv from 'dotenv';
 
 export const setupCurrentEnvironment = () => {
   if (!process.env.ENVIRONMENT) {
-    process.env.ENVIRONMENT = "development";
+    process.env.ENVIRONMENT = 'development';
   }
 
   dotenv.config({
@@ -14,6 +14,6 @@ export const setupCurrentEnvironment = () => {
   });
 
   console.log(
-    "You are runnning the server in " + process.env.ENVIRONMENT + " mode"
+    'You are runnning the server in ' + process.env.ENVIRONMENT + ' mode'
   );
 };

@@ -26,9 +26,9 @@ FormulasQueriesService.getAllFormulasFromMenuId = (menuId) => __awaiter(void 0, 
     const query = mysql2_1.default.format(`SELECT * FROM ${constants_1.FORMULAS_TABLE.name} WHERE ${constants_1.FORMULAS_TABLE.name}.${constants_1.FORMULAS_TABLE.columns.menuId} = ?`, [menuId]);
     try {
         const [rows] = yield __1.dbConnexion.execute(query);
-        return (0, apiResponses_1.databaseQueryResponse)(rows, "get all formulas by menu ID");
+        return (0, apiResponses_1.databaseQueryResponse)(rows, 'get all formulas by menu ID');
     }
     catch (error) {
-        return (0, apiResponses_1.databaseQueryError)("get all formulas by menu ID");
+        return (0, apiResponses_1.databaseQueryError)('get all formulas by menu ID');
     }
 });

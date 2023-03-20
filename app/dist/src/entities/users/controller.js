@@ -25,7 +25,7 @@ exports.UsersController = UsersController;
 _a = UsersController;
 // MUTATIONS
 UsersController.signup = (userInfo) => __awaiter(void 0, void 0, void 0, function* () {
-    const isValid = (0, apiResponses_1.verifyFormDataValidity)(userInfo, ["email", "password"]);
+    const isValid = (0, apiResponses_1.verifyFormDataValidity)(userInfo, ['email', 'password']);
     if (isValid.statusCode !== 200) {
         return isValid;
     }
@@ -35,16 +35,16 @@ UsersController.signup = (userInfo) => __awaiter(void 0, void 0, void 0, functio
     }
     const isDuplicate = yield service_queries_1.UsersQueriesService.getUserByEmail(userInfo.email);
     if (isDuplicate.statusCode === 200) {
-        return (0, apiResponses_1.isDuplicateResponse)("signup");
+        return (0, apiResponses_1.isDuplicateResponse)('signup');
     }
     const response = yield service_mutations_1.UsersMutationsService.createNewUser(userInfo, _a.generateUserSessionToken());
     if (response.statusCode !== 200) {
         return response;
     }
-    return yield _a.getUserSessionInfo(userInfo.email, 201, "user created");
+    return yield _a.getUserSessionInfo(userInfo.email, 201, 'user created');
 });
 UsersController.updateOptionalInfo = (userInfo) => __awaiter(void 0, void 0, void 0, function* () {
-    const isValid = (0, apiResponses_1.verifyFormDataValidity)(userInfo, ["email"]);
+    const isValid = (0, apiResponses_1.verifyFormDataValidity)(userInfo, ['email']);
     if (isValid.statusCode !== 200) {
         return isValid;
     }
@@ -59,7 +59,7 @@ UsersController.updateMail = (userInfo, dbUser) => __awaiter(void 0, void 0, voi
     if (!(yield _a.comparePassword(dbUser.password, userInfo.password))) {
         return {
             statusCode: 400,
-            response: "Mot de passe incorrect.",
+            response: 'Mot de passe incorrect.',
         };
     }
     const isSecure = _a.verifyUserSignupConformity(userInfo);
@@ -70,7 +70,7 @@ UsersController.updateMail = (userInfo, dbUser) => __awaiter(void 0, void 0, voi
     if (modifiedMail.statusCode !== 200) {
         return {
             statusCode: 400,
-            response: "Erreur lors du traitement. Veuillez réessayer plus tard",
+            response: 'Erreur lors du traitement. Veuillez réessayer plus tard',
         };
     }
     return yield _a.login(userInfo);
@@ -79,7 +79,7 @@ UsersController.updatePassword = (userInfo, dbUser) => __awaiter(void 0, void 0,
     if (!(yield _a.comparePassword(dbUser.password, userInfo.password))) {
         return {
             statusCode: 400,
-            response: "Mot de passe incorrect.",
+            response: 'Mot de passe incorrect.',
         };
     }
     const isSecure = _a.verifyUserSignupConformity({
@@ -93,7 +93,7 @@ UsersController.updatePassword = (userInfo, dbUser) => __awaiter(void 0, void 0,
     if (modifiedPassword.statusCode !== 200) {
         return {
             statusCode: 400,
-            response: "Erreur lors du traitement. Veuillez réessayer plus tard",
+            response: 'Erreur lors du traitement. Veuillez réessayer plus tard',
         };
     }
     return modifiedPassword;
@@ -107,13 +107,13 @@ UsersController.login = (userInfo) => __awaiter(void 0, void 0, void 0, function
         return yield controller_1.AdminController.protectedLogin(userInfo);
     }
     if (!(yield _a.comparePassword(retreivedUser.data[0].password, userInfo.password))) {
-        return (0, apiResponses_1.databaseQueryResponse)([], "user");
+        return (0, apiResponses_1.databaseQueryResponse)([], 'user');
     }
     const updatedUser = yield service_mutations_1.UsersMutationsService.updateUserToken(userInfo.email, _a.generateUserSessionToken());
     if (updatedUser.statusCode !== 200) {
         return updatedUser;
     }
-    return yield _a.getUserSessionInfo(userInfo.email, 200, "user logged in");
+    return yield _a.getUserSessionInfo(userInfo.email, 200, 'user logged in');
 });
 // QUERIES
 UsersController.getUserOptionalInfo = (authentifiedUser) => __awaiter(void 0, void 0, void 0, function* () {
@@ -124,7 +124,7 @@ UsersController.getUserOptionalInfo = (authentifiedUser) => __awaiter(void 0, vo
             defaultGuestNumber: authentifiedUser.defaultGuestNumber,
             defaultAllergies: authentifiedUser.defaultAllergies,
         },
-        response: "user data found successfully",
+        response: 'user data found successfully',
     };
 });
 UsersController.getUserRole = (userSessionInfo) => __awaiter(void 0, void 0, void 0, function* () {
@@ -137,11 +137,11 @@ UsersController.getUserRole = (userSessionInfo) => __awaiter(void 0, void 0, voi
         data: {
             role: retreivedUser.data[0].isAdmin,
         },
-        response: "user role found successfully",
+        response: 'user role found successfully',
     };
 });
 UsersController.getAuthenticatedUserFromSession = (userSessionInfo) => __awaiter(void 0, void 0, void 0, function* () {
-    const isValid = (0, apiResponses_1.verifyFormDataValidity)(userSessionInfo, ["id", "token"]);
+    const isValid = (0, apiResponses_1.verifyFormDataValidity)(userSessionInfo, ['id', 'token']);
     if (isValid.statusCode !== 200) {
         return isValid;
     }
@@ -151,7 +151,7 @@ UsersController.getAuthenticatedUserFromSession = (userSessionInfo) => __awaiter
     }
     const sessionInfoIsValid = yield _a.verifyUserSessionInfoValidity(userSessionInfo, retreivedUser.data[0]);
     if (!sessionInfoIsValid) {
-        return (0, apiResponses_1.databaseQueryError)("get user info");
+        return (0, apiResponses_1.databaseQueryError)('get user info');
     }
     return retreivedUser;
 });
@@ -165,7 +165,7 @@ UsersController.getUserSessionInfo = (email, statusCode, context) => __awaiter(v
     return {
         statusCode: statusCode,
         data: { session: `${hashedId}:${user.data[0].sessionToken}` },
-        response: context + " successfully",
+        response: context + ' successfully',
     };
 });
 UsersController.verifyUserSessionInfoValidity = (sessionItem, userInfo) => __awaiter(void 0, void 0, void 0, function* () {
@@ -213,18 +213,18 @@ UsersController.verifyUserSignupConformity = (userInfo) => {
             userInfo.password.match(/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])/)) {
             return {
                 statusCode: 200,
-                response: "user info are conform",
+                response: 'user info are conform',
             };
         }
     }
     return {
         statusCode: 400,
-        response: "email or password is not conform",
+        response: 'email or password is not conform',
     };
 };
 UsersController.generateUserSessionToken = () => {
-    const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    let token = "";
+    const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let token = '';
     for (let i = 0; i < 500; i++) {
         token += chars[Math.floor(Math.random() * chars.length)];
     }

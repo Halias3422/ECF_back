@@ -1,10 +1,10 @@
-import mysql2 from "mysql2";
-import { dbConnexion } from "../..";
+import mysql2 from 'mysql2';
+import { dbConnexion } from '../..';
 import {
   databaseMutationError,
   databaseMutationResponse,
-} from "../common/apiResponses";
-import { DaySchedule, SCHEDULE_TABLE } from "./constants";
+} from '../common/apiResponses';
+import { DaySchedule, SCHEDULE_TABLE } from './constants';
 
 export class ScheduleMutationsService {
   static modifyDaySchedule = async (daySchedule: DaySchedule) => {
@@ -20,9 +20,9 @@ export class ScheduleMutationsService {
         ]
       );
       const [rows] = await dbConnexion.execute(mutation);
-      return databaseMutationResponse(rows, "modify day schedule");
+      return databaseMutationResponse(rows, 'modify day schedule');
     } catch (error) {
-      return databaseMutationError("modify day capacity");
+      return databaseMutationError('modify day capacity');
     }
   };
 }

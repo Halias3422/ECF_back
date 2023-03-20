@@ -36,7 +36,7 @@ exports.reservationsRoutes.get(constants_1.RESERVATIONS_ROUTES.getUserReservatio
         res.status(statusCode).send({ response, data });
     }
     else {
-        res.status(401).send("Unauthorized");
+        res.status(401).send('Unauthorized');
     }
 }));
 exports.reservationsRoutes.get(constants_1.RESERVATIONS_ROUTES.getAllReservationsWithAssociatedMail, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -46,6 +46,6 @@ exports.reservationsRoutes.get(constants_1.RESERVATIONS_ROUTES.getAllReservation
         res.status(statusCode).send({ response, data });
     }
     else {
-        res.status(401).send("Unauthorized");
+        res.status(401).send('Unauthorized');
     }
 }));

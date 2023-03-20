@@ -32,9 +32,9 @@ ScheduleMutationsService.modifyDaySchedule = (daySchedule) => __awaiter(void 0, 
             daySchedule.id,
         ]);
         const [rows] = yield __1.dbConnexion.execute(mutation);
-        return (0, apiResponses_1.databaseMutationResponse)(rows, "modify day schedule");
+        return (0, apiResponses_1.databaseMutationResponse)(rows, 'modify day schedule');
     }
     catch (error) {
-        return (0, apiResponses_1.databaseMutationError)("modify day capacity");
+        return (0, apiResponses_1.databaseMutationError)('modify day capacity');
     }
 });

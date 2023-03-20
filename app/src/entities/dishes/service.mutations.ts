@@ -1,11 +1,11 @@
-import mysql2 from "mysql2";
-import { dbConnexion } from "../..";
+import mysql2 from 'mysql2';
+import { dbConnexion } from '../..';
 import {
   databaseMutationError,
   databaseMutationResponse,
-} from "../common/apiResponses";
-import { ApiResponse } from "../common/constants";
-import { DISHES_TABLE, DishFormData } from "./constants";
+} from '../common/apiResponses';
+import { ApiResponse } from '../common/constants';
+import { DISHES_TABLE, DishFormData } from './constants';
 
 export class DishesMutationsService {
   static createNewDish = async (
@@ -15,7 +15,7 @@ export class DishesMutationsService {
     //necessary to set DEFAULT value for id
     const DEFAULT = {
       toSqlString: function () {
-        return "DEFAULT";
+        return 'DEFAULT';
       },
     };
 
@@ -32,9 +32,9 @@ export class DishesMutationsService {
         ]
       );
       const [rows] = await dbConnexion.execute(mutation);
-      return databaseMutationResponse(rows, "create new dish");
+      return databaseMutationResponse(rows, 'create new dish');
     } catch (error: any) {
-      return databaseMutationError("create new dish");
+      return databaseMutationError('create new dish');
     }
   };
 
@@ -55,9 +55,9 @@ export class DishesMutationsService {
         ]
       );
       const [rows] = await dbConnexion.execute(mutation);
-      return databaseMutationResponse(rows, "modify dish item");
+      return databaseMutationResponse(rows, 'modify dish item');
     } catch (error: any) {
-      return databaseMutationError("modify dish item");
+      return databaseMutationError('modify dish item');
     }
   };
 
@@ -68,9 +68,9 @@ export class DishesMutationsService {
         [dishId]
       );
       const [rows] = await dbConnexion.execute(mutation);
-      return databaseMutationResponse(rows, "delete dish by ID");
+      return databaseMutationResponse(rows, 'delete dish by ID');
     } catch (error: any) {
-      return databaseMutationError("delete dish by ID");
+      return databaseMutationError('delete dish by ID');
     }
   };
 }

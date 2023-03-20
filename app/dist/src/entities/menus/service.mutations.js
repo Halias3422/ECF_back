@@ -26,34 +26,34 @@ MenuMutationsService.createNewMenu = (menu) => __awaiter(void 0, void 0, void 0,
     try {
         const DEFAULT = {
             toSqlString: function () {
-                return "DEFAULT";
+                return 'DEFAULT';
             },
         };
         const mutation = mysql2_1.default.format(`INSERT INTO ${constants_1.MENUS_TABLE.name} VALUES (?, ?)`, [DEFAULT, menu.title]);
         const [rows] = yield __1.dbConnexion.execute(mutation);
-        return (0, apiResponses_1.databaseMutationResponse)(rows, "create new menu");
+        return (0, apiResponses_1.databaseMutationResponse)(rows, 'create new menu');
     }
     catch (error) {
-        return (0, apiResponses_1.databaseMutationError)("create new menu");
+        return (0, apiResponses_1.databaseMutationError)('create new menu');
     }
 });
 MenuMutationsService.modifyMenu = (menu) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const mutation = mysql2_1.default.format(`UPDATE ${constants_1.MENUS_TABLE.name} SET ${constants_1.MENUS_TABLE.columns.title} = ? WHERE ${constants_1.MENUS_TABLE.columns.id} = ?`, [menu.title, menu.id]);
         const [rows] = yield __1.dbConnexion.execute(mutation);
-        return (0, apiResponses_1.databaseMutationResponse)(rows, "modify menu");
+        return (0, apiResponses_1.databaseMutationResponse)(rows, 'modify menu');
     }
     catch (error) {
-        return (0, apiResponses_1.databaseMutationError)("modify menu");
+        return (0, apiResponses_1.databaseMutationError)('modify menu');
     }
 });
 MenuMutationsService.deleteMenu = (menu) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const mutation = mysql2_1.default.format(`DELETE FROM ${constants_1.MENUS_TABLE.name} WHERE ${constants_1.MENUS_TABLE.columns.id} = ?`, [menu.id]);
         const [rows] = yield __1.dbConnexion.execute(mutation);
-        return (0, apiResponses_1.databaseMutationResponse)(rows, "delete menu");
+        return (0, apiResponses_1.databaseMutationResponse)(rows, 'delete menu');
     }
     catch (error) {
-        return (0, apiResponses_1.databaseMutationError)("delete menu");
+        return (0, apiResponses_1.databaseMutationError)('delete menu');
     }
 });

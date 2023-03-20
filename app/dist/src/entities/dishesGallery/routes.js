@@ -34,7 +34,7 @@ exports.dishesGalleryRoutes.get(constants_1.DISHES_GALLERY_ROUTES.verifyIfDuplic
         res.status(statusCode).send(response);
     }
     else {
-        res.status(400).send("Wrong data sent");
+        res.status(400).send('Wrong data sent');
     }
 }));
 // PROTECTED
@@ -45,7 +45,7 @@ exports.dishesGalleryRoutes.post(constants_1.DISHES_GALLERY_ROUTES.deleteDishGal
         res.status(statusCode).send(response);
     }
     else {
-        res.status(401).send("Unauthorized");
+        res.status(401).send('Unauthorized');
     }
 }));
 exports.dishesGalleryRoutes.post(constants_1.DISHES_GALLERY_ROUTES.saveDishGalleryImage, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -53,14 +53,14 @@ exports.dishesGalleryRoutes.post(constants_1.DISHES_GALLERY_ROUTES.saveDishGalle
     if (auth.statusCode === 200) {
         (0, index_1.uploadImage)(req, res, (error) => __awaiter(void 0, void 0, void 0, function* () {
             if (error) {
-                return res.status(500).send("Error uploading image: " + error);
+                return res.status(500).send('Error uploading image: ' + error);
             }
             const { statusCode, response } = yield controller_1.DishesGalleryController.saveDishGalleryImage(req.file);
             return res.status(statusCode).send(response);
         }));
     }
     else {
-        res.status(401).send("Unauthorized");
+        res.status(401).send('Unauthorized');
     }
 }));
 exports.dishesGalleryRoutes.post(constants_1.DISHES_GALLERY_ROUTES.deleteDishGalleryImage, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -70,7 +70,7 @@ exports.dishesGalleryRoutes.post(constants_1.DISHES_GALLERY_ROUTES.deleteDishGal
         res.status(statusCode).send(response);
     }
     else {
-        res.status(401).send("Unauthorized");
+        res.status(401).send('Unauthorized');
     }
 }));
 exports.dishesGalleryRoutes.post(constants_1.DISHES_GALLERY_ROUTES.createNewDishGalleryItem, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -80,7 +80,7 @@ exports.dishesGalleryRoutes.post(constants_1.DISHES_GALLERY_ROUTES.createNewDish
         res.status(statusCode).send(response);
     }
     else {
-        res.status(401).send("Unauthorized");
+        res.status(401).send('Unauthorized');
     }
 }));
 exports.dishesGalleryRoutes.post(constants_1.DISHES_GALLERY_ROUTES.modifyDishGalleryItem, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -90,6 +90,6 @@ exports.dishesGalleryRoutes.post(constants_1.DISHES_GALLERY_ROUTES.modifyDishGal
         res.status(statusCode).send(response);
     }
     else {
-        res.status(401).send("Unauthorized");
+        res.status(401).send('Unauthorized');
     }
 }));

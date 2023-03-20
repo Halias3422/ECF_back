@@ -1,16 +1,16 @@
-import bcrypt from "bcrypt";
+import bcrypt from 'bcrypt';
 import {
   databaseQueryError,
   databaseQueryResponse,
   verifyFormDataValidity,
-} from "../common/apiResponses";
-import { ApiResponse } from "../common/constants";
-import { UserAuthData, UserData } from "../users/constants";
-import { UsersController } from "../users/controller";
-import { UsersMutationsService } from "../users/service.mutations";
-import { AdminAuthData, AdminSessionData } from "./constants";
-import { AdminMutationsService } from "./service.mutations";
-import { AdminQueriesService } from "./service.queries";
+} from '../common/apiResponses';
+import { ApiResponse } from '../common/constants';
+import { UserAuthData, UserData } from '../users/constants';
+import { UsersController } from '../users/controller';
+import { UsersMutationsService } from '../users/service.mutations';
+import { AdminAuthData, AdminSessionData } from './constants';
+import { AdminMutationsService } from './service.mutations';
+import { AdminQueriesService } from './service.queries';
 
 export class AdminController {
   static protectedLogin = async (
@@ -29,7 +29,7 @@ export class AdminController {
         userInfo.password
       ))
     ) {
-      return databaseQueryResponse([], "user");
+      return databaseQueryResponse([], 'user');
     }
     const updatedUser = await UsersMutationsService.updateUserToken(
       userInfo.email,
@@ -41,7 +41,7 @@ export class AdminController {
     return await this.getProtectedUserSessionInfo(
       userInfo.email,
       needPasswordReset ? 303 : 200,
-      needPasswordReset ? "password reset needed" : "user logged in"
+      needPasswordReset ? 'password reset needed' : 'user logged in'
     );
   };
 
@@ -49,9 +49,9 @@ export class AdminController {
     userSessionInfo: AdminSessionData
   ): Promise<ApiResponse> => {
     const isValid = verifyFormDataValidity(userSessionInfo, [
-      "id",
-      "email",
-      "token",
+      'id',
+      'email',
+      'token',
     ]);
     if (isValid.statusCode !== 200) {
       return isValid;
@@ -68,14 +68,14 @@ export class AdminController {
       retreivedUser.data[0].id
     );
     if (!idIsValid) {
-      return databaseQueryError("get protected user info");
+      return databaseQueryError('get protected user info');
     }
     const emailIsValid = await this.verifyUserSessionItemValidity(
       userSessionInfo.email,
       retreivedUser.data[0].email
     );
     if (!emailIsValid) {
-      return databaseQueryError("get protected user info");
+      return databaseQueryError('get protected user info');
     }
     return retreivedUser;
   };
@@ -87,7 +87,7 @@ export class AdminController {
     if (!(await this.comparePassword(dbUser.password, userInfo.password))) {
       return {
         statusCode: 400,
-        response: "Mot de passe incorrect.",
+        response: 'Mot de passe incorrect.',
       };
     }
     const isSecure = UsersController.verifyUserSignupConformity(userInfo);
@@ -101,7 +101,7 @@ export class AdminController {
     if (modifiedMail.statusCode !== 200) {
       return {
         statusCode: 400,
-        response: "Erreur lors du traitement. Veuillez réessayer plus tard",
+        response: 'Erreur lors du traitement. Veuillez réessayer plus tard',
       };
     }
     return await this.protectedLogin(userInfo);
@@ -114,7 +114,7 @@ export class AdminController {
     if (!(await this.comparePassword(dbUser.password, userInfo.password))) {
       return {
         statusCode: 400,
-        response: "Mot de passe incorrect.",
+        response: 'Mot de passe incorrect.',
       };
     }
     const isSecure = UsersController.verifyUserSignupConformity({
@@ -134,7 +134,7 @@ export class AdminController {
     if (modifiedPassword.statusCode !== 200) {
       return {
         statusCode: 400,
-        response: "Erreur lors du traitement. Veuillez réessayer plus tard",
+        response: 'Erreur lors du traitement. Veuillez réessayer plus tard',
       };
     }
     return modifiedPassword;
@@ -157,10 +157,10 @@ export class AdminController {
         data: {
           session: `${hashedId}:${hashedMail}:${user.data[0].sessionToken}`,
         },
-        response: context + " successfully",
+        response: context + ' successfully',
       };
     } catch (error) {
-      return databaseQueryError("get session info");
+      return databaseQueryError('get session info');
     }
   };
 
@@ -189,8 +189,8 @@ export class AdminController {
 
   private static generateUserSessionToken = (): string => {
     const chars =
-      "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    let token = "";
+      'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let token = '';
     for (let i = 0; i < 500; i++) {
       token += chars[Math.floor(Math.random() * chars.length)];
     }

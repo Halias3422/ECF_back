@@ -1,12 +1,12 @@
-import mysql2 from "mysql2";
-import bcrypt from "bcrypt";
-import { ApiResponse } from "../common/constants";
-import { UserAuthData, UserOptionalData, USERS_TABLE } from "./constants";
-import { dbConnexion } from "../..";
+import mysql2 from 'mysql2';
+import bcrypt from 'bcrypt';
+import { ApiResponse } from '../common/constants';
+import { UserAuthData, UserOptionalData, USERS_TABLE } from './constants';
+import { dbConnexion } from '../..';
 import {
   databaseMutationError,
   databaseMutationResponse,
-} from "../common/apiResponses";
+} from '../common/apiResponses';
 
 export class UsersMutationsService {
   static createNewUser = async (
@@ -17,7 +17,7 @@ export class UsersMutationsService {
       const hashedPassword = await bcrypt.hash(userInfo.password, 10);
       const DEFAULT = {
         toSqlString: function () {
-          return "DEFAULT";
+          return 'DEFAULT';
         },
       };
 
@@ -26,9 +26,9 @@ export class UsersMutationsService {
         [DEFAULT, userInfo.email, hashedPassword, 1, null, token, 0]
       );
       const [rows] = await dbConnexion.execute(mutation);
-      return databaseMutationResponse(rows, "create new user");
+      return databaseMutationResponse(rows, 'create new user');
     } catch (error) {
-      return databaseMutationError("create new user");
+      return databaseMutationError('create new user');
     }
   };
 
@@ -41,9 +41,9 @@ export class UsersMutationsService {
         [userInfo.defaultGuestNumber, userInfo.defaultAllergies, userInfo.email]
       );
       const [rows] = await dbConnexion.execute(mutation);
-      return databaseMutationResponse(rows, "update user optional data");
+      return databaseMutationResponse(rows, 'update user optional data');
     } catch (error) {
-      return databaseMutationError("update user optional data");
+      return databaseMutationError('update user optional data');
     }
   };
 
@@ -57,9 +57,9 @@ export class UsersMutationsService {
         [newMail, userId]
       );
       const [rows] = await dbConnexion.execute(mutation);
-      return databaseMutationResponse(rows, "update user mail");
+      return databaseMutationResponse(rows, 'update user mail');
     } catch (error) {
-      return databaseMutationError("update user mail");
+      return databaseMutationError('update user mail');
     }
   };
 
@@ -74,9 +74,9 @@ export class UsersMutationsService {
         [newHashedPassword, userId]
       );
       const [rows] = await dbConnexion.execute(mutation);
-      return databaseMutationResponse(rows, "update user password");
+      return databaseMutationResponse(rows, 'update user password');
     } catch (error) {
-      return databaseMutationError("update user password");
+      return databaseMutationError('update user password');
     }
   };
 
@@ -91,9 +91,9 @@ export class UsersMutationsService {
 
     try {
       const [rows] = await dbConnexion.execute(mutation);
-      return databaseMutationResponse(rows, "update user session token");
+      return databaseMutationResponse(rows, 'update user session token');
     } catch (error) {
-      return databaseMutationError("update user session token");
+      return databaseMutationError('update user session token');
     }
   };
 }

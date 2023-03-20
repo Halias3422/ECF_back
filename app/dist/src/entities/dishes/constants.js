@@ -2,22 +2,22 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DISHES_TABLE = exports.DISHES_ROUTES = void 0;
 exports.DISHES_ROUTES = {
-    createNewDish: "/api/create-new-dish",
-    getAllDishesByCategories: "/api/get-all-dishes-by-categories",
-    deleteDishItem: "/api/delete-dish",
-    deleteDishImage: "/api/delete-dish-image",
-    verifyIfDuplicateTitleOrImage: "/api/dish-verify-duplicate-title-or-image",
-    saveDishImage: "/api/save-dish-image",
-    modifyDishItem: "/api/modify-dish-item",
+    createNewDish: '/api/create-new-dish',
+    getAllDishesByCategories: '/api/get-all-dishes-by-categories',
+    deleteDishItem: '/api/delete-dish',
+    deleteDishImage: '/api/delete-dish-image',
+    verifyIfDuplicateTitleOrImage: '/api/dish-verify-duplicate-title-or-image',
+    saveDishImage: '/api/save-dish-image',
+    modifyDishItem: '/api/modify-dish-item',
 };
 exports.DISHES_TABLE = {
-    name: "Dishes",
+    name: 'Dishes',
     columns: {
-        id: "id",
-        categoryId: "categoryId",
-        title: "title",
-        image: "image",
-        description: "description",
-        price: "price",
+        id: 'id',
+        categoryId: 'categoryId',
+        title: 'title',
+        image: 'image',
+        description: 'description',
+        price: 'price',
     },
 };

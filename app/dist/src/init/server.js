@@ -10,23 +10,23 @@ const routes_1 = require("./routes");
 const initExpressServer = () => {
     const app = (0, express_1.default)();
     app.use((0, cors_1.default)({
-        origin: "*",
+        origin: '*',
     }), 
     // necessary to handle incoming data
     express_1.default.urlencoded({ extended: true }), express_1.default.json());
     // init routing
-    app.use("/", routes_1.routes);
+    app.use('/', routes_1.routes);
     // serve static images
-    app.use(express_1.default.static("public"));
+    app.use(express_1.default.static('public'));
     // launch server
     let server = null;
     try {
         server = app.listen(process.env.SERVER_PORT, () => {
-            console.log("Server is running on port " + process.env.SERVER_PORT);
+            console.log('Server is running on port ' + process.env.SERVER_PORT);
         });
     }
     catch (error) {
-        console.log("Unexpected Error while initializing server : " + error);
+        console.log('Unexpected Error while initializing server : ' + error);
     }
     return server;
 };

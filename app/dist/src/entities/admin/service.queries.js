@@ -26,19 +26,19 @@ AdminQueriesService.getProtectedUserByEmail = (email) => __awaiter(void 0, void 
     try {
         const query = mysql2_1.default.format(`SELECT * FROM ${constants_1.USERS_TABLE.name} WHERE ${constants_1.USERS_TABLE.columns.email} = ?`, [email]);
         const [rows] = yield __1.dbConnexion.execute(query);
-        return (0, apiResponses_1.databaseQueryResponse)(rows, "user");
+        return (0, apiResponses_1.databaseQueryResponse)(rows, 'user');
     }
     catch (error) {
-        return (0, apiResponses_1.databaseQueryError)("get user");
+        return (0, apiResponses_1.databaseQueryError)('get user');
     }
 });
 AdminQueriesService.getProtectedUserBySessionToken = (token) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const query = mysql2_1.default.format(`SELECT * FROM ${constants_1.USERS_TABLE.name} WHERE ${constants_1.USERS_TABLE.columns.sessionToken} = ?`, [token]);
         const [rows] = yield __1.dbConnexion.execute(query);
-        return (0, apiResponses_1.databaseQueryResponse)(rows, "protected user");
+        return (0, apiResponses_1.databaseQueryResponse)(rows, 'protected user');
     }
     catch (error) {
-        return (0, apiResponses_1.databaseQueryError)("get protected user");
+        return (0, apiResponses_1.databaseQueryError)('get protected user');
     }
 });

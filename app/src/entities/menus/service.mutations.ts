@@ -1,17 +1,17 @@
-import mysql2 from "mysql2";
-import { dbConnexion } from "../..";
+import mysql2 from 'mysql2';
+import { dbConnexion } from '../..';
 import {
   databaseMutationError,
   databaseMutationResponse,
-} from "../common/apiResponses";
-import { FormattedMenu, MENUS_TABLE } from "./constants";
+} from '../common/apiResponses';
+import { FormattedMenu, MENUS_TABLE } from './constants';
 
 export class MenuMutationsService {
   static createNewMenu = async (menu: FormattedMenu) => {
     try {
       const DEFAULT = {
         toSqlString: function () {
-          return "DEFAULT";
+          return 'DEFAULT';
         },
       };
       const mutation = mysql2.format(
@@ -19,9 +19,9 @@ export class MenuMutationsService {
         [DEFAULT, menu.title]
       );
       const [rows] = await dbConnexion.execute(mutation);
-      return databaseMutationResponse(rows, "create new menu");
+      return databaseMutationResponse(rows, 'create new menu');
     } catch (error) {
-      return databaseMutationError("create new menu");
+      return databaseMutationError('create new menu');
     }
   };
 
@@ -32,9 +32,9 @@ export class MenuMutationsService {
         [menu.title, menu.id]
       );
       const [rows] = await dbConnexion.execute(mutation);
-      return databaseMutationResponse(rows, "modify menu");
+      return databaseMutationResponse(rows, 'modify menu');
     } catch (error) {
-      return databaseMutationError("modify menu");
+      return databaseMutationError('modify menu');
     }
   };
 
@@ -45,9 +45,9 @@ export class MenuMutationsService {
         [menu.id]
       );
       const [rows] = await dbConnexion.execute(mutation);
-      return databaseMutationResponse(rows, "delete menu");
+      return databaseMutationResponse(rows, 'delete menu');
     } catch (error) {
-      return databaseMutationError("delete menu");
+      return databaseMutationError('delete menu');
     }
   };
 }

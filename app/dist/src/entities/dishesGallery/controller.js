@@ -41,7 +41,7 @@ DishesGalleryController.getAllDishesGallery = () => __awaiter(void 0, void 0, vo
     };
 });
 DishesGalleryController.verifyIfDuplicateTitleOrImage = (dish) => __awaiter(void 0, void 0, void 0, function* () {
-    const isValid = (0, apiResponses_1.verifyFormDataValidity)(dish, ["title", "image"]);
+    const isValid = (0, apiResponses_1.verifyFormDataValidity)(dish, ['title', 'image']);
     if (isValid.statusCode !== 200) {
         return isValid;
     }
@@ -50,42 +50,42 @@ DishesGalleryController.verifyIfDuplicateTitleOrImage = (dish) => __awaiter(void
         return {
             statusCode: 400,
             data: isDuplicate.data,
-            response: "title or image already exists",
+            response: 'title or image already exists',
         };
     }
-    return (0, apiResponses_1.databaseQueryResponse)(["a", "b"], "new item is not a duplicate");
+    return (0, apiResponses_1.databaseQueryResponse)(['a', 'b'], 'new item is not a duplicate');
 });
 // PROTECTED
 DishesGalleryController.saveDishGalleryImage = (dishImage) => __awaiter(void 0, void 0, void 0, function* () {
     const params = {
         Bucket: process.env.AWS_BUCKET_NAME,
-        Key: "dishesGallery/DISHESGALLERY_" + dishImage.originalname,
+        Key: 'dishesGallery/DISHESGALLERY_' + dishImage.originalname,
         Body: dishImage.buffer,
-        ACL: "public-read",
+        ACL: 'public-read',
     };
     try {
         yield __1.storage.send(new client_s3_1.PutObjectCommand(params));
-        return { statusCode: 201, response: "dish gallery image saved" };
+        return { statusCode: 201, response: 'dish gallery image saved' };
     }
     catch (error) {
-        return (0, apiResponses_1.databaseMutationError)("save dish gallery image" + error);
+        return (0, apiResponses_1.databaseMutationError)('save dish gallery image' + error);
     }
 });
 DishesGalleryController.deleteDishGalleryImage = (imageName) => __awaiter(void 0, void 0, void 0, function* () {
     const deleteParams = {
         Bucket: process.env.AWS_BUCKET_NAME,
-        Key: "dishesGallery/DISHESGALLERY_" + imageName,
+        Key: 'dishesGallery/DISHESGALLERY_' + imageName,
     };
     try {
         yield __1.storage.send(new client_s3_1.DeleteObjectCommand(deleteParams));
-        return { statusCode: 200, response: "dish gallery image deleted" };
+        return { statusCode: 200, response: 'dish gallery image deleted' };
     }
     catch (error) {
-        return (0, apiResponses_1.databaseMutationError)("delete dish gallery image" + error);
+        return (0, apiResponses_1.databaseMutationError)('delete dish gallery image' + error);
     }
 });
 DishesGalleryController.createDishGalleryItem = (dish) => __awaiter(void 0, void 0, void 0, function* () {
-    const isValid = (0, apiResponses_1.verifyFormDataValidity)(dish, ["title", "image"]);
+    const isValid = (0, apiResponses_1.verifyFormDataValidity)(dish, ['title', 'image']);
     if (isValid.statusCode !== 200) {
         return isValid;
     }
@@ -96,7 +96,7 @@ DishesGalleryController.createDishGalleryItem = (dish) => __awaiter(void 0, void
     return Object.assign(Object.assign({}, createdDish), { statusCode: 201 });
 });
 DishesGalleryController.modifyDishGalleryItem = (dish) => __awaiter(void 0, void 0, void 0, function* () {
-    const isValid = (0, apiResponses_1.verifyFormDataValidity)(dish, ["id", "title", "image"]);
+    const isValid = (0, apiResponses_1.verifyFormDataValidity)(dish, ['id', 'title', 'image']);
     if (!dish.id || isValid.statusCode !== 200) {
         return isValid;
     }
@@ -104,7 +104,7 @@ DishesGalleryController.modifyDishGalleryItem = (dish) => __awaiter(void 0, void
     return modifiedDish;
 });
 DishesGalleryController.deleteDishGalleryItem = (dish) => __awaiter(void 0, void 0, void 0, function* () {
-    const isValid = (0, apiResponses_1.verifyFormDataValidity)(dish, ["id", "title", "image"]);
+    const isValid = (0, apiResponses_1.verifyFormDataValidity)(dish, ['id', 'title', 'image']);
     if (!dish.id || isValid.statusCode !== 200) {
         return isValid;
     }
@@ -113,10 +113,10 @@ DishesGalleryController.deleteDishGalleryItem = (dish) => __awaiter(void 0, void
 });
 DishesGalleryController.deleteImage = (imageName) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        yield fs_1.promises.unlink(__1.rootDirectory + "/public/dishesGallery/" + imageName);
+        yield fs_1.promises.unlink(__1.rootDirectory + '/public/dishesGallery/' + imageName);
     }
     catch (error) {
-        return (0, apiResponses_1.databaseMutationError)("delete dish gallery image");
+        return (0, apiResponses_1.databaseMutationError)('delete dish gallery image');
     }
-    return (0, apiResponses_1.databaseMutationResponse)({ affectedRows: 1 }, "delete dish gallery image");
+    return (0, apiResponses_1.databaseMutationResponse)({ affectedRows: 1 }, 'delete dish gallery image');
 });

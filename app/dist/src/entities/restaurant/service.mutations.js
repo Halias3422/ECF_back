@@ -26,9 +26,9 @@ RestaurantMutationsService.modifySeatsCapacity = (newNumber) => __awaiter(void 0
     try {
         const mutation = mysql2_1.default.format(`UPDATE ${constants_1.RESTAURANT_TABLE.name} SET ${constants_1.RESTAURANT_TABLE.columns.seatsCapacity} = (?)`, [newNumber]);
         const [rows] = yield __1.dbConnexion.execute(mutation);
-        return (0, apiResponses_1.databaseMutationResponse)(rows, "modify seats capacity");
+        return (0, apiResponses_1.databaseMutationResponse)(rows, 'modify seats capacity');
     }
     catch (error) {
-        return (0, apiResponses_1.databaseMutationError)("modify seats capacity");
+        return (0, apiResponses_1.databaseMutationError)('modify seats capacity');
     }
 });

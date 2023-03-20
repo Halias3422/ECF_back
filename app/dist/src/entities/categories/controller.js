@@ -20,13 +20,13 @@ exports.CategoriesController = CategoriesController;
 _a = CategoriesController;
 // MUTATIONS
 CategoriesController.createNewCategory = (newCategory) => __awaiter(void 0, void 0, void 0, function* () {
-    const isValid = (0, apiResponses_1.verifyFormDataValidity)(newCategory, ["name"]);
+    const isValid = (0, apiResponses_1.verifyFormDataValidity)(newCategory, ['name']);
     if (isValid.statusCode !== 200) {
         return isValid;
     }
     const isDuplicate = yield service_queries_1.CategoriesQueriesService.getCategoryByName(newCategory.name);
     if (isDuplicate.statusCode === 200) {
-        return (0, apiResponses_1.isDuplicateResponse)("create new category");
+        return (0, apiResponses_1.isDuplicateResponse)('create new category');
     }
     const response = yield service_mutations_1.CategoriesMutationsService.createNewCategory(newCategory);
     if (response.statusCode !== 200) {
@@ -35,7 +35,7 @@ CategoriesController.createNewCategory = (newCategory) => __awaiter(void 0, void
     return Object.assign(Object.assign({}, response), { statusCode: 201 });
 });
 CategoriesController.deleteCategory = (category) => __awaiter(void 0, void 0, void 0, function* () {
-    const isValid = (0, apiResponses_1.verifyFormDataValidity)(category, ["id", "name"]);
+    const isValid = (0, apiResponses_1.verifyFormDataValidity)(category, ['id', 'name']);
     if (isValid.statusCode !== 200) {
         return isValid;
     }
@@ -43,13 +43,13 @@ CategoriesController.deleteCategory = (category) => __awaiter(void 0, void 0, vo
     return response;
 });
 CategoriesController.modifyCategory = (category) => __awaiter(void 0, void 0, void 0, function* () {
-    const isValid = (0, apiResponses_1.verifyFormDataValidity)(category, ["id", "name"]);
+    const isValid = (0, apiResponses_1.verifyFormDataValidity)(category, ['id', 'name']);
     if (isValid.statusCode !== 200) {
         return isValid;
     }
     const isDuplicate = yield _a.getCategoryByName(category.name);
     if (isDuplicate.statusCode === 200) {
-        return (0, apiResponses_1.isDuplicateResponse)("modify category");
+        return (0, apiResponses_1.isDuplicateResponse)('modify category');
     }
     const response = yield service_mutations_1.CategoriesMutationsService.modifyCategoryById(category);
     return response;

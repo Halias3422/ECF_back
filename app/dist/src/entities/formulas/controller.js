@@ -20,9 +20,9 @@ _a = FormulasController;
 // MUTATIONS
 FormulasController.createNewFormula = (formula, menuId) => __awaiter(void 0, void 0, void 0, function* () {
     const isValid = (0, apiResponses_1.verifyFormDataValidity)(formula, [
-        "title",
-        "description",
-        "price",
+        'title',
+        'description',
+        'price',
     ]);
     if (isValid.statusCode !== 200) {
         return isValid;
@@ -32,10 +32,10 @@ FormulasController.createNewFormula = (formula, menuId) => __awaiter(void 0, voi
 });
 FormulasController.deleteFormula = (formula) => __awaiter(void 0, void 0, void 0, function* () {
     const isValid = (0, apiResponses_1.verifyFormDataValidity)(formula, [
-        "id",
-        "title",
-        "description",
-        "price",
+        'id',
+        'title',
+        'description',
+        'price',
     ]);
     if (isValid.statusCode !== 200) {
         return isValid;
@@ -45,10 +45,10 @@ FormulasController.deleteFormula = (formula) => __awaiter(void 0, void 0, void 0
 });
 FormulasController.modifyFormula = (formula) => __awaiter(void 0, void 0, void 0, function* () {
     const isValid = (0, apiResponses_1.verifyFormDataValidity)(formula, [
-        "id",
-        "title",
-        "description",
-        "price",
+        'id',
+        'title',
+        'description',
+        'price',
     ]);
     if (isValid.statusCode !== 200) {
         return isValid;

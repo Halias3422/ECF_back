@@ -25,35 +25,35 @@ _a = CategoriesMutationsService;
 CategoriesMutationsService.createNewCategory = (newCategory) => __awaiter(void 0, void 0, void 0, function* () {
     const DEFAULT = {
         toSqlString: function () {
-            return "DEFAULT";
+            return 'DEFAULT';
         },
     };
     const mutation = mysql2_1.default.format(`INSERT INTO ${constant_1.CATEGORIES_TABLE.name} VALUES (?, ?)`, [DEFAULT, newCategory.name]);
     try {
         const [rows] = yield __1.dbConnexion.execute(mutation);
-        return (0, apiResponses_1.databaseMutationResponse)(rows, "create new category");
+        return (0, apiResponses_1.databaseMutationResponse)(rows, 'create new category');
     }
     catch (error) {
-        return (0, apiResponses_1.databaseMutationError)("create new category");
+        return (0, apiResponses_1.databaseMutationError)('create new category');
     }
 });
 CategoriesMutationsService.deleteCategoryById = (categoryId) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const mutation = mysql2_1.default.format(`DELETE FROM ${constant_1.CATEGORIES_TABLE.name} WHERE ${constant_1.CATEGORIES_TABLE.columns.id} = ?`, [categoryId]);
         const [rows] = yield __1.dbConnexion.execute(mutation);
-        return (0, apiResponses_1.databaseMutationResponse)(rows, "delete category by ID");
+        return (0, apiResponses_1.databaseMutationResponse)(rows, 'delete category by ID');
     }
     catch (error) {
-        return (0, apiResponses_1.databaseMutationError)("delete category by ID");
+        return (0, apiResponses_1.databaseMutationError)('delete category by ID');
     }
 });
 CategoriesMutationsService.modifyCategoryById = (category) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const mutation = mysql2_1.default.format(`UPDATE ${constant_1.CATEGORIES_TABLE.name} SET ${constant_1.CATEGORIES_TABLE.columns.name} = ? WHERE ${constant_1.CATEGORIES_TABLE.columns.id} = ?`, [category.name, category.id]);
         const [rows] = yield __1.dbConnexion.execute(mutation);
-        return (0, apiResponses_1.databaseMutationResponse)(rows, "delete category by ID");
+        return (0, apiResponses_1.databaseMutationResponse)(rows, 'delete category by ID');
     }
     catch (error) {
-        return (0, apiResponses_1.databaseMutationError)("delete category by ID");
+        return (0, apiResponses_1.databaseMutationError)('delete category by ID');
     }
 });

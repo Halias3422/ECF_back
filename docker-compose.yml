@@ -1,75 +1,30 @@
-version: '3.8'
+version: "3.8"
 
 services:
-  le-quai-antique-mysql-db:
+  ecf_db:
     image: mysql:8.0
-    container_name: le-quai-antique-mysql-db
+    container_name: ecf_db
     restart: always
-    env_file: ./.env
     environment:
-      MYSQL_DATABASE: $MYSQL_DATABASE
-      MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
-      MYSQL_USER: $MYSQL_USER
-      MYSQL_PASSWORD: $MYSQL_PASSWORD
-    # ports:
-    #   - $MYSQL_LOCAL_PORT:$MYSQL_DOCKER_PORT
-    healthcheck:
-      test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost']
-      timeout: 20s
-      retries: 10
+      MYSQL_DATABASE: ecf_db
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_USER: ecf_db
+      MYSQL_PASSWORD: password
+    ports:
+      - "3306:3306"
     volumes:
-      - db_data:/var/lib/mysql
       - .:/docker-entrypoint-initdb.d
 
-  # test_ecf_db:
-  #   image: mysql:8.0
-  #   container_name: test_ecf_db
-  #   restart: always
-  #   environment:
-  #     MYSQL_DATABASE: test_ecf_db
-  #     MYSQL_ROOT_PASSWORD: testrootpassword
-  #     MYSQL_USER: test_ecf_db
-  #     MYSQL_PASSWORD: test_password
-  #   ports:
-  #     - '3308:3306'
-  #   volumes:
-  #     - test_db_data:/var/lib/mysql
-  #     - .:/docker-entrypoint-initdb.d
-
-  le-quai-antique-server:
-    image: node:19-alpine
-    ports:
-      - 5000:5000
-    working_dir: /app
-    command: sh -c 'cd app/ && yarn && yarn start'
-    volumes:
-      - ./:/app
+  test_ecf_db:
+    image: mysql:8.0
+    container_name: test_ecf_db
+    restart: always
     environment:
-      MYSQL_HOST: $MYSQL_DATABASE
-      MYSQL_USER: $MYSQL_USER
-      MYSQL_PASSWORD: $MYSQL_PASSWORD
-      MYSQL_DB: $MYSQL_DATABASE
-    depends_on:
-      le-quai-antique-mysql-db:
-        condition: service_healthy
-    stdin_open: true
-    tty: true
-
-    # build:
-    #   context: .
-    #   dockerfile: ./app/Dockerfile
-    # image: node-mysql-app
-    # env_file: ./app/environment/production.env
-    # environment:
-    #   DB_HOST: localhost
-    # ports:
-    #   - '5000:5000'
-    # depends_on:
-    #   le-quai-antique-mysql-db:
-    #     condition: service_healthy
-    # stdin_open: true
-    # tty: true
-
-volumes:
-  db_data:
-  test_db_data:
+      MYSQL_DATABASE: test_ecf_db
+      MYSQL_ROOT_PASSWORD: testrootpassword
+      MYSQL_USER: test_ecf_db
+      MYSQL_PASSWORD: test_password
+    ports:
+      - "3308:3306"
+    volumes:
+      - .:/docker-entrypoint-initdb.d

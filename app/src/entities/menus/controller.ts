@@ -1,14 +1,14 @@
 import {
   isDuplicateResponse,
   verifyFormDataValidity,
-} from "../common/apiResponses";
-import { ApiResponse } from "../common/constants";
-import { FormulaData } from "../formulas/constants";
-import { FormulasController } from "../formulas/controller";
-import { FormulasQueriesService } from "../formulas/service.queries";
-import { FormattedMenu } from "./constants";
-import { MenuMutationsService } from "./service.mutations";
-import { MenusQueriesService } from "./service.queries";
+} from '../common/apiResponses';
+import { ApiResponse } from '../common/constants';
+import { FormulaData } from '../formulas/constants';
+import { FormulasController } from '../formulas/controller';
+import { FormulasQueriesService } from '../formulas/service.queries';
+import { FormattedMenu } from './constants';
+import { MenuMutationsService } from './service.mutations';
+import { MenusQueriesService } from './service.queries';
 
 export class MenuController {
   // QUERIES
@@ -44,7 +44,7 @@ export class MenuController {
   };
 
   static getMenuByTitle = async (menu: FormattedMenu): Promise<ApiResponse> => {
-    const isValid = verifyFormDataValidity(menu, ["title", "formulas"]);
+    const isValid = verifyFormDataValidity(menu, ['title', 'formulas']);
     if (isValid.statusCode !== 200) {
       return isValid;
     }
@@ -55,7 +55,7 @@ export class MenuController {
   static verifyDuplicateMenuByTitleAndId = async (
     menu: FormattedMenu
   ): Promise<ApiResponse> => {
-    const isValid = verifyFormDataValidity(menu, ["title", "formulas"]);
+    const isValid = verifyFormDataValidity(menu, ['title', 'formulas']);
     if (isValid.statusCode !== 200) {
       return isValid;
     }
@@ -69,13 +69,13 @@ export class MenuController {
   // MUTATIONS
 
   static createNewMenu = async (menu: FormattedMenu): Promise<ApiResponse> => {
-    const isValid = verifyFormDataValidity(menu, ["title", "formulas"]);
+    const isValid = verifyFormDataValidity(menu, ['title', 'formulas']);
     if (isValid.statusCode !== 200) {
       return isValid;
     }
     const isDuplicate = await this.getMenuByTitle(menu);
     if (isDuplicate.statusCode === 200) {
-      return isDuplicateResponse("create new menu");
+      return isDuplicateResponse('create new menu');
     }
     const createdMenu = await MenuMutationsService.createNewMenu(menu);
     if (createdMenu.statusCode !== 200) {
@@ -98,13 +98,13 @@ export class MenuController {
   };
 
   static modifyMenu = async (menu: FormattedMenu): Promise<ApiResponse> => {
-    const isValid = verifyFormDataValidity(menu, ["id", "title", "formulas"]);
+    const isValid = verifyFormDataValidity(menu, ['id', 'title', 'formulas']);
     if (isValid.statusCode !== 200) {
       return isValid;
     }
     const isDuplicate = await this.verifyDuplicateMenuByTitleAndId(menu);
     if (isDuplicate.statusCode === 200) {
-      return isDuplicateResponse("modify menu");
+      return isDuplicateResponse('modify menu');
     }
     const modifiedFormulas = await this.handleModifiedMenuFormulas(menu);
     if (modifiedFormulas.statusCode !== 200) {
@@ -115,7 +115,7 @@ export class MenuController {
   };
 
   static deleteMenu = async (menu: FormattedMenu): Promise<ApiResponse> => {
-    const isValid = verifyFormDataValidity(menu, ["id", "title", "formulas"]);
+    const isValid = verifyFormDataValidity(menu, ['id', 'title', 'formulas']);
     if (isValid.statusCode !== 200) {
       return isValid;
     }
@@ -182,7 +182,7 @@ export class MenuController {
     return {
       statusCode: 200,
       data: [],
-      response: "formula updated successfully",
+      response: 'formula updated successfully',
     };
   };
 }

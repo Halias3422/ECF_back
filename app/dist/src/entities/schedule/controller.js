@@ -24,12 +24,12 @@ ScheduleController.getWeekSchedule = () => __awaiter(void 0, void 0, void 0, fun
 ScheduleController.modifyWeekSchedule = (weekSchedule) => __awaiter(void 0, void 0, void 0, function* () {
     for (const daySchedule of weekSchedule) {
         const isValid = (0, apiResponses_1.verifyFormDataValidity)(daySchedule, [
-            "id",
-            "dayOfWeek",
-            "morningOpening",
-            "morningClosing",
-            "afternoonOpening",
-            "afternoonClosing",
+            'id',
+            'dayOfWeek',
+            'morningOpening',
+            'morningClosing',
+            'afternoonOpening',
+            'afternoonClosing',
         ]);
         if (isValid.statusCode !== 200) {
             return isValid;
@@ -39,5 +39,5 @@ ScheduleController.modifyWeekSchedule = (weekSchedule) => __awaiter(void 0, void
             return response;
         }
     }
-    return (0, apiResponses_1.databaseMutationResponse)({ affectedRows: 1 }, "modify week schedule");
+    return (0, apiResponses_1.databaseMutationResponse)({ affectedRows: 1 }, 'modify week schedule');
 });
