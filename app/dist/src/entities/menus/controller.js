@@ -138,9 +138,17 @@ MenuController.handleModifiedMenuFormulas = (menu) => __awaiter(void 0, void 0, 
         }
     }
     for (const modifiedFormula of menu.formulas) {
-        const modificationResponse = yield controller_1.FormulasController.modifyFormula(modifiedFormula);
-        if (modificationResponse.statusCode !== 200) {
-            return modificationResponse;
+        if (modifiedFormula.id) {
+            const modificationResponse = yield controller_1.FormulasController.modifyFormula(modifiedFormula);
+            if (modificationResponse.statusCode !== 200) {
+                return modificationResponse;
+            }
+        }
+        else {
+            const newFormula = yield controller_1.FormulasController.createNewFormula(modifiedFormula, menu.id);
+            if (newFormula.statusCode !== 201) {
+                return newFormula;
+            }
         }
     }
     return {

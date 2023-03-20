@@ -162,11 +162,21 @@ export class MenuController {
       }
     }
     for (const modifiedFormula of menu.formulas) {
-      const modificationResponse = await FormulasController.modifyFormula(
-        modifiedFormula
-      );
-      if (modificationResponse.statusCode !== 200) {
-        return modificationResponse;
+      if (modifiedFormula.id) {
+        const modificationResponse = await FormulasController.modifyFormula(
+          modifiedFormula
+        );
+        if (modificationResponse.statusCode !== 200) {
+          return modificationResponse;
+        }
+      } else {
+        const newFormula = await FormulasController.createNewFormula(
+          modifiedFormula,
+          menu.id as string
+        );
+        if (newFormula.statusCode !== 201) {
+          return newFormula;
+        }
       }
     }
     return {
