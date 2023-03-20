@@ -11,6 +11,7 @@ export class ReservationsController {
   static getAllPartialReservationsByDate = async (
     date: string
   ): Promise<ApiResponse> => {
+    await this.deletePassedReservations();
     const response =
       await ReservationsQueriesService.getAllPartialReservationsByDate(date);
     return response;
@@ -19,6 +20,7 @@ export class ReservationsController {
   static getUserReservations = async (
     userInfo: UserData
   ): Promise<ApiResponse> => {
+    await this.deletePassedReservations();
     const response = await ReservationsQueriesService.getUserReservations(
       userInfo.id
     );
@@ -27,6 +29,7 @@ export class ReservationsController {
 
   static getAllReservationsWithAssociatedMail =
     async (): Promise<ApiResponse> => {
+      await this.deletePassedReservations();
       const response =
         await ReservationsQueriesService.getAllReservationsWithAssociatedMail();
       return response;
@@ -54,5 +57,11 @@ export class ReservationsController {
       return { ...newReservation, statusCode: 201 };
     }
     return newReservation;
+  };
+
+  // PRIVATE
+
+  private static deletePassedReservations = async () => {
+    await ReservationsMutationsService.deletePassedReservations();
   };
 }

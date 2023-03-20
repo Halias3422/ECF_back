@@ -36,4 +36,19 @@ export class ReservationsMutationsService {
       return databaseMutationError('create new reservation');
     }
   };
+
+  static deletePassedReservations = async () => {
+    try {
+      const newDate = new Date();
+      const today = newDate.toISOString().split('T')[0];
+      const mutation = mysql2.format(
+        `DELETE FROM ${RESERVATIONS_TABLE.name} WHERE DATE(${RESERVATIONS_TABLE.columns.date}) < DATE(?)`,
+        [today]
+      );
+      const [rows] = await dbConnexion.execute(mutation);
+      return databaseMutationResponse(rows, 'create new reservation');
+    } catch (error) {
+      return databaseMutationError('create new reservation');
+    }
+  };
 }
