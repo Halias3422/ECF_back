@@ -45,3 +45,15 @@ ReservationsMutationsService.createReservation = (reservation, userId) => __awai
         return (0, apiResponses_1.databaseMutationError)('create new reservation');
     }
 });
+ReservationsMutationsService.deletePassedReservations = () => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const newDate = new Date();
+        const today = newDate.toISOString().split('T')[0];
+        const mutation = mysql2_1.default.format(`DELETE FROM ${constants_1.RESERVATIONS_TABLE.name} WHERE DATE(${constants_1.RESERVATIONS_TABLE.columns.date}) < DATE(?)`, [today]);
+        const [rows] = yield __1.dbConnexion.execute(mutation);
+        return (0, apiResponses_1.databaseMutationResponse)(rows, 'create new reservation');
+    }
+    catch (error) {
+        return (0, apiResponses_1.databaseMutationError)('create new reservation');
+    }
+});

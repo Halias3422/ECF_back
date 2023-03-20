@@ -110,6 +110,10 @@ DishesGalleryController.deleteDishGalleryItem = (dish) => __awaiter(void 0, void
         return isValid;
     }
     const deletedDish = yield service_mutations_1.DishesGalleryMutationsService.deleteDishGalleryItemById(dish.id);
+    if (deletedDish.statusCode !== 200) {
+        return deletedDish;
+    }
+    yield _a.modifyGalleryDishesPosition(dish.position);
     return deletedDish;
 });
 DishesGalleryController.deleteImage = (imageName) => __awaiter(void 0, void 0, void 0, function* () {
@@ -120,4 +124,8 @@ DishesGalleryController.deleteImage = (imageName) => __awaiter(void 0, void 0, v
         return (0, apiResponses_1.databaseMutationError)('delete dish gallery image');
     }
     return (0, apiResponses_1.databaseMutationResponse)({ affectedRows: 1 }, 'delete dish gallery image');
+});
+DishesGalleryController.modifyGalleryDishesPosition = (position) => __awaiter(void 0, void 0, void 0, function* () {
+    const modifiedDishes = yield service_mutations_1.DishesGalleryMutationsService.modifyGalleryDishesPosition(position);
+    return modifiedDishes;
 });

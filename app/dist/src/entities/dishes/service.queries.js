@@ -23,8 +23,8 @@ class DishesQueriesService {
 exports.DishesQueriesService = DishesQueriesService;
 _a = DishesQueriesService;
 DishesQueriesService.getDishByTitle = (dishTitle) => __awaiter(void 0, void 0, void 0, function* () {
-    const query = mysql2_1.default.format(`SELECT * FROM ${constants_1.DISHES_TABLE.name} WHERE ${constants_1.DISHES_TABLE.name}.${constants_1.DISHES_TABLE.columns.title} = ?`, [dishTitle]);
     try {
+        const query = mysql2_1.default.format(`SELECT * FROM ${constants_1.DISHES_TABLE.name} WHERE ${constants_1.DISHES_TABLE.name}.${constants_1.DISHES_TABLE.columns.title} = ?`, [dishTitle]);
         const [rows] = yield __1.dbConnexion.execute(query);
         return (0, apiResponses_1.databaseQueryResponse)(rows, 'get dish by title');
     }
@@ -33,13 +33,23 @@ DishesQueriesService.getDishByTitle = (dishTitle) => __awaiter(void 0, void 0, v
     }
 });
 DishesQueriesService.getAllDishes = () => __awaiter(void 0, void 0, void 0, function* () {
-    const query = `SELECT * FROM ${constants_1.DISHES_TABLE.name} ORDER BY ${constants_1.DISHES_TABLE.columns.position} ASC`;
     try {
+        const query = `SELECT * FROM ${constants_1.DISHES_TABLE.name} ORDER BY ${constants_1.DISHES_TABLE.columns.position} ASC`;
         const [rows] = yield __1.dbConnexion.execute(query);
         return (0, apiResponses_1.databaseQueryResponse)(rows, 'get all dishes');
     }
     catch (error) {
         return (0, apiResponses_1.databaseQueryError)('get all dishes');
+    }
+});
+DishesQueriesService.getAllDishesByCategoryId = (dishId) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const query = mysql2_1.default.format(`SELECT * FROM ${constants_1.DISHES_TABLE.name} WHERE ${constants_1.DISHES_TABLE.columns.categoryId} = ? ORDER BY ${constants_1.DISHES_TABLE.columns.position} ASC`, [dishId]);
+        const [rows] = yield __1.dbConnexion.execute(query);
+        return (0, apiResponses_1.databaseQueryResponse)(rows, 'get all dishes by ID');
+    }
+    catch (error) {
+        return (0, apiResponses_1.databaseQueryError)('get all dishes by ID');
     }
 });
 DishesQueriesService.getDishDuplicate = (dish) => __awaiter(void 0, void 0, void 0, function* () {

@@ -23,7 +23,6 @@ FormulasController.createNewFormula = (formula, menuId) => __awaiter(void 0, voi
         'title',
         'description',
         'price',
-        'position',
     ]);
     if (isValid.statusCode !== 200) {
         return isValid;
@@ -43,6 +42,7 @@ FormulasController.deleteFormula = (formula) => __awaiter(void 0, void 0, void 0
         return isValid;
     }
     const deletedFormula = yield service_mutations_1.FormulasMutationsService.deleteFormulaById(formula.id);
+    yield _a.modifyFormulasPosition(formula.position);
     return deletedFormula;
 });
 FormulasController.modifyFormula = (formula) => __awaiter(void 0, void 0, void 0, function* () {
@@ -58,4 +58,7 @@ FormulasController.modifyFormula = (formula) => __awaiter(void 0, void 0, void 0
     }
     const modifiedFormula = yield service_mutations_1.FormulasMutationsService.modifyFormulaById(formula);
     return modifiedFormula;
+});
+FormulasController.modifyFormulasPosition = (position) => __awaiter(void 0, void 0, void 0, function* () {
+    return yield service_mutations_1.FormulasMutationsService.modifyFormulasPosition(position);
 });

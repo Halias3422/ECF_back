@@ -31,7 +31,7 @@ DishesMutationsService.createNewDish = (newDish, dishCategoryId) => __awaiter(vo
         },
     };
     try {
-        const query = yield service_queries_1.DishesQueriesService.getAllDishes();
+        const query = yield service_queries_1.DishesQueriesService.getAllDishesByCategoryId(dishCategoryId);
         const mutation = mysql2_1.default.format(`INSERT INTO ${constants_1.DISHES_TABLE.name} VALUES (?, ?, ?, ?, ?, ?, ?)`, [
             DEFAULT,
             dishCategoryId,
@@ -39,10 +39,8 @@ DishesMutationsService.createNewDish = (newDish, dishCategoryId) => __awaiter(vo
             newDish.title,
             newDish.description,
             newDish.price,
-            query.data
-                ? query.data.length > 0
-                    ? query.data[query.data.length - 1].position + 1
-                    : 1
+            query.data && query.data.length > 0
+                ? query.data[query.data.length - 1].position + 1
                 : 0,
         ]);
         const [rows] = yield __1.dbConnexion.execute(mutation);
@@ -68,6 +66,16 @@ DishesMutationsService.modifyDishItemById = (dish, categoryId) => __awaiter(void
     }
     catch (error) {
         return (0, apiResponses_1.databaseMutationError)('modify dish item');
+    }
+});
+DishesMutationsService.modifyDishesPosition = (position, categoryId) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const mutation = mysql2_1.default.format(`UPDATE ${constants_1.DISHES_TABLE.name} SET ${constants_1.DISHES_TABLE.columns.position} = ${constants_1.DISHES_TABLE.columns.position} - 1 WHERE ${constants_1.DISHES_TABLE.columns.position} > ? AND ${constants_1.DISHES_TABLE.columns.categoryId} = ?`, [position, categoryId]);
+        const [rows] = yield __1.dbConnexion.execute(mutation);
+        return (0, apiResponses_1.databaseMutationResponse)(rows, 'modify dishes position');
+    }
+    catch (error) {
+        return (0, apiResponses_1.databaseMutationError)('modify dishes position');
     }
 });
 DishesMutationsService.deleteDishItemById = (dishId) => __awaiter(void 0, void 0, void 0, function* () {

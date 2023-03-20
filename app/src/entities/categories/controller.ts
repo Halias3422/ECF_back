@@ -41,6 +41,7 @@ export class CategoriesController {
     const response = await CategoriesMutationsService.deleteCategoryById(
       category.id as string
     );
+    await this.modifyCategoriesPosition(category.position);
     return response;
   };
 
@@ -93,5 +94,11 @@ export class CategoriesController {
       });
     }
     return formattedCategories;
+  };
+
+  private static modifyCategoriesPosition = async (
+    position: number
+  ): Promise<ApiResponse> => {
+    return await CategoriesMutationsService.modifyCategoriesPosition(position);
   };
 }

@@ -33,10 +33,8 @@ CategoriesMutationsService.createNewCategory = (newCategory) => __awaiter(void 0
     const mutation = mysql2_1.default.format(`INSERT INTO ${constant_1.CATEGORIES_TABLE.name} VALUES (?, ?, ?)`, [
         DEFAULT,
         newCategory.name,
-        query.data
-            ? query.data.length > 0
-                ? query.data[query.data.length - 1].position + 1
-                : 1
+        query.data && query.data.length > 0
+            ? query.data[query.data.length - 1].position + 1
             : 0,
     ]);
     try {
@@ -55,6 +53,16 @@ CategoriesMutationsService.deleteCategoryById = (categoryId) => __awaiter(void 0
     }
     catch (error) {
         return (0, apiResponses_1.databaseMutationError)('delete category by ID');
+    }
+});
+CategoriesMutationsService.modifyCategoriesPosition = (position) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const mutation = mysql2_1.default.format(`UPDATE ${constant_1.CATEGORIES_TABLE.name} SET ${constant_1.CATEGORIES_TABLE.columns.position} = ${constant_1.CATEGORIES_TABLE.columns.position} - 1 WHERE ${constant_1.CATEGORIES_TABLE.columns.position} > ?`, [position]);
+        const [rows] = yield __1.dbConnexion.execute(mutation);
+        return (0, apiResponses_1.databaseMutationResponse)(rows, 'modify categories position');
+    }
+    catch (error) {
+        return (0, apiResponses_1.databaseMutationError)('modify categories position');
     }
 });
 CategoriesMutationsService.modifyCategoryById = (category) => __awaiter(void 0, void 0, void 0, function* () {

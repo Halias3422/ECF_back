@@ -23,10 +23,8 @@ export class CategoriesMutationsService {
       [
         DEFAULT,
         newCategory.name,
-        query.data
-          ? query.data.length > 0
-            ? query.data[query.data.length - 1].position + 1
-            : 1
+        query.data && query.data.length > 0
+          ? query.data[query.data.length - 1].position + 1
           : 0,
       ]
     );
@@ -50,6 +48,21 @@ export class CategoriesMutationsService {
       return databaseMutationResponse(rows, 'delete category by ID');
     } catch (error: any) {
       return databaseMutationError('delete category by ID');
+    }
+  };
+
+  static modifyCategoriesPosition = async (
+    position: number
+  ): Promise<ApiResponse> => {
+    try {
+      const mutation = mysql2.format(
+        `UPDATE ${CATEGORIES_TABLE.name} SET ${CATEGORIES_TABLE.columns.position} = ${CATEGORIES_TABLE.columns.position} - 1 WHERE ${CATEGORIES_TABLE.columns.position} > ?`,
+        [position]
+      );
+      const [rows] = await dbConnexion.execute(mutation);
+      return databaseMutationResponse(rows, 'modify categories position');
+    } catch (error: any) {
+      return databaseMutationError('modify categories position');
     }
   };
 

@@ -127,6 +127,7 @@ export class MenuController {
       }
     }
     const deletedMenu = await MenuMutationsService.deleteMenu(menu);
+    await this.modifyMenusPosition(menu.position);
     return deletedMenu;
   };
   // PRIVATE
@@ -185,5 +186,11 @@ export class MenuController {
       data: [],
       response: 'formula updated successfully',
     };
+  };
+
+  private static modifyMenusPosition = async (
+    position: number
+  ): Promise<ApiResponse> => {
+    return await MenuMutationsService.modifyMenusPosition(position);
   };
 }

@@ -20,14 +20,17 @@ exports.ReservationsController = ReservationsController;
 _a = ReservationsController;
 //QUERIES
 ReservationsController.getAllPartialReservationsByDate = (date) => __awaiter(void 0, void 0, void 0, function* () {
+    yield _a.deletePassedReservations();
     const response = yield service_queries_1.ReservationsQueriesService.getAllPartialReservationsByDate(date);
     return response;
 });
 ReservationsController.getUserReservations = (userInfo) => __awaiter(void 0, void 0, void 0, function* () {
+    yield _a.deletePassedReservations();
     const response = yield service_queries_1.ReservationsQueriesService.getUserReservations(userInfo.id);
     return response;
 });
 ReservationsController.getAllReservationsWithAssociatedMail = () => __awaiter(void 0, void 0, void 0, function* () {
+    yield _a.deletePassedReservations();
     const response = yield service_queries_1.ReservationsQueriesService.getAllReservationsWithAssociatedMail();
     return response;
 });
@@ -46,4 +49,8 @@ ReservationsController.createReservation = (reservation, userSession) => __await
         return Object.assign(Object.assign({}, newReservation), { statusCode: 201 });
     }
     return newReservation;
+});
+// PRIVATE
+ReservationsController.deletePassedReservations = () => __awaiter(void 0, void 0, void 0, function* () {
+    yield service_mutations_1.ReservationsMutationsService.deletePassedReservations();
 });

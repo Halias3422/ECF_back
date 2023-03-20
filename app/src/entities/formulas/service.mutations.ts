@@ -31,9 +31,8 @@ export class FormulasMutationsService {
           formula.description,
           formula.price,
           query.data
-            ? query.data.length > 0
-              ? query.data[query.data.length - 1].position + 1
-              : 1
+            ? query.data.length > 0 &&
+              query.data[query.data.length - 1].position + 1
             : 0,
         ]
       );
@@ -56,6 +55,21 @@ export class FormulasMutationsService {
       return databaseMutationResponse(rows, 'delete formula by ID');
     } catch (error: any) {
       return databaseMutationError('delete formula by ID');
+    }
+  };
+
+  static modifyFormulasPosition = async (
+    position: number
+  ): Promise<ApiResponse> => {
+    try {
+      const mutation = mysql2.format(
+        `UPDATE ${FORMULAS_TABLE.name} SET ${FORMULAS_TABLE.columns.position} = ${FORMULAS_TABLE.columns.position} - 1 WHERE ${FORMULAS_TABLE.columns.position} > ?`,
+        [position]
+      );
+      const [rows] = await dbConnexion.execute(mutation);
+      return databaseMutationResponse(rows, 'modify formulas position');
+    } catch (error: any) {
+      return databaseMutationError('modify formulas position');
     }
   };
 

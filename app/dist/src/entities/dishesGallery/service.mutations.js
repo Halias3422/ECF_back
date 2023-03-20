@@ -35,10 +35,8 @@ DishesGalleryMutationsService.createDishGalleryItem = (dish) => __awaiter(void 0
             DEFAULT,
             dish.title,
             dish.image,
-            query.data
-                ? query.data.length > 0
-                    ? query.data[query.data.length - 1].position + 1
-                    : 1
+            query.data && query.data.length > 0
+                ? query.data[query.data.length - 1].position + 1
                 : 0,
         ]);
         const [rows] = yield __1.dbConnexion.execute(mutation);
@@ -56,6 +54,16 @@ DishesGalleryMutationsService.modifyDishGalleryItemById = (dish) => __awaiter(vo
     }
     catch (error) {
         return (0, apiResponses_1.databaseMutationError)('modify gallery dish item');
+    }
+});
+DishesGalleryMutationsService.modifyGalleryDishesPosition = (position) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const mutation = mysql2_1.default.format(`UPDATE ${constants_1.DISHES_GALLERY_TABLE.name} SET ${constants_1.DISHES_GALLERY_TABLE.columns.position} = ${constants_1.DISHES_GALLERY_TABLE.columns.position} - 1 WHERE ${constants_1.DISHES_GALLERY_TABLE.columns.position} > ?`, [position]);
+        const [rows] = yield __1.dbConnexion.execute(mutation);
+        return (0, apiResponses_1.databaseMutationResponse)(rows, 'modify gallery dishes position');
+    }
+    catch (error) {
+        return (0, apiResponses_1.databaseMutationError)('modify gallery dishes position');
     }
 });
 DishesGalleryMutationsService.deleteDishGalleryItemById = (dishId) => __awaiter(void 0, void 0, void 0, function* () {

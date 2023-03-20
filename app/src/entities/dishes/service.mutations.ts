@@ -21,7 +21,9 @@ export class DishesMutationsService {
     };
 
     try {
-      const query = await DishesQueriesService.getAllDishes();
+      const query = await DishesQueriesService.getAllDishesByCategoryId(
+        dishCategoryId
+      );
       const mutation = mysql2.format(
         `INSERT INTO ${DISHES_TABLE.name} VALUES (?, ?, ?, ?, ?, ?, ?)`,
         [
@@ -31,10 +33,8 @@ export class DishesMutationsService {
           newDish.title,
           newDish.description,
           newDish.price,
-          query.data
-            ? query.data.length > 0
-              ? query.data[query.data.length - 1].position + 1
-              : 1
+          query.data && query.data.length > 0
+            ? query.data[query.data.length - 1].position + 1
             : 0,
         ]
       );
@@ -48,7 +48,7 @@ export class DishesMutationsService {
   static modifyDishItemById = async (
     dish: DishFormData,
     categoryId: string
-  ) => {
+  ): Promise<ApiResponse> => {
     try {
       const mutation = mysql2.format(
         `UPDATE ${DISHES_TABLE.name} SET ${DISHES_TABLE.columns.title} = ?, ${DISHES_TABLE.columns.image} = ?, ${DISHES_TABLE.columns.description} = ?, ${DISHES_TABLE.columns.price} = ?, ${DISHES_TABLE.columns.categoryId} = ?, ${DISHES_TABLE.columns.position} = ? WHERE ${DISHES_TABLE.columns.id} = ?`,
@@ -69,7 +69,23 @@ export class DishesMutationsService {
     }
   };
 
-  static deleteDishItemById = async (dishId: any) => {
+  static modifyDishesPosition = async (
+    position: number,
+    categoryId: string
+  ): Promise<ApiResponse> => {
+    try {
+      const mutation = mysql2.format(
+        `UPDATE ${DISHES_TABLE.name} SET ${DISHES_TABLE.columns.position} = ${DISHES_TABLE.columns.position} - 1 WHERE ${DISHES_TABLE.columns.position} > ? AND ${DISHES_TABLE.columns.categoryId} = ?`,
+        [position, categoryId]
+      );
+      const [rows] = await dbConnexion.execute(mutation);
+      return databaseMutationResponse(rows, 'modify dishes position');
+    } catch (error: any) {
+      return databaseMutationError('modify dishes position');
+    }
+  };
+
+  static deleteDishItemById = async (dishId: any): Promise<ApiResponse> => {
     try {
       const mutation = mysql2.format(
         `DELETE FROM ${DISHES_TABLE.name} WHERE ${DISHES_TABLE.columns.id} = ?`,

@@ -38,9 +38,8 @@ FormulasMutationsService.createNewFormula = (formula, menuId) => __awaiter(void 
             formula.description,
             formula.price,
             query.data
-                ? query.data.length > 0
-                    ? query.data[query.data.length - 1].position + 1
-                    : 1
+                ? query.data.length > 0 &&
+                    query.data[query.data.length - 1].position + 1
                 : 0,
         ]);
         const [rows] = yield __1.dbConnexion.execute(mutation);
@@ -58,6 +57,16 @@ FormulasMutationsService.deleteFormulaById = (formulaId) => __awaiter(void 0, vo
     }
     catch (error) {
         return (0, apiResponses_1.databaseMutationError)('delete formula by ID');
+    }
+});
+FormulasMutationsService.modifyFormulasPosition = (position) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const mutation = mysql2_1.default.format(`UPDATE ${constants_1.FORMULAS_TABLE.name} SET ${constants_1.FORMULAS_TABLE.columns.position} = ${constants_1.FORMULAS_TABLE.columns.position} - 1 WHERE ${constants_1.FORMULAS_TABLE.columns.position} > ?`, [position]);
+        const [rows] = yield __1.dbConnexion.execute(mutation);
+        return (0, apiResponses_1.databaseMutationResponse)(rows, 'modify formulas position');
+    }
+    catch (error) {
+        return (0, apiResponses_1.databaseMutationError)('modify formulas position');
     }
 });
 FormulasMutationsService.modifyFormulaById = (formula) => __awaiter(void 0, void 0, void 0, function* () {

@@ -115,6 +115,7 @@ MenuController.deleteMenu = (menu) => __awaiter(void 0, void 0, void 0, function
         }
     }
     const deletedMenu = yield service_mutations_1.MenuMutationsService.deleteMenu(menu);
+    yield _a.modifyMenusPosition(menu.position);
     return deletedMenu;
 });
 // PRIVATE
@@ -157,4 +158,7 @@ MenuController.handleModifiedMenuFormulas = (menu) => __awaiter(void 0, void 0, 
         data: [],
         response: 'formula updated successfully',
     };
+});
+MenuController.modifyMenusPosition = (position) => __awaiter(void 0, void 0, void 0, function* () {
+    return yield service_mutations_1.MenuMutationsService.modifyMenusPosition(position);
 });

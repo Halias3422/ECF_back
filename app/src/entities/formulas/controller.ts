@@ -13,7 +13,6 @@ export class FormulasController {
       'title',
       'description',
       'price',
-      'position',
     ]);
     if (isValid.statusCode !== 200) {
       return isValid;
@@ -38,6 +37,7 @@ export class FormulasController {
     const deletedFormula = await FormulasMutationsService.deleteFormulaById(
       formula.id as string
     );
+    await this.modifyFormulasPosition(formula.position);
     return deletedFormula;
   };
 
@@ -56,5 +56,11 @@ export class FormulasController {
       formula
     );
     return modifiedFormula;
+  };
+
+  private static modifyFormulasPosition = async (
+    position: number
+  ): Promise<ApiResponse> => {
+    return await FormulasMutationsService.modifyFormulasPosition(position);
   };
 }

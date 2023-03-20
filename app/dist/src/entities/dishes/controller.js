@@ -49,6 +49,7 @@ DishesController.deleteDishItem = (dish) => __awaiter(void 0, void 0, void 0, fu
         return { statusCode: 400, response: 'data is invalid', data: [] };
     }
     const deletedDish = yield service_mutations_1.DishesMutationsService.deleteDishItemById(dish.id);
+    yield _a.modifyDishesPosition(dish.position, dish.category);
     return deletedDish;
 });
 DishesController.saveDishImage = (dishImage) => __awaiter(void 0, void 0, void 0, function* () {
@@ -149,6 +150,10 @@ DishesController.verifyDishFormDataValidity = (dish) => {
     }
     return (0, apiResponses_1.databaseQueryResponse)([{ valid: 'isvalid' }], 'form data valid');
 };
+DishesController.modifyDishesPosition = (position, category) => __awaiter(void 0, void 0, void 0, function* () {
+    const dishCategory = yield controller_1.CategoriesController.getCategoryByName(category);
+    return yield service_mutations_1.DishesMutationsService.modifyDishesPosition(position, dishCategory.data[0].id);
+});
 DishesController.getDishesCategoriesById = (dishes) => __awaiter(void 0, void 0, void 0, function* () {
     const response = [];
     const retreivedCategoriesId = [];

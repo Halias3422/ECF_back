@@ -40,6 +40,7 @@ CategoriesController.deleteCategory = (category) => __awaiter(void 0, void 0, vo
         return isValid;
     }
     const response = yield service_mutations_1.CategoriesMutationsService.deleteCategoryById(category.id);
+    yield _a.modifyCategoriesPosition(category.position);
     return response;
 });
 CategoriesController.modifyCategory = (category) => __awaiter(void 0, void 0, void 0, function* () {
@@ -76,3 +77,6 @@ CategoriesController.formatCategoriesResponse = (categories) => {
     }
     return formattedCategories;
 };
+CategoriesController.modifyCategoriesPosition = (position) => __awaiter(void 0, void 0, void 0, function* () {
+    return yield service_mutations_1.CategoriesMutationsService.modifyCategoriesPosition(position);
+});

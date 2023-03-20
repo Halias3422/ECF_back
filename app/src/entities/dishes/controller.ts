@@ -57,6 +57,7 @@ export class DishesController {
     const deletedDish = await DishesMutationsService.deleteDishItemById(
       dish.id
     );
+    await this.modifyDishesPosition(dish.position, dish.category);
     return deletedDish;
   };
 
@@ -176,6 +177,17 @@ export class DishesController {
       return isValid;
     }
     return databaseQueryResponse([{ valid: 'isvalid' }], 'form data valid');
+  };
+
+  private static modifyDishesPosition = async (
+    position: number,
+    category: string
+  ): Promise<ApiResponse> => {
+    const dishCategory = await CategoriesController.getCategoryByName(category);
+    return await DishesMutationsService.modifyDishesPosition(
+      position,
+      dishCategory.data[0].id
+    );
   };
 
   private static getDishesCategoriesById = async (dishes: any[]) => {

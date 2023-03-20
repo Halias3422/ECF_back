@@ -34,10 +34,8 @@ MenuMutationsService.createNewMenu = (menu) => __awaiter(void 0, void 0, void 0,
         const mutation = mysql2_1.default.format(`INSERT INTO ${constants_1.MENUS_TABLE.name} VALUES (?, ?, ?)`, [
             DEFAULT,
             menu.title,
-            query.data
-                ? query.data.length > 0
-                    ? query.data[query.data.length - 1].position + 1
-                    : 1
+            query.data && query.data.length > 0
+                ? query.data[query.data.length - 1].position + 1
                 : 0,
         ]);
         const [rows] = yield __1.dbConnexion.execute(mutation);
@@ -65,5 +63,15 @@ MenuMutationsService.deleteMenu = (menu) => __awaiter(void 0, void 0, void 0, fu
     }
     catch (error) {
         return (0, apiResponses_1.databaseMutationError)('delete menu');
+    }
+});
+MenuMutationsService.modifyMenusPosition = (position) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const mutation = mysql2_1.default.format(`UPDATE ${constants_1.MENUS_TABLE.name} SET ${constants_1.MENUS_TABLE.columns.position} = ${constants_1.MENUS_TABLE.columns.position} - 1 WHERE ${constants_1.MENUS_TABLE.columns.position} > ?`, [position]);
+        const [rows] = yield __1.dbConnexion.execute(mutation);
+        return (0, apiResponses_1.databaseMutationResponse)(rows, 'modify menus position');
+    }
+    catch (error) {
+        return (0, apiResponses_1.databaseMutationError)('modify menus position');
     }
 });

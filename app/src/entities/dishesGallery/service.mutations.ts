@@ -4,11 +4,14 @@ import {
   databaseMutationError,
   databaseMutationResponse,
 } from '../common/apiResponses';
+import { ApiResponse } from '../common/constants';
 import { DishesGalleryFormData, DISHES_GALLERY_TABLE } from './constants';
 import { DishesGalleryQueriesService } from './service.queries';
 
 export class DishesGalleryMutationsService {
-  static createDishGalleryItem = async (dish: DishesGalleryFormData) => {
+  static createDishGalleryItem = async (
+    dish: DishesGalleryFormData
+  ): Promise<ApiResponse> => {
     const DEFAULT = {
       toSqlString: function () {
         return 'DEFAULT';
@@ -22,10 +25,8 @@ export class DishesGalleryMutationsService {
           DEFAULT,
           dish.title,
           dish.image,
-          query.data
-            ? query.data.length > 0
-              ? query.data[query.data.length - 1].position + 1
-              : 1
+          query.data && query.data.length > 0
+            ? query.data[query.data.length - 1].position + 1
             : 0,
         ]
       );
@@ -36,7 +37,9 @@ export class DishesGalleryMutationsService {
     }
   };
 
-  static modifyDishGalleryItemById = async (dish: DishesGalleryFormData) => {
+  static modifyDishGalleryItemById = async (
+    dish: DishesGalleryFormData
+  ): Promise<ApiResponse> => {
     try {
       const mutation = mysql2.format(
         `UPDATE ${DISHES_GALLERY_TABLE.name} SET ${DISHES_GALLERY_TABLE.columns.title} = ?, ${DISHES_GALLERY_TABLE.columns.image} = ?, ${DISHES_GALLERY_TABLE.columns.position} = ? WHERE ${DISHES_GALLERY_TABLE.columns.id} = ?`,
@@ -49,7 +52,24 @@ export class DishesGalleryMutationsService {
     }
   };
 
-  static deleteDishGalleryItemById = async (dishId: any) => {
+  static modifyGalleryDishesPosition = async (
+    position: number
+  ): Promise<ApiResponse> => {
+    try {
+      const mutation = mysql2.format(
+        `UPDATE ${DISHES_GALLERY_TABLE.name} SET ${DISHES_GALLERY_TABLE.columns.position} = ${DISHES_GALLERY_TABLE.columns.position} - 1 WHERE ${DISHES_GALLERY_TABLE.columns.position} > ?`,
+        [position]
+      );
+      const [rows] = await dbConnexion.execute(mutation);
+      return databaseMutationResponse(rows, 'modify gallery dishes position');
+    } catch (error: any) {
+      return databaseMutationError('modify gallery dishes position');
+    }
+  };
+
+  static deleteDishGalleryItemById = async (
+    dishId: any
+  ): Promise<ApiResponse> => {
     try {
       const mutation = mysql2.format(
         `DELETE FROM ${DISHES_GALLERY_TABLE.name} WHERE ${DISHES_GALLERY_TABLE.columns.id} = ?`,

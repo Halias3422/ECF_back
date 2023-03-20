@@ -128,6 +128,10 @@ export class DishesGalleryController {
     }
     const deletedDish =
       await DishesGalleryMutationsService.deleteDishGalleryItemById(dish.id);
+    if (deletedDish.statusCode !== 200) {
+      return deletedDish;
+    }
+    await this.modifyGalleryDishesPosition(dish.position);
     return deletedDish;
   };
 
@@ -141,5 +145,13 @@ export class DishesGalleryController {
       { affectedRows: 1 },
       'delete dish gallery image'
     );
+  };
+
+  private static modifyGalleryDishesPosition = async (
+    position: number
+  ): Promise<ApiResponse> => {
+    const modifiedDishes =
+      await DishesGalleryMutationsService.modifyGalleryDishesPosition(position);
+    return modifiedDishes;
   };
 }
