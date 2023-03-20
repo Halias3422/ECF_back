@@ -9,6 +9,7 @@ import * as apiResponse from '../src/entities/common/apiResponses';
 
 const categoryForm: CategoryFormData = {
   name: 'Dessert',
+  position: 0,
 };
 describe('Categories verify authorization for protected endpoints', () => {
   afterAll(async () => {
@@ -91,11 +92,11 @@ describe('Categories endpoints: getAllCategories', () => {
     expect(categoryOne.statusCode).toEqual(201);
     const categoryTwo = await request(server)
       .post(CATEGORIES_ROUTES.createNewCategory)
-      .send({ name: 'Burger' });
+      .send({ name: 'Burger', position: 1 });
     expect(categoryTwo.statusCode).toEqual(201);
     const categoryThree = await request(server)
       .post(CATEGORIES_ROUTES.createNewCategory)
-      .send({ name: 'Plat principal' });
+      .send({ name: 'Plat principal', position: 2 });
     expect(categoryThree.statusCode).toEqual(201);
     const res = await request(server).get(CATEGORIES_ROUTES.getAllCategories);
     expect(res.statusCode).toEqual(200);
@@ -135,7 +136,7 @@ describe('Categories endpoints: ModifyCategory', () => {
     expect(retreived.statusCode).toEqual(200);
     const modified = await request(server)
       .post(CATEGORIES_ROUTES.modifyCategory)
-      .send({ id: foundCategory.id, name: 'Burger' });
+      .send({ id: foundCategory.id, name: 'Burger', position: 1 });
     expect(modified.statusCode).toEqual(200);
     const finalRetreived = await request(server).get(
       CATEGORIES_ROUTES.getAllCategories

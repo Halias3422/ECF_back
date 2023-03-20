@@ -17,5 +17,6 @@ exports.DISHES_GALLERY_TABLE = {
         id: 'id',
         title: 'title',
         image: 'image',
+        position: 'position',
     },
 };

@@ -23,7 +23,7 @@ class FormulasQueriesService {
 exports.FormulasQueriesService = FormulasQueriesService;
 _a = FormulasQueriesService;
 FormulasQueriesService.getAllFormulasFromMenuId = (menuId) => __awaiter(void 0, void 0, void 0, function* () {
-    const query = mysql2_1.default.format(`SELECT * FROM ${constants_1.FORMULAS_TABLE.name} WHERE ${constants_1.FORMULAS_TABLE.name}.${constants_1.FORMULAS_TABLE.columns.menuId} = ?`, [menuId]);
+    const query = mysql2_1.default.format(`SELECT * FROM ${constants_1.FORMULAS_TABLE.name} WHERE ${constants_1.FORMULAS_TABLE.name}.${constants_1.FORMULAS_TABLE.columns.menuId} = ? ORDER BY ${constants_1.FORMULAS_TABLE.columns.position} ASC`, [menuId]);
     try {
         const [rows] = yield __1.dbConnexion.execute(query);
         return (0, apiResponses_1.databaseQueryResponse)(rows, 'get all formulas by menu ID');

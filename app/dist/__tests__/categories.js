@@ -42,6 +42,7 @@ const database_1 = require("../src/testUtils/database");
 const apiResponse = __importStar(require("../src/entities/common/apiResponses"));
 const categoryForm = {
     name: 'Dessert',
+    position: 0,
 };
 describe('Categories verify authorization for protected endpoints', () => {
     afterAll(() => __awaiter(void 0, void 0, void 0, function* () {
@@ -111,11 +112,11 @@ describe('Categories endpoints: getAllCategories', () => {
         expect(categoryOne.statusCode).toEqual(201);
         const categoryTwo = yield (0, supertest_1.default)(src_1.server)
             .post(constant_1.CATEGORIES_ROUTES.createNewCategory)
-            .send({ name: 'Burger' });
+            .send({ name: 'Burger', position: 1 });
         expect(categoryTwo.statusCode).toEqual(201);
         const categoryThree = yield (0, supertest_1.default)(src_1.server)
             .post(constant_1.CATEGORIES_ROUTES.createNewCategory)
-            .send({ name: 'Plat principal' });
+            .send({ name: 'Plat principal', position: 2 });
         expect(categoryThree.statusCode).toEqual(201);
         const res = yield (0, supertest_1.default)(src_1.server).get(constant_1.CATEGORIES_ROUTES.getAllCategories);
         expect(res.statusCode).toEqual(200);
@@ -148,7 +149,7 @@ describe('Categories endpoints: ModifyCategory', () => {
         expect(retreived.statusCode).toEqual(200);
         const modified = yield (0, supertest_1.default)(src_1.server)
             .post(constant_1.CATEGORIES_ROUTES.modifyCategory)
-            .send({ id: foundCategory.id, name: 'Burger' });
+            .send({ id: foundCategory.id, name: 'Burger', position: 1 });
         expect(modified.statusCode).toEqual(200);
         const finalRetreived = yield (0, supertest_1.default)(src_1.server).get(constant_1.CATEGORIES_ROUTES.getAllCategories);
         expect(finalRetreived.statusCode).toEqual(200);

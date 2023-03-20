@@ -24,7 +24,7 @@ exports.DishesGalleryQueriesService = DishesGalleryQueriesService;
 _a = DishesGalleryQueriesService;
 DishesGalleryQueriesService.getAllDishesGallery = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const query = `SELECT * FROM ${constants_1.DISHES_GALLERY_TABLE.name}`;
+        const query = `SELECT * FROM ${constants_1.DISHES_GALLERY_TABLE.name} ORDER BY ${constants_1.DISHES_GALLERY_TABLE.columns.position} ASC`;
         const [rows] = yield __1.dbConnexion.execute(query);
         if (rows.length > 0) {
         }

@@ -14,5 +14,6 @@ exports.FORMULAS_TABLE = {
         title: 'title',
         description: 'description',
         price: 'price',
+        position: 'position',
     },
 };

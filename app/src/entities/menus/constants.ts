@@ -12,11 +12,13 @@ export const MENUS_TABLE = {
   columns: {
     id: 'id',
     title: 'title',
+    position: 'position',
   },
 };
 
 export interface FormattedMenu {
   id?: string;
   title: string;
+  position: number;
   formulas: FormulaData[];
 }

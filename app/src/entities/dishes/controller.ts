@@ -191,6 +191,7 @@ export class DishesController {
             category: {
               id: retreivedCategory.data[0].id,
               name: retreivedCategory.data[0].name,
+              position: retreivedCategory.data[0].position,
             },
             dishes: [],
           });
@@ -204,6 +205,9 @@ export class DishesController {
     dishes: any[],
     retreivedCategories: ResponseDishesByCategory[]
   ) => {
+    retreivedCategories = retreivedCategories.sort((a, b) =>
+      a.category.position > b.category.position ? 1 : -1
+    );
     for (let i = 0; i < retreivedCategories.length; i++) {
       for (const dish of dishes) {
         if (
@@ -216,6 +220,7 @@ export class DishesController {
             image: dish.image,
             description: dish.description,
             price: dish.price,
+            position: dish.position,
             category: retreivedCategories[i].category.name,
           });
         }

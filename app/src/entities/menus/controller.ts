@@ -21,6 +21,7 @@ export class MenuController {
           let formattedMenu: FormattedMenu = {
             id: menu.id,
             title: menu.title,
+            position: menu.position,
             formulas: [],
           };
           const retreivedFormulas =

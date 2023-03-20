@@ -44,7 +44,7 @@ CategoriesQueriesService.getCategoryByName = (categoryName) => __awaiter(void 0,
 });
 CategoriesQueriesService.getAllCategories = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const query = `SELECT * FROM ${constant_1.CATEGORIES_TABLE.name}`;
+        const query = `SELECT * FROM ${constant_1.CATEGORIES_TABLE.name} ORDER BY ${constant_1.CATEGORIES_TABLE.columns.position} ASC`;
         const [rows] = yield __1.dbConnexion.execute(query);
         return (0, apiResponses_1.databaseQueryResponse)(rows, 'get all categories');
     }

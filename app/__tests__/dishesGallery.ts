@@ -10,6 +10,7 @@ import * as apiResponse from '../src/entities/common/apiResponses';
 const fakeDishGallery: DishesGalleryFormData = {
   image: 'fake-image.jpg',
   title: 'fake title',
+  position: 0,
 };
 
 describe('Verify dishesGallery protected endpoints', () => {

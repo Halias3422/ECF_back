@@ -43,12 +43,14 @@ const database_1 = require("../src/testUtils/database");
 const apiResponse = __importStar(require("../src/entities/common/apiResponses"));
 const categoryForm = {
     name: 'Dessert',
+    position: 0,
 };
 const dishForm = {
     category: 'Dessert',
     image: 'glace-menthe.jpg',
     title: 'glace à la menthe',
     description: 'un généreux dessert pour les plus gourmands',
+    position: 0,
     price: '19.99',
 };
 describe('Dishes verify authorization for protected endpoints', () => {
@@ -139,12 +141,15 @@ describe('Dishes endpoints: createNewDish', () => {
 const categories = [
     {
         name: 'Dessert',
+        position: 0,
     },
     {
         name: 'Entree',
+        position: 1,
     },
     {
         name: 'Plat principal',
+        position: 2,
     },
 ];
 const dishes = [
@@ -154,6 +159,7 @@ const dishes = [
         title: 'dish 1 title',
         description: 'dish 1 description',
         price: '19.99',
+        position: 0,
     },
     {
         category: 'Dessert',
@@ -161,6 +167,7 @@ const dishes = [
         title: 'dish 2 title',
         description: 'dish 2 description',
         price: '24.99',
+        position: 1,
     },
     {
         category: 'Entree',
@@ -168,6 +175,7 @@ const dishes = [
         title: 'dish 3 title',
         description: 'dish 3 description',
         price: '14.99',
+        position: 0,
     },
 ];
 describe('Dishes endpoints: getAllDishesByCategories', () => {

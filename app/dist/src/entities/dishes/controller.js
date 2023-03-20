@@ -161,6 +161,7 @@ DishesController.getDishesCategoriesById = (dishes) => __awaiter(void 0, void 0,
                     category: {
                         id: retreivedCategory.data[0].id,
                         name: retreivedCategory.data[0].name,
+                        position: retreivedCategory.data[0].position,
                     },
                     dishes: [],
                 });
@@ -170,6 +171,7 @@ DishesController.getDishesCategoriesById = (dishes) => __awaiter(void 0, void 0,
     return response;
 });
 DishesController.formatGetDishesByCategoriesResponse = (dishes, retreivedCategories) => __awaiter(void 0, void 0, void 0, function* () {
+    retreivedCategories = retreivedCategories.sort((a, b) => a.category.position > b.category.position ? 1 : -1);
     for (let i = 0; i < retreivedCategories.length; i++) {
         for (const dish of dishes) {
             if (JSON.stringify(dish.categoryId) ===
@@ -180,6 +182,7 @@ DishesController.formatGetDishesByCategoriesResponse = (dishes, retreivedCategor
                     image: dish.image,
                     description: dish.description,
                     price: dish.price,
+                    position: dish.position,
                     category: retreivedCategories[i].category.name,
                 });
             }

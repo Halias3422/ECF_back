@@ -5,6 +5,7 @@ import {
   databaseMutationResponse,
 } from '../common/apiResponses';
 import { DishesGalleryFormData, DISHES_GALLERY_TABLE } from './constants';
+import { DishesGalleryQueriesService } from './service.queries';
 
 export class DishesGalleryMutationsService {
   static createDishGalleryItem = async (dish: DishesGalleryFormData) => {
@@ -14,9 +15,19 @@ export class DishesGalleryMutationsService {
       },
     };
     try {
+      const query = await DishesGalleryQueriesService.getAllDishesGallery();
       const mutation = mysql2.format(
-        `INSERT INTO ${DISHES_GALLERY_TABLE.name} VALUES (?, ?, ?)`,
-        [DEFAULT, dish.title, dish.image]
+        `INSERT INTO ${DISHES_GALLERY_TABLE.name} VALUES (?, ?, ?, ?)`,
+        [
+          DEFAULT,
+          dish.title,
+          dish.image,
+          query.data
+            ? query.data.length > 0
+              ? query.data[query.data.length - 1].position + 1
+              : 1
+            : 0,
+        ]
       );
       const [rows] = await dbConnexion.execute(mutation);
       return databaseMutationResponse(rows, 'create gallery dish item');
@@ -28,8 +39,8 @@ export class DishesGalleryMutationsService {
   static modifyDishGalleryItemById = async (dish: DishesGalleryFormData) => {
     try {
       const mutation = mysql2.format(
-        `UPDATE ${DISHES_GALLERY_TABLE.name} SET ${DISHES_GALLERY_TABLE.columns.title} = ?, ${DISHES_GALLERY_TABLE.columns.image} = ? WHERE ${DISHES_GALLERY_TABLE.columns.id} = ?`,
-        [dish.title, dish.image, dish.id]
+        `UPDATE ${DISHES_GALLERY_TABLE.name} SET ${DISHES_GALLERY_TABLE.columns.title} = ?, ${DISHES_GALLERY_TABLE.columns.image} = ?, ${DISHES_GALLERY_TABLE.columns.position} = ? WHERE ${DISHES_GALLERY_TABLE.columns.id} = ?`,
+        [dish.title, dish.image, dish.position, dish.id]
       );
       const [rows] = await dbConnexion.execute(mutation);
       return databaseMutationResponse(rows, 'modify gallery dish item');

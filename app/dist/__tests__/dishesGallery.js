@@ -43,6 +43,7 @@ const apiResponse = __importStar(require("../src/entities/common/apiResponses"))
 const fakeDishGallery = {
     image: 'fake-image.jpg',
     title: 'fake title',
+    position: 0,
 };
 describe('Verify dishesGallery protected endpoints', () => {
     afterAll(() => {

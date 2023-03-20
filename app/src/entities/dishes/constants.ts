@@ -17,6 +17,7 @@ export const DISHES_TABLE = {
     image: 'image',
     description: 'description',
     price: 'price',
+    position: 'position',
   },
 };
 
@@ -27,6 +28,7 @@ export interface DishFormData {
   description: string;
   price: string;
   category: string;
+  position: number;
 }
 
 export interface DishImageData {
@@ -38,6 +40,7 @@ export interface ResponseDishesByCategory {
   category: {
     id: string;
     name: string;
+    position: number;
   };
   dishes: DishFormData[];
 }

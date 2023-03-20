@@ -28,6 +28,7 @@ MenuController.getAllMenus = () => __awaiter(void 0, void 0, void 0, function* (
             let formattedMenu = {
                 id: menu.id,
                 title: menu.title,
+                position: menu.position,
                 formulas: [],
             };
             const retreivedFormulas = yield service_queries_1.FormulasQueriesService.getAllFormulasFromMenuId(menu.id);

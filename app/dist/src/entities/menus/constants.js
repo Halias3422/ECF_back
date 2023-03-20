@@ -12,5 +12,6 @@ exports.MENUS_TABLE = {
     columns: {
         id: 'id',
         title: 'title',
+        position: 'position',
     },
 };

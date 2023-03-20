@@ -16,7 +16,8 @@ dishesRoutes.get(
   DISHES_ROUTES.verifyIfDuplicateTitleOrImage,
   async (req, res) => {
     if (req.query) {
-      const { title, image, id, description, price, category } = req.query;
+      const { title, image, id, description, price, category, position } =
+        req.query;
       const { statusCode, response } =
         await DishesController.verifyIfDuplicateTitleOrImage({
           title: title as string,
@@ -24,6 +25,7 @@ dishesRoutes.get(
           id: id as string,
           description: description as string,
           price: price as string,
+          position: parseInt(position as string),
           category: category as string,
         });
       res.status(statusCode).send(response);

@@ -18,6 +18,7 @@ const mysql2_1 = __importDefault(require("mysql2"));
 const __1 = require("../..");
 const apiResponses_1 = require("../common/apiResponses");
 const constants_1 = require("./constants");
+const service_queries_1 = require("./service.queries");
 class MenuMutationsService {
 }
 exports.MenuMutationsService = MenuMutationsService;
@@ -29,7 +30,16 @@ MenuMutationsService.createNewMenu = (menu) => __awaiter(void 0, void 0, void 0,
                 return 'DEFAULT';
             },
         };
-        const mutation = mysql2_1.default.format(`INSERT INTO ${constants_1.MENUS_TABLE.name} VALUES (?, ?)`, [DEFAULT, menu.title]);
+        const query = yield service_queries_1.MenusQueriesService.getAllMenus();
+        const mutation = mysql2_1.default.format(`INSERT INTO ${constants_1.MENUS_TABLE.name} VALUES (?, ?, ?)`, [
+            DEFAULT,
+            menu.title,
+            query.data
+                ? query.data.length > 0
+                    ? query.data[query.data.length - 1].position + 1
+                    : 1
+                : 0,
+        ]);
         const [rows] = yield __1.dbConnexion.execute(mutation);
         return (0, apiResponses_1.databaseMutationResponse)(rows, 'create new menu');
     }
@@ -39,7 +49,7 @@ MenuMutationsService.createNewMenu = (menu) => __awaiter(void 0, void 0, void 0,
 });
 MenuMutationsService.modifyMenu = (menu) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const mutation = mysql2_1.default.format(`UPDATE ${constants_1.MENUS_TABLE.name} SET ${constants_1.MENUS_TABLE.columns.title} = ? WHERE ${constants_1.MENUS_TABLE.columns.id} = ?`, [menu.title, menu.id]);
+        const mutation = mysql2_1.default.format(`UPDATE ${constants_1.MENUS_TABLE.name} SET ${constants_1.MENUS_TABLE.columns.title} = ?, ${constants_1.MENUS_TABLE.columns.position} = ? WHERE ${constants_1.MENUS_TABLE.columns.id} = ?`, [menu.title, menu.position, menu.id]);
         const [rows] = yield __1.dbConnexion.execute(mutation);
         return (0, apiResponses_1.databaseMutationResponse)(rows, 'modify menu');
     }

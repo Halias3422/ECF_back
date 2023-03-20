@@ -10,7 +10,7 @@ import { DishesGalleryFormData, DISHES_GALLERY_TABLE } from './constants';
 export class DishesGalleryQueriesService {
   static getAllDishesGallery = async (): Promise<ApiResponse> => {
     try {
-      const query = `SELECT * FROM ${DISHES_GALLERY_TABLE.name}`;
+      const query = `SELECT * FROM ${DISHES_GALLERY_TABLE.name} ORDER BY ${DISHES_GALLERY_TABLE.columns.position} ASC`;
       const [rows] = await dbConnexion.execute(query);
       if (rows.length > 0) {
       }

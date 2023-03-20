@@ -25,13 +25,15 @@ yarn dev
 yarn build && yarn start
 ```
 
-4. Lancer Prettier
+## Autres commandes:
+
+Lancer Prettier
 
 ```
 yarn prettier
 ```
 
-5. Lancer tests (BDD de test active nécessaire)
+Lancer tests (BDD de test active nécessaire)
 
 ```
 yarn test

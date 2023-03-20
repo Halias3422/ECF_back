@@ -18,6 +18,7 @@ const mysql2_1 = __importDefault(require("mysql2"));
 const __1 = require("../..");
 const apiResponses_1 = require("../common/apiResponses");
 const constants_1 = require("./constants");
+const service_queries_1 = require("./service.queries");
 class FormulasMutationsService {
 }
 exports.FormulasMutationsService = FormulasMutationsService;
@@ -29,7 +30,19 @@ FormulasMutationsService.createNewFormula = (formula, menuId) => __awaiter(void 
                 return 'DEFAULT';
             },
         };
-        const mutation = mysql2_1.default.format(`INSERT INTO ${constants_1.FORMULAS_TABLE.name} VALUES (?, ?, ?, ?, ?)`, [DEFAULT, menuId, formula.title, formula.description, formula.price]);
+        const query = yield service_queries_1.FormulasQueriesService.getAllFormulasFromMenuId(menuId);
+        const mutation = mysql2_1.default.format(`INSERT INTO ${constants_1.FORMULAS_TABLE.name} VALUES (?, ?, ?, ?, ?, ?)`, [
+            DEFAULT,
+            menuId,
+            formula.title,
+            formula.description,
+            formula.price,
+            query.data
+                ? query.data.length > 0
+                    ? query.data[query.data.length - 1].position + 1
+                    : 1
+                : 0,
+        ]);
         const [rows] = yield __1.dbConnexion.execute(mutation);
         return (0, apiResponses_1.databaseMutationResponse)(rows, 'create formula');
     }
@@ -49,7 +62,13 @@ FormulasMutationsService.deleteFormulaById = (formulaId) => __awaiter(void 0, vo
 });
 FormulasMutationsService.modifyFormulaById = (formula) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const mutation = mysql2_1.default.format(`UPDATE ${constants_1.FORMULAS_TABLE.name} SET ${constants_1.FORMULAS_TABLE.columns.title} = ?, ${constants_1.FORMULAS_TABLE.columns.description} = ?, ${constants_1.FORMULAS_TABLE.columns.price} = ? WHERE ${constants_1.FORMULAS_TABLE.columns.id} = ?`, [formula.title, formula.description, formula.price, formula.id]);
+        const mutation = mysql2_1.default.format(`UPDATE ${constants_1.FORMULAS_TABLE.name} SET ${constants_1.FORMULAS_TABLE.columns.title} = ?, ${constants_1.FORMULAS_TABLE.columns.description} = ?, ${constants_1.FORMULAS_TABLE.columns.price} = ?, ${constants_1.FORMULAS_TABLE.columns.position} = ? WHERE ${constants_1.FORMULAS_TABLE.columns.id} = ?`, [
+            formula.title,
+            formula.description,
+            formula.price,
+            formula.position,
+            formula.id,
+        ]);
         const [rows] = yield __1.dbConnexion.execute(mutation);
         return (0, apiResponses_1.databaseMutationResponse)(rows, 'modify formula by ID');
     }

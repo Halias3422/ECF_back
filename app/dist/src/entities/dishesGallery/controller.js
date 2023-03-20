@@ -32,6 +32,7 @@ DishesGalleryController.getAllDishesGallery = () => __awaiter(void 0, void 0, vo
             id: dish.id,
             image: dish.image,
             title: dish.title,
+            position: dish.position,
         });
     }
     return {

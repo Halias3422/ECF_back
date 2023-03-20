@@ -18,6 +18,7 @@ const mysql2_1 = __importDefault(require("mysql2"));
 const __1 = require("../..");
 const apiResponses_1 = require("../common/apiResponses");
 const constants_1 = require("./constants");
+const service_queries_1 = require("./service.queries");
 class DishesGalleryMutationsService {
 }
 exports.DishesGalleryMutationsService = DishesGalleryMutationsService;
@@ -29,7 +30,17 @@ DishesGalleryMutationsService.createDishGalleryItem = (dish) => __awaiter(void 0
         },
     };
     try {
-        const mutation = mysql2_1.default.format(`INSERT INTO ${constants_1.DISHES_GALLERY_TABLE.name} VALUES (?, ?, ?)`, [DEFAULT, dish.title, dish.image]);
+        const query = yield service_queries_1.DishesGalleryQueriesService.getAllDishesGallery();
+        const mutation = mysql2_1.default.format(`INSERT INTO ${constants_1.DISHES_GALLERY_TABLE.name} VALUES (?, ?, ?, ?)`, [
+            DEFAULT,
+            dish.title,
+            dish.image,
+            query.data
+                ? query.data.length > 0
+                    ? query.data[query.data.length - 1].position + 1
+                    : 1
+                : 0,
+        ]);
         const [rows] = yield __1.dbConnexion.execute(mutation);
         return (0, apiResponses_1.databaseMutationResponse)(rows, 'create gallery dish item');
     }
@@ -39,7 +50,7 @@ DishesGalleryMutationsService.createDishGalleryItem = (dish) => __awaiter(void 0
 });
 DishesGalleryMutationsService.modifyDishGalleryItemById = (dish) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const mutation = mysql2_1.default.format(`UPDATE ${constants_1.DISHES_GALLERY_TABLE.name} SET ${constants_1.DISHES_GALLERY_TABLE.columns.title} = ?, ${constants_1.DISHES_GALLERY_TABLE.columns.image} = ? WHERE ${constants_1.DISHES_GALLERY_TABLE.columns.id} = ?`, [dish.title, dish.image, dish.id]);
+        const mutation = mysql2_1.default.format(`UPDATE ${constants_1.DISHES_GALLERY_TABLE.name} SET ${constants_1.DISHES_GALLERY_TABLE.columns.title} = ?, ${constants_1.DISHES_GALLERY_TABLE.columns.image} = ?, ${constants_1.DISHES_GALLERY_TABLE.columns.position} = ? WHERE ${constants_1.DISHES_GALLERY_TABLE.columns.id} = ?`, [dish.title, dish.image, dish.position, dish.id]);
         const [rows] = yield __1.dbConnexion.execute(mutation);
         return (0, apiResponses_1.databaseMutationResponse)(rows, 'modify gallery dish item');
     }

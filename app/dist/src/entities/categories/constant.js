@@ -12,5 +12,6 @@ exports.CATEGORIES_TABLE = {
     columns: {
         id: 'id',
         name: 'name',
+        position: 'position',
     },
 };

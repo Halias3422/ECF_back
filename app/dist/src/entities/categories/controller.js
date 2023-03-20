@@ -48,7 +48,8 @@ CategoriesController.modifyCategory = (category) => __awaiter(void 0, void 0, vo
         return isValid;
     }
     const isDuplicate = yield _a.getCategoryByName(category.name);
-    if (isDuplicate.statusCode === 200) {
+    if (isDuplicate.statusCode === 200 &&
+        isDuplicate.data[0].id !== category.id) {
         return (0, apiResponses_1.isDuplicateResponse)('modify category');
     }
     const response = yield service_mutations_1.CategoriesMutationsService.modifyCategoryById(category);
@@ -70,6 +71,7 @@ CategoriesController.formatCategoriesResponse = (categories) => {
         formattedCategories.push({
             id: category.id,
             name: category.name,
+            position: category.position,
         });
     }
     return formattedCategories;

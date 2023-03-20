@@ -33,7 +33,7 @@ DishesQueriesService.getDishByTitle = (dishTitle) => __awaiter(void 0, void 0, v
     }
 });
 DishesQueriesService.getAllDishes = () => __awaiter(void 0, void 0, void 0, function* () {
-    const query = `SELECT * FROM ${constants_1.DISHES_TABLE.name}`;
+    const query = `SELECT * FROM ${constants_1.DISHES_TABLE.name} ORDER BY ${constants_1.DISHES_TABLE.columns.position} ASC`;
     try {
         const [rows] = yield __1.dbConnexion.execute(query);
         return (0, apiResponses_1.databaseQueryResponse)(rows, 'get all dishes');

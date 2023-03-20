@@ -5,6 +5,7 @@ import {
   databaseMutationResponse,
 } from '../common/apiResponses';
 import { FormattedMenu, MENUS_TABLE } from './constants';
+import { MenusQueriesService } from './service.queries';
 
 export class MenuMutationsService {
   static createNewMenu = async (menu: FormattedMenu) => {
@@ -14,9 +15,18 @@ export class MenuMutationsService {
           return 'DEFAULT';
         },
       };
+      const query = await MenusQueriesService.getAllMenus();
       const mutation = mysql2.format(
-        `INSERT INTO ${MENUS_TABLE.name} VALUES (?, ?)`,
-        [DEFAULT, menu.title]
+        `INSERT INTO ${MENUS_TABLE.name} VALUES (?, ?, ?)`,
+        [
+          DEFAULT,
+          menu.title,
+          query.data
+            ? query.data.length > 0
+              ? query.data[query.data.length - 1].position + 1
+              : 1
+            : 0,
+        ]
       );
       const [rows] = await dbConnexion.execute(mutation);
       return databaseMutationResponse(rows, 'create new menu');
@@ -28,8 +38,8 @@ export class MenuMutationsService {
   static modifyMenu = async (menu: FormattedMenu) => {
     try {
       const mutation = mysql2.format(
-        `UPDATE ${MENUS_TABLE.name} SET ${MENUS_TABLE.columns.title} = ? WHERE ${MENUS_TABLE.columns.id} = ?`,
-        [menu.title, menu.id]
+        `UPDATE ${MENUS_TABLE.name} SET ${MENUS_TABLE.columns.title} = ?, ${MENUS_TABLE.columns.position} = ? WHERE ${MENUS_TABLE.columns.id} = ?`,
+        [menu.title, menu.position, menu.id]
       );
       const [rows] = await dbConnexion.execute(mutation);
       return databaseMutationResponse(rows, 'modify menu');

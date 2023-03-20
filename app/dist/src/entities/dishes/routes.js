@@ -25,13 +25,14 @@ exports.dishesRoutes.get(constants_1.DISHES_ROUTES.getAllDishesByCategories, (re
 }));
 exports.dishesRoutes.get(constants_1.DISHES_ROUTES.verifyIfDuplicateTitleOrImage, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (req.query) {
-        const { title, image, id, description, price, category } = req.query;
+        const { title, image, id, description, price, category, position } = req.query;
         const { statusCode, response } = yield controller_1.DishesController.verifyIfDuplicateTitleOrImage({
             title: title,
             image: image,
             id: id,
             description: description,
             price: price,
+            position: parseInt(position),
             category: category,
         });
         res.status(statusCode).send(response);

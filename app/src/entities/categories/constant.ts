@@ -10,10 +10,12 @@ export const CATEGORIES_TABLE = {
   columns: {
     id: 'id',
     name: 'name',
+    position: 'position',
   },
 };
 
 export interface CategoryFormData {
   id?: string;
   name: string;
+  position: number;
 }

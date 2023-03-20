@@ -19,5 +19,6 @@ exports.DISHES_TABLE = {
         image: 'image',
         description: 'description',
         price: 'price',
+        position: 'position',
     },
 };

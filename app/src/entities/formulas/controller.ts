@@ -13,6 +13,7 @@ export class FormulasController {
       'title',
       'description',
       'price',
+      'position',
     ]);
     if (isValid.statusCode !== 200) {
       return isValid;
@@ -29,6 +30,7 @@ export class FormulasController {
       'title',
       'description',
       'price',
+      'position',
     ]);
     if (isValid.statusCode !== 200) {
       return isValid;
@@ -45,6 +47,7 @@ export class FormulasController {
       'title',
       'description',
       'price',
+      'position',
     ]);
     if (isValid.statusCode !== 200) {
       return isValid;

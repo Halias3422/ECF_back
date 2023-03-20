@@ -19,11 +19,12 @@ dishesGalleryRoutes.get(
   DISHES_GALLERY_ROUTES.verifyIfDuplicateTitleOrImage,
   async (req, res) => {
     if (req.query) {
-      const { title, image, id } = req.query;
+      const { title, image, position, id } = req.query;
       const { statusCode, response } =
         await DishesGalleryController.verifyIfDuplicateTitleOrImage({
           title: title as string,
           image: image as string,
+          position: parseInt(position as string),
           id: id as string,
         });
       res.status(statusCode).send(response);

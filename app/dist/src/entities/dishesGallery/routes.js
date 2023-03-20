@@ -25,10 +25,11 @@ exports.dishesGalleryRoutes.get(constants_1.DISHES_GALLERY_ROUTES.getAllDishesGa
 }));
 exports.dishesGalleryRoutes.get(constants_1.DISHES_GALLERY_ROUTES.verifyIfDuplicateTitleOrImage, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (req.query) {
-        const { title, image, id } = req.query;
+        const { title, image, position, id } = req.query;
         const { statusCode, response } = yield controller_1.DishesGalleryController.verifyIfDuplicateTitleOrImage({
             title: title,
             image: image,
+            position: parseInt(position),
             id: id,
         });
         res.status(statusCode).send(response);

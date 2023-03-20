@@ -42,16 +42,19 @@ const database_1 = require("../src/testUtils/database");
 const apiResponse = __importStar(require("../src/entities/common/apiResponses"));
 const newMenu = {
     title: 'new menu',
+    position: 0,
     formulas: [
         {
             title: 'formula 1',
             description: 'description 1',
             price: '5.99',
+            position: 0,
         },
         {
             title: 'formula 2',
             description: 'description 2',
             price: '199.99',
+            position: 1,
         },
     ],
 };

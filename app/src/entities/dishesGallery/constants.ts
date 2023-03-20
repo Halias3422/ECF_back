@@ -16,6 +16,7 @@ export const DISHES_GALLERY_TABLE = {
     id: 'id',
     title: 'title',
     image: 'image',
+    position: 'position',
   },
 };
 
@@ -23,4 +24,5 @@ export interface DishesGalleryFormData {
   id?: string;
   image: string;
   title: string;
+  position: number;
 }

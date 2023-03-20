@@ -6,6 +6,7 @@ import {
 } from '../common/apiResponses';
 import { ApiResponse } from '../common/constants';
 import { FormulaData, FORMULAS_TABLE } from './constants';
+import { FormulasQueriesService } from './service.queries';
 
 export class FormulasMutationsService {
   static createNewFormula = async (
@@ -18,9 +19,23 @@ export class FormulasMutationsService {
           return 'DEFAULT';
         },
       };
+      const query = await FormulasQueriesService.getAllFormulasFromMenuId(
+        menuId
+      );
       const mutation = mysql2.format(
-        `INSERT INTO ${FORMULAS_TABLE.name} VALUES (?, ?, ?, ?, ?)`,
-        [DEFAULT, menuId, formula.title, formula.description, formula.price]
+        `INSERT INTO ${FORMULAS_TABLE.name} VALUES (?, ?, ?, ?, ?, ?)`,
+        [
+          DEFAULT,
+          menuId,
+          formula.title,
+          formula.description,
+          formula.price,
+          query.data
+            ? query.data.length > 0
+              ? query.data[query.data.length - 1].position + 1
+              : 1
+            : 0,
+        ]
       );
       const [rows] = await dbConnexion.execute(mutation);
       return databaseMutationResponse(rows, 'create formula');
@@ -49,8 +64,14 @@ export class FormulasMutationsService {
   ): Promise<ApiResponse> => {
     try {
       const mutation = mysql2.format(
-        `UPDATE ${FORMULAS_TABLE.name} SET ${FORMULAS_TABLE.columns.title} = ?, ${FORMULAS_TABLE.columns.description} = ?, ${FORMULAS_TABLE.columns.price} = ? WHERE ${FORMULAS_TABLE.columns.id} = ?`,
-        [formula.title, formula.description, formula.price, formula.id]
+        `UPDATE ${FORMULAS_TABLE.name} SET ${FORMULAS_TABLE.columns.title} = ?, ${FORMULAS_TABLE.columns.description} = ?, ${FORMULAS_TABLE.columns.price} = ?, ${FORMULAS_TABLE.columns.position} = ? WHERE ${FORMULAS_TABLE.columns.id} = ?`,
+        [
+          formula.title,
+          formula.description,
+          formula.price,
+          formula.position,
+          formula.id,
+        ]
       );
       const [rows] = await dbConnexion.execute(mutation);
       return databaseMutationResponse(rows, 'modify formula by ID');

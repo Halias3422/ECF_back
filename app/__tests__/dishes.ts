@@ -10,6 +10,7 @@ import * as apiResponse from '../src/entities/common/apiResponses';
 
 const categoryForm: CategoryFormData = {
   name: 'Dessert',
+  position: 0,
 };
 
 const dishForm: DishFormData = {
@@ -17,6 +18,7 @@ const dishForm: DishFormData = {
   image: 'glace-menthe.jpg',
   title: 'glace à la menthe',
   description: 'un généreux dessert pour les plus gourmands',
+  position: 0,
   price: '19.99',
 };
 
@@ -123,12 +125,15 @@ describe('Dishes endpoints: createNewDish', () => {
 const categories: CategoryFormData[] = [
   {
     name: 'Dessert',
+    position: 0,
   },
   {
     name: 'Entree',
+    position: 1,
   },
   {
     name: 'Plat principal',
+    position: 2,
   },
 ];
 
@@ -139,6 +144,7 @@ const dishes: DishFormData[] = [
     title: 'dish 1 title',
     description: 'dish 1 description',
     price: '19.99',
+    position: 0,
   },
   {
     category: 'Dessert',
@@ -146,6 +152,7 @@ const dishes: DishFormData[] = [
     title: 'dish 2 title',
     description: 'dish 2 description',
     price: '24.99',
+    position: 1,
   },
   {
     category: 'Entree',
@@ -153,6 +160,7 @@ const dishes: DishFormData[] = [
     title: 'dish 3 title',
     description: 'dish 3 description',
     price: '14.99',
+    position: 0,
   },
 ];
 

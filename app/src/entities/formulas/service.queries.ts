@@ -12,7 +12,7 @@ export class FormulasQueriesService {
     menuId: string
   ): Promise<ApiResponse> => {
     const query = mysql2.format(
-      `SELECT * FROM ${FORMULAS_TABLE.name} WHERE ${FORMULAS_TABLE.name}.${FORMULAS_TABLE.columns.menuId} = ?`,
+      `SELECT * FROM ${FORMULAS_TABLE.name} WHERE ${FORMULAS_TABLE.name}.${FORMULAS_TABLE.columns.menuId} = ? ORDER BY ${FORMULAS_TABLE.columns.position} ASC`,
       [menuId]
     );
     try {

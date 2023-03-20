@@ -29,6 +29,7 @@ export class DishesGalleryController {
         id: dish.id,
         image: dish.image,
         title: dish.title,
+        position: dish.position,
       });
     }
     return {

@@ -38,7 +38,7 @@ export class CategoriesQueriesService {
 
   static getAllCategories = async (): Promise<ApiResponse> => {
     try {
-      const query = `SELECT * FROM ${CATEGORIES_TABLE.name}`;
+      const query = `SELECT * FROM ${CATEGORIES_TABLE.name} ORDER BY ${CATEGORIES_TABLE.columns.position} ASC`;
       const [rows] = await dbConnexion.execute(query);
       return databaseQueryResponse(rows, 'get all categories');
     } catch (error) {

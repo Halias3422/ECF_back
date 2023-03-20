@@ -6,6 +6,7 @@ import {
 } from '../common/apiResponses';
 import { ApiResponse } from '../common/constants';
 import { DISHES_TABLE, DishFormData } from './constants';
+import { DishesQueriesService } from './service.queries';
 
 export class DishesMutationsService {
   static createNewDish = async (
@@ -20,8 +21,9 @@ export class DishesMutationsService {
     };
 
     try {
+      const query = await DishesQueriesService.getAllDishes();
       const mutation = mysql2.format(
-        `INSERT INTO ${DISHES_TABLE.name} VALUES (?, ?, ?, ?, ?, ?)`,
+        `INSERT INTO ${DISHES_TABLE.name} VALUES (?, ?, ?, ?, ?, ?, ?)`,
         [
           DEFAULT,
           dishCategoryId,
@@ -29,6 +31,11 @@ export class DishesMutationsService {
           newDish.title,
           newDish.description,
           newDish.price,
+          query.data
+            ? query.data.length > 0
+              ? query.data[query.data.length - 1].position + 1
+              : 1
+            : 0,
         ]
       );
       const [rows] = await dbConnexion.execute(mutation);
@@ -44,13 +51,14 @@ export class DishesMutationsService {
   ) => {
     try {
       const mutation = mysql2.format(
-        `UPDATE ${DISHES_TABLE.name} SET ${DISHES_TABLE.columns.title} = ?, ${DISHES_TABLE.columns.image} = ?, ${DISHES_TABLE.columns.description} = ?, ${DISHES_TABLE.columns.price} = ?, ${DISHES_TABLE.columns.categoryId} = ? WHERE ${DISHES_TABLE.columns.id} = ?`,
+        `UPDATE ${DISHES_TABLE.name} SET ${DISHES_TABLE.columns.title} = ?, ${DISHES_TABLE.columns.image} = ?, ${DISHES_TABLE.columns.description} = ?, ${DISHES_TABLE.columns.price} = ?, ${DISHES_TABLE.columns.categoryId} = ?, ${DISHES_TABLE.columns.position} = ? WHERE ${DISHES_TABLE.columns.id} = ?`,
         [
           dish.title,
           dish.image,
           dish.description,
           dish.price,
           categoryId,
+          dish.position,
           dish.id,
         ]
       );

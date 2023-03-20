@@ -10,7 +10,7 @@ import { MENUS_TABLE } from './constants';
 export class MenusQueriesService {
   static getAllMenus = async (): Promise<ApiResponse> => {
     try {
-      const query = `SELECT * FROM ${MENUS_TABLE.name}`;
+      const query = `SELECT * FROM ${MENUS_TABLE.name} ORDER BY ${MENUS_TABLE.columns.position} ASC`;
 
       const [rows] = await dbConnexion.execute(query);
       return databaseQueryResponse(rows, 'get all menus');

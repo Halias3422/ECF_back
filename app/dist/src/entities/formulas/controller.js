@@ -23,6 +23,7 @@ FormulasController.createNewFormula = (formula, menuId) => __awaiter(void 0, voi
         'title',
         'description',
         'price',
+        'position',
     ]);
     if (isValid.statusCode !== 200) {
         return isValid;
@@ -36,6 +37,7 @@ FormulasController.deleteFormula = (formula) => __awaiter(void 0, void 0, void 0
         'title',
         'description',
         'price',
+        'position',
     ]);
     if (isValid.statusCode !== 200) {
         return isValid;
@@ -49,6 +51,7 @@ FormulasController.modifyFormula = (formula) => __awaiter(void 0, void 0, void 0
         'title',
         'description',
         'price',
+        'position',
     ]);
     if (isValid.statusCode !== 200) {
         return isValid;

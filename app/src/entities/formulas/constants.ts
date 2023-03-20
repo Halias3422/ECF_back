@@ -12,6 +12,7 @@ export const FORMULAS_TABLE = {
     title: 'title',
     description: 'description',
     price: 'price',
+    position: 'position',
   },
 };
 
@@ -21,4 +22,5 @@ export interface FormulaData {
   title: string;
   description: string;
   price: string;
+  position: number;
 }

@@ -22,7 +22,7 @@ export class DishesQueriesService {
   };
 
   static getAllDishes = async (): Promise<ApiResponse> => {
-    const query = `SELECT * FROM ${DISHES_TABLE.name}`;
+    const query = `SELECT * FROM ${DISHES_TABLE.name} ORDER BY ${DISHES_TABLE.columns.position} ASC`;
 
     try {
       const [rows] = await dbConnexion.execute(query);

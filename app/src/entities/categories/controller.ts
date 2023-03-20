@@ -52,7 +52,10 @@ export class CategoriesController {
       return isValid;
     }
     const isDuplicate = await this.getCategoryByName(category.name);
-    if (isDuplicate.statusCode === 200) {
+    if (
+      isDuplicate.statusCode === 200 &&
+      isDuplicate.data[0].id !== category.id
+    ) {
       return isDuplicateResponse('modify category');
     }
     const response = await CategoriesMutationsService.modifyCategoryById(
@@ -86,6 +89,7 @@ export class CategoriesController {
       formattedCategories.push({
         id: category.id,
         name: category.name,
+        position: category.position,
       });
     }
     return formattedCategories;

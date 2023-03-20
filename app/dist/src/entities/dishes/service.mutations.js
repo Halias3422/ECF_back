@@ -18,6 +18,7 @@ const mysql2_1 = __importDefault(require("mysql2"));
 const __1 = require("../..");
 const apiResponses_1 = require("../common/apiResponses");
 const constants_1 = require("./constants");
+const service_queries_1 = require("./service.queries");
 class DishesMutationsService {
 }
 exports.DishesMutationsService = DishesMutationsService;
@@ -30,13 +31,19 @@ DishesMutationsService.createNewDish = (newDish, dishCategoryId) => __awaiter(vo
         },
     };
     try {
-        const mutation = mysql2_1.default.format(`INSERT INTO ${constants_1.DISHES_TABLE.name} VALUES (?, ?, ?, ?, ?, ?)`, [
+        const query = yield service_queries_1.DishesQueriesService.getAllDishes();
+        const mutation = mysql2_1.default.format(`INSERT INTO ${constants_1.DISHES_TABLE.name} VALUES (?, ?, ?, ?, ?, ?, ?)`, [
             DEFAULT,
             dishCategoryId,
             newDish.image,
             newDish.title,
             newDish.description,
             newDish.price,
+            query.data
+                ? query.data.length > 0
+                    ? query.data[query.data.length - 1].position + 1
+                    : 1
+                : 0,
         ]);
         const [rows] = yield __1.dbConnexion.execute(mutation);
         return (0, apiResponses_1.databaseMutationResponse)(rows, 'create new dish');
@@ -47,12 +54,13 @@ DishesMutationsService.createNewDish = (newDish, dishCategoryId) => __awaiter(vo
 });
 DishesMutationsService.modifyDishItemById = (dish, categoryId) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const mutation = mysql2_1.default.format(`UPDATE ${constants_1.DISHES_TABLE.name} SET ${constants_1.DISHES_TABLE.columns.title} = ?, ${constants_1.DISHES_TABLE.columns.image} = ?, ${constants_1.DISHES_TABLE.columns.description} = ?, ${constants_1.DISHES_TABLE.columns.price} = ?, ${constants_1.DISHES_TABLE.columns.categoryId} = ? WHERE ${constants_1.DISHES_TABLE.columns.id} = ?`, [
+        const mutation = mysql2_1.default.format(`UPDATE ${constants_1.DISHES_TABLE.name} SET ${constants_1.DISHES_TABLE.columns.title} = ?, ${constants_1.DISHES_TABLE.columns.image} = ?, ${constants_1.DISHES_TABLE.columns.description} = ?, ${constants_1.DISHES_TABLE.columns.price} = ?, ${constants_1.DISHES_TABLE.columns.categoryId} = ?, ${constants_1.DISHES_TABLE.columns.position} = ? WHERE ${constants_1.DISHES_TABLE.columns.id} = ?`, [
             dish.title,
             dish.image,
             dish.description,
             dish.price,
             categoryId,
+            dish.position,
             dish.id,
         ]);
         const [rows] = yield __1.dbConnexion.execute(mutation);
